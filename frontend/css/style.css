@@ -1,20 +1,20 @@
-* {
+* {  /*The * selector means 'apply to EVERY element.' The first two lines remove all default browser margins and padding so we have complete control over spacing.*/ 
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* ? */
 }
 
 body {
     font-family: 'Raleway', sans-serif;
     color: #333;
     background: #faf6f1;
-    line-height: 1.6;
-}
+    line-height: 1.6; /* It sets the spacing between lines of text to 1.6 times the font size, making text more readable than the browser default*/
+} 
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+    max-width: 1200px; /* common web design pattern, to fit larger screens */
+    margin: 0 auto; /* centers horisontally (0 top/bottom, auto left/right) */
+    padding: 0 10px; 
 }
 
 /* Header */
@@ -22,10 +22,9 @@ body {
 .main-header {
     background: #fff;
     padding: 1.5rem 0;
-    border-bottom: 1px solid #e8e1d6;
     position: sticky;                 /* Sticks to top when scrolling */     
     top: 0;                           /* Stick from the very top */ 
-    z-index: 100;                     /* Ensures header is above other content (these 3 often used together) */
+    z-index: 9999;                     /* Ensures header is above other content (these 3 often used together) */
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);  /*  X ,  Y,   blur(soft edge),  color(5% black opacity)    */
 }
 
@@ -38,17 +37,15 @@ body {
 .logo h1 {
     font-family: 'Playfair Display', serif;
     font-size: 2.2rem;    /* rem = scales with browser settings (accessible) , px = less flexible */
-    font-weight: 700;
+    font-weight: 900;
     color: #8b6b61;
-    letter-spacing: 1px;
+    
 }
 
 .tagline {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     color: #D58A94;
-    font-size: 0.95rem;
-    margin-top: 0.2rem;
 }
 
 nav {
@@ -60,35 +57,15 @@ nav {
 .nav-item {
     text-decoration: none;
     color: #8b6b61;
-    font-weight: 500;
-    font-size: 1rem;
-    padding: 0.5rem 0;
-    position: relative;      /* Needed for the underline effect */
-    transition: color 0.3s, transform 0.3s;  /* Smooth color change over 0.3 seconds (property, duration) */
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    transition: color 0.3s, transform 0.3s;
 }
 
 .nav-item:hover {
-    color: #6d4c41;
-    transform: translateY(-2px);
+    color: #593e35;
+    transform: translateY(-4px);
 }
-
-.nav-item.active {
-    color: #6d4c41;
-    font-weight: 650;
-}
-
-
-/* UNDERLINE EFFEKT */
-.nav-item.active:after {   /*It's a CSS pseudo-element = "add visual element without extra HTML" */
-    content: '';           /* Required for pseudo-element to show */
-    position: absolute;    /* Position relative to .nav-item */
-    bottom: -5px;          /* 5px below the text */
-    left: 0;               /* Start from left edge */
-    right: 0;              /* Extend to right edge */
-    height: 2px;           /* Thickness of the line */
-    background: #6d4c41;
-}
-
 
 /* ICONS INSIDE LINKS */
 .nav-item i {
@@ -98,23 +75,24 @@ nav {
 /* Hero Section */
 .hero {
     background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://i.pinimg.com/736x/5b/e1/04/5be10426d1419a48d354a0944ffc9d58.jpg');
-    background-size: cover;   /* "Stretch image to fill entire area (may crop edges)" */
+    /* background-size: cover;   /* "Stretch image to fill entire area (may crop edges)" */
     background-position: center;
     color: white;
-    padding: 6rem 0;
+    padding: 10rem 0;
     text-align: center;
 }
 
 .hero-content h2{
     font-family: 'Playfair Display', serif;
     font-size: 3.5rem;
-    font-weight: 700;
+    font-weight: 900;
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
 .hero-content p{
-    font-size: 1.2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
     max-width: 600px;
     margin: 0 auto 2rem;
     color: rgba(255,255,255,0.9);
@@ -122,29 +100,28 @@ nav {
 
 .btn-primary {
     display: inline-block;  /* Allows padding and behaves like button */
-    background: #8b6b61;
+    background: #e6bcc2;
     color: white;
     padding: 1rem 2.5rem;
     border-radius: 2px;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 1rem;
-    letter-spacing: 1.5px;
-    transition: background 0.3s, transform 0.3s;  /* Animate color and movement */
+    letter-spacing: 3px;
+    transition: background 0.3s, transform 0.3s;
 }
 
 .btn-primary:hover {
-    background: #6d4c41;
-    transform: translateY(-2px);  /*can only buttons with box hover liek this, or can the text in header also hover?*/
+    background: #c3949a;
+    transform: translateY(-2px); 
 }
 
 /* ============================== */
-/* MENU SECTION STYLES */
-/* ============================== */
+/* MENU SECTION */
 
 .menu-section {
-    padding: 4rem 0;
-    background: #ffffff; /* Light cream background */
+    padding: 5rem 0;
+    background: #ffffff; 
 }
 
 .section-title {
@@ -167,7 +144,7 @@ nav {
 
 /* Menu Category */
 .menu-category {
-    margin-bottom: 3rem;
+    margin-bottom: 5rem;
 }
 
 .menu-category h3 {
@@ -181,7 +158,7 @@ nav {
 }
 
 .menu-category h3 i {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
 }
 
 /* Menu Items Grid */
@@ -195,15 +172,12 @@ nav {
 .menu-item {
     background: white;
     border-radius: 15px; /* Rounded corners for bubble effect */
-    overflow: hidden; /* Keeps image inside rounded corners */
-    box-shadow: 0 5px 15px rgba(139, 107, 97, 0.1); /* Soft shadow */
+    box-shadow: 0 5px 15px rgba(139, 107, 97, 0.2); /* Soft shadow */
     transition: all 0.3s ease;
-    border: 1px solid #f0e6d6; /* Light border */
 }
 
 .menu-item:hover {
-    transform: translateY(-10px); /* Lift effect on hover */
-    box-shadow: 0 15px 30px rgba(139, 107, 97, 0.15); /* Stronger shadow on hover */
+    transform: translateY(-5px); /* Lift effect on hover */
 }
 
 /* Menu Item Image */
@@ -211,7 +185,7 @@ nav {
     width: 100%;
     height: 200px;
     object-fit: cover; /* Crops image nicely */
-    display: block;
+    margin-top: 20px;
 }
 
 /* Item Content Area */
@@ -227,11 +201,12 @@ nav {
 }
 
 .item-content p {
-    color: #666;
+    color: #8b6b61;
     font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 1rem;
-    min-height: 70px; /* Ensures consistent height */
+    font-style: italic;
+    line-height: 0.5;
+    margin-bottom: 0;
+    min-height: 20px; /* Ensures consistent height */
 }
 
 /* Footer with Price and Button */
@@ -241,60 +216,73 @@ nav {
     align-items: center;
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 1px solid #f0e6d6;
+    border-top: 1px solid #f0e6d6; /* line above footer */
 }
 
 .price {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 600;
-    color: #8b6b61;
+    color: #c3949a;
 }
 
 /* Add to Cart Button */
 .btn-add {
-    background: #b97982; /* Green color for action */
+    display: flex;
+    align-items: center;
+    background: #c3949a;
     color: white;
     border: none;
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
+    font-family: 'Cormorant Garamond', serif;
     font-weight: 500;
     font-size: 0.95rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
     gap: 8px;
-    transition: all 0.3s ease;
 }
 
 .btn-add:hover {
-    background: #D58A94; /* Darker green on hover */
-    transform: scale(1.05); /* Slight grow effect */
+    background: #e6bcc2;;
 }
 
-.btn-add:active {
-    transform: scale(0.98); /* Press effect */
-}
 
 /* Responsive Design */
-@media (max-width: 768px) {
-    .menu-items {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
+@media (max-width: 768px) { /*targets tablets and larger phones (slightly changes layout)*/
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
     }
+
+    nav {
+        text-align: center;
+        gap: 0.5rem;
+    }
+
+    .menu-items {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* fr = flexible fraction, divison of leftover space*/
+        gap: 1.5rem;
+    } /*"On tablets (768px and below). Reduced minimum column width from 300px to 280px, decreased gap slightly. Ensures still 
+    get 2 columns on most tablets instead of dropping to 1 too early." */
     
     .menu-item {
         margin-bottom: 1rem;
     }
-    
-    .item-content p {
-        min-height: auto; /* Remove fixed height on mobile */
-    }
 }
 
 @media (max-width: 480px) {
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav {
+        text-align: center;
+    }
+
     .menu-items {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+        gap: 1rem;
     }
     
     .section-title h2 {
@@ -307,11 +295,21 @@ nav {
 }
 
 /* Cart counter animation */
+/* Simple bump animation */
 .cart-count {
+    display: inline-block;
     transition: all 0.3s ease;
+    padding: 2px 6px;
+    border-radius: 50%;
+    background-color: #f0e6d6;
 }
 
 .cart-count.bump {
-    transform: scale(1.3);
-    color: #4CAF50; /* Green color when item added */
+    animation: bump 0.3s ease;
+}
+
+@keyframes bump {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
 }

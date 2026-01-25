@@ -1,37 +1,36 @@
 //Add to cart
 
-//1. Get cart from browser memory, or start with empty array
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
+//1. Get cart from browser local storage, or if no cart -> start with empty array (so cart items don't disappear when refresh page)
+//let cart = JSON.parse(localStorage.getItem('cart')) || []; //'JSON.parse' converts the stores text back into js array. why? localStorage can only store text, so we convert our array to text when saving, then back to aray when loading
+let cart = [];
 //2. Function to update the cart number in header
 function updateCartCount() {
-    // Calculate total items in cart
-    let totalItems = 0;
-    for (let i = 0; i < cart.length; i++) {
-        totalItems += cart[i].quantity;
+    // Get the single cart counter by ID
+    let cartCounter = document.getElementById('cart-count');
+    
+    if (!cartCounter) { //"If cartCounter is NOT found (is null/undefined)..."
+        console.warn("Cart counter element not found!");  //Safety check
+        return;   //Stop the function here, don't continue
     }
     
-    // Find all cart counters on page
-    let cartCounters = document.querySelectorAll('.cart-count');
-    
-    for (let i = 0; i < cartCounters.length; i++) {
-        let counter = cartCounters[i];
-        let oldCount = parseInt(counter.textContent) || 0;
-        
-        // Update the number
-        counter.textContent = totalItems;
-        
-        // Only animate if count increased (not on first load)
-        if (totalItems > oldCount && oldCount > 0) {
-            // Add animation class
-            counter.classList.add('bump');
-            
-            // Remove animation class after animation completes
-            setTimeout(function() {
-                counter.classList.remove('bump');
-            }, 300); // Match CSS animation duration
+    // Calculate total items
+    let totalItems = 0;
+    for (let i = 0; i < cart.length; i++) {   // Keep going while i is less than number of items in cart
+        if (cart[i] && cart[i].quantity) {    //If this item exists AND has a quantity...
+            totalItems += cart[i].quantity;   // Add the quantity to total
         }
     }
+    
+    let oldCount = parseInt(cartCounter.textContent) || 0;  //Gets the text inside <span id="cart-count">, coverts to int and saves to new variable, annars use 0
+    
+    cartCounter.textContent = totalItems;   //Updates displayed number
+    
+    // Animate if count increased
+    if (totalItems > oldCount && oldCount > 0) {
+        cartCounter.classList.add('bump');
+        setTimeout(() => cartCounter.classList.remove('bump'), 300); //Adds 'bump' CSS class for animation, removes it after 300ms
+    }
+    
 }
 
 //3. Function to add item to cart
@@ -59,26 +58,16 @@ function addToCart(itemId, itemName, itemPrice, button) {
         });
     }
 
-    // Save cart to browser memory
+    // Save cart to browser memory -> Converts array to string for storage. Saves under key 'cart'
     localStorage.setItem('cart', JSON.stringify(cart));
 
-    // Update cart counter
+    // Calls first function to update display cart counter
     updateCartCount();
 
-    // Simple button feedback - USE THE BUTTON PARAMETER
-    let originalText = button.innerHTML;
-    button.innerHTML = '<i class="fas fa-check"></i> Added';
-    button.style.backgroundColor = '#b97982'; // Your pink color
-
-    // Reset button after 1 second
-    setTimeout(function() {
-        button.innerHTML = originalText;
-        button.style.backgroundColor = '';
-    }, 1000);
 }
 
 
-//4. when page loads, set up everything
+//4. waits till HTML loads then tuns remaining code to avoid errors.
 document.addEventListener('DOMContentLoaded', function() {
     //set intial cart count
     updateCartCount();
