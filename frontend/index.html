@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> <!-- tells browser and screen readers page is in english-->
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- view-port tag to make website responsive on mobile devices, by setting width to the device width -->
     <title>Latte Avenue</title>
     <link rel="stylesheet" href= "css/style.css"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- 'Font Awesome' is an icon library. for shopping bag icon, plus icon, coffee mug -->
 </head>
 
 <body>
-    <!-- Header (fixed) -->
-    <header class="main-header">
-        <div class="container">
+    <!-- Header -->
+    <header class="main-header">  <!-- semantic headers bc they're bl.a clearer when reading the code-->
+        <div class="container"> <!-- common pattern to limit content width and center it, in css-->
             <div class="header-content">
                 <div class="logo">
                     <h1>Latte Avenue</h1>
@@ -20,13 +20,13 @@
                 <nav>
                     <!-- navigation links -->
      <!-- **  -->   <a href="login.html" class="nav-item"><strong>Login</strong></a>
-                    <a href="index.html" class="nav-item active">Home</a>
+                    <a href="index.html" class="nav-item">Home</a>
                     <a href="#menu" class="nav-item">Menu</a>
                     <a href="contact" class="nav-item">Contact</a>
                     <a href="cart.html" class="nav-item">
                         <i class="fas fa-shopping-bag"></i>
                         <strong>Cart</strong>
-                        <span id="cart-count">0</span>
+                        <span id="cart-count" class="cart-count">0</span> <!-- JS needs a unique id to find and update cart nr. class cart-count is for styling, ID for JS -->
                     </a>
                 </nav>
             </div>
@@ -34,12 +34,12 @@
     </header>
 
 <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero">   <!-- 'section' groups related content -->
         <div class="container">
-            <div class="hero-content">
+            <div class="hero-content"> <!-- gives flexibility to center text within the container -->
                 <h2> Where Parisian Charm Meets Café Culture</h2>
                 <p>Exquisite lattes, pastries, desserts and the elegance of Paris in every detail</p>
-                <a href="#menu" class="btn-primary">View Our Menu</a>
+                <a href="#menu" class="btn-primary">View Our Menu</a>  <!-- internal link, '#' means ID -->
             </div>
         </div>
     </section>
