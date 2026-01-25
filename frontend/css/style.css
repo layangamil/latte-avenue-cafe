@@ -173,11 +173,6 @@ nav {
     background: white;
     border-radius: 15px; /* Rounded corners for bubble effect */
     box-shadow: 0 5px 15px rgba(139, 107, 97, 0.2); /* Soft shadow */
-    transition: all 0.3s ease;
-}
-
-.menu-item:hover {
-    transform: translateY(-5px); /* Lift effect on hover */
 }
 
 /* Menu Item Image */
@@ -228,21 +223,28 @@ nav {
 
 /* Add to Cart Button */
 .btn-add {
-    display: flex;
-    align-items: center;
-    background: #c3949a;
-    color: white;
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #c3949a;
     border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 500;
-    font-size: 0.95rem;
-    gap: 8px;
-}
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+    transition: background 0.3s, transform 0.3s;
+  }
+  
+  .btn-add:active:hover{  /* when hovering AND clicked*/
+    box-shadow: 0 7px #666;
+    transform: translateY(4px);
+  }
 
 .btn-add:hover {
-    background: #e6bcc2;;
+    background: #e6bcc2;
+    transform: translateY(-2px);
 }
 
 
