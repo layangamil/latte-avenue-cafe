@@ -26,10 +26,10 @@ function updateCartCount() {
     cartCounter.textContent = totalItems;   //Updates displayed number
     
     // Animate if count increased
-    if (totalItems > oldCount && oldCount > 0) {
-        cartCounter.classList.add('bump');
-        setTimeout(() => cartCounter.classList.remove('bump'), 300); //Adds 'bump' CSS class for animation, removes it after 300ms
-    }
+    cartCounter.classList.add('bump');
+    setTimeout(function() {
+        cartCounter.classList.remove('bump');
+    }, 300);
     
 }
 
