@@ -233,12 +233,12 @@ nav {
     background-color: #c3949a;
     border: none;
     border-radius: 15px;
-    box-shadow: 0 9px #999;
+    box-shadow: 0 7px #999;
     transition: background 0.3s, transform 0.3s;
   }
   
   .btn-add:active:hover{  /* when hovering AND clicked*/
-    box-shadow: 0 7px #666;
+    box-shadow: 0 5px #666;
     transform: translateY(4px);
   }
 
@@ -249,7 +249,7 @@ nav {
 
 
 /* Responsive Design */
-@media (max-width: 768px) { /*targets tablets and larger phones (slightly changes layout)*/
+@media (max-width: 1024px) { /*targets tablets (slightly changes layout)*/
     .header-content {
         flex-direction: column;
         text-align: center;
@@ -262,7 +262,7 @@ nav {
     }
 
     .menu-items {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* fr = flexible fraction, divison of leftover space*/
+        grid-template-columns: repeat(2, 1fr); /* fr = flexible fraction, divison of leftover space*/
         gap: 1.5rem;
     } /*"On tablets (768px and below). Reduced minimum column width from 300px to 280px, decreased gap slightly. Ensures still 
     get 2 columns on most tablets instead of dropping to 1 too early." */
@@ -272,7 +272,7 @@ nav {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px) { /*for larger phones and phones in general?*/ 
     .header-content {
         flex-direction: column;
         text-align: center;
@@ -283,24 +283,17 @@ nav {
     }
 
     .menu-items {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+        grid-template-columns: repeat(2, 1fr);  /* we want to fit two item cards on screen so for small screens with width 360, we did 180px*/
         gap: 1rem;
     }
-    
-    .section-title h2 {
-        font-size: 2rem;
-    }
-    
-    .menu-category h3 {
-        font-size: 1.5rem;
-    }
+
 }
 
 /* Cart counter animation */
 /* Simple bump animation */
 .cart-count {
     display: inline-block;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;  /*transition will start slow, then go fast, and end slow */
     padding: 2px 6px;
     border-radius: 50%;
     background-color: #f0e6d6;

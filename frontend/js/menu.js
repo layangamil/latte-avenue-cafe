@@ -20,7 +20,7 @@ function updateCartCount() {
     
     cartCounter.textContent = totalItems;   //Updates displayed number 
     
-    // Animate
+    // Animate only if cartCounter is more than 0
     if (totalItems > 0) {
         cartCounter.classList.add('bump');
         setTimeout(function() {
@@ -55,6 +55,8 @@ function addToCart(itemId, itemName, itemPrice, button) {
     }
     // Calls first function to update display cart counter
     updateCartCount();
+
+    
 }
 
 //4. waits till HTML loads then tuns remaining code to avoid errors.
