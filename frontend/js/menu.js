@@ -1,7 +1,6 @@
 //Add to cart
 
-//1. Get cart from browser local storage, or if no cart -> start with empty array (so cart items don't disappear when refresh page)
-//let cart = JSON.parse(localStorage.getItem('cart')) || []; //'JSON.parse' converts the stores text back into js array. why? localStorage can only store text, so we convert our array to text when saving, then back to aray when loading
+
 let cart = [];
 //2. Function to update the cart number in header
 function updateCartCount() {
@@ -9,7 +8,7 @@ function updateCartCount() {
     let cartCounter = document.getElementById('cart-count');
     
     if (!cartCounter) { //"If cartCounter is NOT found (is null/undefined)..."
-        console.warn("Cart counter element not found!");  //Safety check
+        console.log("Cart count not found!");  //Safety check
         return;   //Stop the function here, don't continue
     }
     
@@ -30,7 +29,6 @@ function updateCartCount() {
     setTimeout(function() {
         cartCounter.classList.remove('bump');
     }, 300);
-    
 }
 
 //3. Function to add item to cart
