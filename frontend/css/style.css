@@ -247,6 +247,14 @@ nav {
     transform: translateY(-2px);
 }
 
+.contact-content h3{
+    margin-top: 3rem;
+}
+
+.contact-content p{
+    color:rgb(106, 97, 97);
+}
+
 
 /* Responsive Design */
 @media (max-width: 1024px) { /*targets tablets (slightly changes layout)*/
