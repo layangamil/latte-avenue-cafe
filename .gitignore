@@ -1,0 +1,8 @@
+# Backend junk (local only)
+backend/node_modules/
+backend/backend/
+backend/frontend/
+backend/server_backup.js
+
+# General
+node_modules/
