@@ -28,11 +28,11 @@ body {
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);  /*  X ,  Y,   blur(soft edge),  color(5% black opacity)    */
 }
 
-.header-content {
-    display: flex;                  /* Use Flexbox for layout */
-    justify-content: space-between; /* Logo LEFT, links RIGHT */
-    align-items: center;            /* Center vertically */
-}
+/*.header-content {
+    display: flex;                  /* Use Flexbox for layout 
+    justify-content: space-between; /* Logo LEFT, links RIGHT 
+    align-items: center;            /* Center vertically 
+}*/
 
 .logo h1 {
     font-family: 'Playfair Display', serif;
@@ -127,12 +127,14 @@ nav {
 .section-title {
     text-align: center;
     margin: 3rem;
+    padding-bottom: 3rem;
 }
 
 .section-title h2 {
     font-family: 'Playfair Display', serif;
     font-size: 2.5rem;
-    color: #5d4037;
+    font-weight: 800;
+    color: #8b6b61;
     margin-bottom: 0.5rem;
 }
 
@@ -164,8 +166,9 @@ nav {
 /* Menu Items Grid */
 .menu-items {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
+    
 }
 
 /* Individual Menu Item (Bubble/Card) */
@@ -199,9 +202,9 @@ nav {
     color: #8b6b61;
     font-size: 0.95rem;
     font-style: italic;
-    line-height: 0.5;
-    margin-bottom: 0;
-    min-height: 20px; /* Ensures consistent height */
+    line-height: 1.4;
+    margin-bottom: 0.5;
+    min-height: 40px; /* Ensures consistent height */
 }
 
 /* Footer with Price and Button */
@@ -237,7 +240,7 @@ nav {
     transition: background 0.3s, transform 0.3s;
   }
   
-  .btn-add:active:hover{  /* when hovering AND clicked*/
+.btn-add:active:hover{  /* when hovering AND clicked*/
     box-shadow: 0 5px #666;
     transform: translateY(4px);
   }
@@ -270,8 +273,8 @@ nav {
     }
 
     .menu-items {
-        grid-template-columns: repeat(2, 1fr); /* fr = flexible fraction, divison of leftover space*/
-        gap: 1.5rem;
+        grid-template-columns: repeat(2, 1fr); /* fr = flexible fraction, divison of leftover space
+        gap: 1.5rem;*/
     } /*"On tablets (768px and below). Reduced minimum column width from 300px to 280px, decreased gap slightly. Ensures still 
     get 2 columns on most tablets instead of dropping to 1 too early." */
     
@@ -280,7 +283,7 @@ nav {
     }
 }
 
-@media (max-width: 480px) { /*for larger phones and phones in general?*/ 
+ @media (max-width: 480px) { /*for larger phones and phones in general? */
     .header-content {
         flex-direction: column;
         text-align: center;
