@@ -6,6 +6,3 @@ backend/server_backup.js
 
 # General
 node_modules/
-
-
-.env
