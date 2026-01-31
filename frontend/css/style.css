@@ -78,7 +78,7 @@ nav {
     /* background-size: cover;   /* "Stretch image to fill entire area (may crop edges)" */
     background-position: center;
     color: white;
-    padding: 10rem 0;
+    padding: 15rem 0;
     text-align: center;
 }
 
@@ -115,15 +115,6 @@ nav {
     background: #c3949a;
     transform: translateY(-2px); 
 }
-
-/* ============================== */
-/* MENU SECTION */
-
-.menu-section {
-    padding: 5rem 0;
-    background: #ffffff; 
-}
-
 .section-title {
     text-align: center;
     margin: 3rem;
@@ -142,6 +133,43 @@ nav {
     color: #a1887f;
     font-style: italic;
     font-size: 1.1rem;
+}
+/* ============================== */
+/* ABOUT SECTION */
+.about-section {
+    padding: 0;
+    margin: 0;
+}
+
+.about-content {
+    display: flex;
+    align-items: space-between;
+}
+
+.about-content img {
+    width: 600px;
+    height: 600px;
+}
+.about-content-text {
+    display:flex;
+    align-items: center;
+}
+
+.about-content p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    font-weight: 400;
+    color: #8b6b61;
+    margin: 2rem;
+}
+
+/* ============================== */
+/* MENU SECTION */
+
+.menu-section {
+    padding: 5rem 0;
+    background: #ffffff; 
 }
 
 /* Menu Category */
@@ -250,12 +278,31 @@ nav {
     transform: translateY(-2px);
 }
 
+/* ============================== */
+/* CONTACT SECTION */
+
+
+.contact-content{
+    margin: 4rem;
+    padding-bottom: 2rem;
+}
+
 .contact-content h3{
+    display:flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 3rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 550;
+    color:#5d4037;
 }
 
 .contact-content p{
-    color:rgb(106, 97, 97);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-style:'Cormorant Garamond', serif;
+    color:#80665e;
 }
 
 
