@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- tells browser and screen readers page is in english-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- view-port tag to make website responsive on mobile devices, by setting width to the device width -->
+    <title>Latte Avenue</title>
+    <link rel="stylesheet" href= "css/style.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- 'Font Awesome' is an icon library. for shopping bag icon, plus icon, coffee mug -->
+    <link rel ="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="main-header navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm"> <!-- semantic headers bc they're bl.a clearer when reading the code-->
+        <div class="container-fluid"> <!-- common pattern to limit content width and center it, in css-->
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="logo">
+                    <h1>Latte Avenue</h1>
+                    <p class="tagline">Parisian Elegance in Every Sip</p>
+                </div>
+                <nav>
+                    <!-- navigation links -->
+     <!-- **  -->   <a href="login.html" class="nav-item"><strong>Login</strong></a>
+                    <a href="index.html" class="nav-item">Home</a>
+                    <a href="#menu" class="nav-item">Menu</a>
+                    <a href="#contact" class="nav-item">Contact</a>
+                    <a href="cart.html" class="nav-item">
+                        <i class="fas fa-shopping-bag"></i>
+                        <strong>Cart</strong>
+                        <span id="cart-count" class="cart-count">0</span> <!-- span, bc it doesnt break line (inline -element) JS needs a unique id to find and update cart nr. class cart-count is for styling, ID for JS -->
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+<!-- Hero Section -->
+    <section class="hero">   <!-- 'section' groups related content -->
+        <div class="container">
+            <div class="hero-content"> <!-- gives flexibility to center text within the container -->
+                <h2> Where Parisian Charm Meets Café Culture</h2>
+                <p>Exquisite lattes, pastries, desserts and the elegance of Paris in every detail</p>
+                <a href="#menu" class="btn-primary">View Our Menu</a>  <!-- internal link, '#' means ID -->
+            </div>
+        </div>
+    </section>
+
+<!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Story</h2>
+                <p>How we came about</p>
+            </div>
+
+            <div class="about-content">
+                <img src="https://i.pinimg.com/736x/81/c2/5f/81c25f649e894cd03870737b4a2b9375.jpg" alt="Paris newspaper">
+                <div class="abount-content-text">
+                    <p>It started as a dream: To create a corner of Paris in the heart of Stockholm. A place where authentic falvours, freshly baked pastries and genuine care is our main focus.</p>
+                    <p>Everything we bake is made by hand and fresh each morning. From our buttery croissants to our delicate macarons. To complement these flavours, our coffee is brewed with the same care using beans from selected roasters.</p>
+                    <p>At our Cafe, you are welcome to relax and take a break from everyday life or quickly order online and pick up on the go.</p>
+                    <p>Welcome in!</p>
+                    <p><strong>- Latte Avenue</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Menu Section -->
+    <section id="menu" class="menu-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Menu</h2>
+                <p>Indulge in Parisian Delights</p>
+            </div>
+
+            <!--Drinks menu-->
+            <div class="menu-category">
+                <h3><i class="fas fa-mug-hot"></i>Signature Drinks</h3>
+                <div class="menu-items">
+
+                    <!-- Drink 1-->
+                     <div class="menu-item">
+                        <img src="https://i.pinimg.com/1200x/d2/2d/ca/d22dca7b24b86c013209682f610bc724.jpg" alt="Chocolate Latte">
+                        <div class="item-content">
+                            <h4>Chocolate Latte</h4>
+                            <p>Includes: Whole milk, dark chocolate</p>
+                            <div class="item-footer">
+                                <span class="price">35,00 SEK</span>
+                                <button class="btn-add" data-id="1" data-name="Chocolate Latte" data-price="35">
+                                    <i class="fas fa-plus"></i>Add
+                                </button>
+                            </div>
+                        </div>
+                     </div>
+                     <!-- Drink 2 -->
+                     <div class="menu-item">
+                        <img src="https://i.pinimg.com/736x/81/fb/93/81fb931a6754bdede19dde16d2b6b1b2.jpg" alt="Brown Sugar Latte">
+                        <div class="item-content">
+                            <h4>Brown Sugar Latte</h4>
+                            <p>Includes:  Whole milk, egg whites</p>
+                            <div class="item-footer">
+                                <span class="price">30,00 SEK</span>
+                                <button class="btn-add" data-id="2" data-name="Brown Sugar Latte" data-price="30">
+                                    <i class="fas fa-plus"></i>Add
+                                </button>
+                            </div>
+                        </div>
+                     </div>
+                     <!-- Drink 3 -->
+                     <div class="menu-item">
+                        <img src="https://i.pinimg.com/1200x/e9/e4/f7/e9e4f7eec7957f1e69d0d5ee658780c6.jpg" alt="Classic Espresso">
+                        <div class="item-content">
+                            <h4>Classic Espresso</h4>
+                            <p>Includes: Double espresso shots</p>
+                            <div class="item-footer">
+                                <span class="price">25,00 SEK</span>
+                                <button class="btn-add" data-id="3" data-name="Classic Espresso" data-price="25">
+                                    <i class="fas fa-plus"></i>Add
+                                </button>
+                            </div>
+                        </div>
+                     </div>
+                     
+                </div>
+            </div>
+            <!-- Desserts menu -->
+            <div class="menu-category">
+                <h3><i class="fas fa-cookie-bite"></i>Parisian Desserts</h3>
+                <div class="menu-items">
+
+                <!-- Dessert 1 --> 
+                 <div class="menu-item">
+                    <img src="https://i.pinimg.com/736x/a9/36/7c/a9367c412847f3e6074e60d75abcfa3b.jpg" alt="Lemon Curd Macaron">
+                    <div class="item-content">
+                        <h4>Lemon Curd Macaron</h4>
+                        <p>Includes: Flour, egg, whole milk</p>
+                        
+                        <div class="item-footer">
+                            <span class="price">15,00 SEK/piece</span>
+                            <button class="btn-add" data-id="4" data-name="Lemon Curd Macaron" data-price="15">
+                                <i class="fas fa-plus"></i>Add
+                            </button>
+                        </div>
+                    </div>
+                 </div>
+                <!-- Dessert 2 --> 
+                <div class="menu-item">
+                    <img src="https://i.pinimg.com/736x/81/24/60/8124607d5c8c754c160850b8abd8c896.jpg" alt="Strawberry Short Cake">
+                    <div class="item-content">
+                        <h4>Strawberry Short Cake</h4>
+                        <p>Includes: Flour, egg, whole milk</p>
+                        
+                        <div class="item-footer">
+                            <span class="price">30,00 SEK/piece</span>
+                            <button class="btn-add" data-id="5" data-name="Strawberry Short Cake" data-price="30">
+                                <i class="fas fa-plus"></i>Add
+                            </button>
+                        </div>
+                    </div>
+                 </div>
+                 <!-- Dessert 3 --> 
+                <div class="menu-item">
+                    <img src="https://i.pinimg.com/736x/b3/51/5f/b3515f2db036a2308516c2003fb209bc.jpg" alt="Berry Cheese Cake">
+                    <div class="item-content">
+                        <h4>Berry Cheese Cake</h4>
+                        <p>Includes: Flour, egg</p>
+                        
+                        <div class="item-footer">
+                            <span class="price">25,00 SEK/piece</span>
+                            <button class="btn-add" data-id="6" data-name="Berry Cheese Cake" data-price="25">
+                                <i class="fas fa-plus"></i>Add
+                            </button>
+                        </div>
+                    </div>
+                 </div>
+<!--   ____________________________________    -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Visit Us</h2>
+                <p>We'd love to see you at our Café</p>
+            </div>
+            <div class="contact-content">
+                <h3>Our Location</h3>
+                <p>123 Centralplan, Stockholm</p>
+                <h3>Open Hours</h3>
+                <p>Mon-Sun : 7am-7pm</p>
+                <h3>Contact Information</h3>
+                <p>Phone: +46 123 456 789<br> Email: latteavenue@gmail.com</p>
+            </div>
+        </div>
+    </section>
+    <script src="js/menu.js"></script>
+</body>
+</html> 

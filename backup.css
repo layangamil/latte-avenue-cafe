@@ -1,0 +1,366 @@
+* {  /*The * selector means 'apply to EVERY element.' The first two lines remove all default browser margins and padding so we have complete control over spacing.*/ 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* ? */
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    color: #333;
+    background: #faf6f1;
+    line-height: 1.6; /* It sets the spacing between lines of text to 1.6 times the font size, making text more readable than the browser default*/
+} 
+
+.container {
+    max-width: 1200px; /* common web design pattern, to fit larger screens */
+    margin: 0 auto; /* centers horisontally (0 top/bottom, auto left/right) */
+    padding: 0 10px; 
+}
+
+/* Header */
+
+.main-header {
+    background: #fff;
+    padding: 1.5rem 0;
+    position: sticky;                 /* Sticks to top when scrolling */     
+    top: 0;                           /* Stick from the very top */ 
+    z-index: 9999;                     /* Ensures header is above other content (these 3 often used together) */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);  /*  X ,  Y,   blur(soft edge),  color(5% black opacity)    */
+}
+
+/*.header-content {
+    display: flex;                  /* Use Flexbox for layout 
+    justify-content: space-between; /* Logo LEFT, links RIGHT 
+    align-items: center;            /* Center vertically 
+}*/
+
+.logo h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;    /* rem = scales with browser settings (accessible) , px = less flexible */
+    font-weight: 900;
+    color: #8b6b61;
+    
+}
+
+.tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: #D58A94;
+}
+
+nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: #8b6b61;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.nav-item:hover {
+    color: #593e35;
+    transform: translateY(-4px);
+}
+
+/* ICONS INSIDE LINKS */
+.nav-item i {
+    margin-right: 5px;     /* 5px space between icon and text */
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://i.pinimg.com/736x/5b/e1/04/5be10426d1419a48d354a0944ffc9d58.jpg');
+    /* background-size: cover;   /* "Stretch image to fill entire area (may crop edges)" */
+    background-position: center;
+    color: white;
+    padding: 15rem 0;
+    text-align: center;
+}
+
+.hero-content h2{
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.hero-content p{
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: rgba(255,255,255,0.9);
+}
+
+.btn-primary {
+    display: inline-block;  /* Allows padding and behaves like button */
+    background: #e6bcc2;
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 2px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 3px;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.btn-primary:hover {
+    background: #c3949a;
+    transform: translateY(-2px); 
+}
+.section-title {
+    text-align: center;
+    margin: 3rem;
+    padding-bottom: 3rem;
+}
+
+.section-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #8b6b61;
+    margin-bottom: 0.5rem;
+}
+
+.section-title p {
+    color: #a1887f;
+    font-style: italic;
+    font-size: 1.1rem;
+}
+/* ============================== */
+/* ABOUT SECTION */
+.about-section {
+    padding: 0;
+    margin: 0;
+}
+
+.about-content {
+    display: flex;
+    align-items: space-between;
+}
+
+.about-content img {
+    width: 600px;
+    height: 600px;
+}
+.about-content-text {
+    display:flex;
+    align-items: center;
+}
+
+.about-content p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    font-weight: 400;
+    color: #8b6b61;
+    margin: 2rem;
+}
+
+/* ============================== */
+/* MENU SECTION */
+
+.menu-section {
+    padding: 5rem 0;
+    background: #ffffff; 
+}
+
+/* Menu Category */
+.menu-category {
+    margin-bottom: 5rem;
+}
+
+.menu-category h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: #8b6b61;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-category h3 i {
+    font-size: 1.8rem;
+}
+
+/* Menu Items Grid */
+.menu-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    
+}
+
+/* Individual Menu Item (Bubble/Card) */
+.menu-item {
+    background: white;
+    border-radius: 15px; /* Rounded corners for bubble effect */
+    box-shadow: 0 5px 15px rgba(139, 107, 97, 0.2); /* Soft shadow */
+}
+
+/* Menu Item Image */
+.menu-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Crops image nicely */
+    margin-top: 20px;
+}
+
+/* Item Content Area */
+.item-content {
+    padding: 1.5rem;
+}
+
+.item-content h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: #5d4037;
+    margin-bottom: 0.5rem;
+}
+
+.item-content p {
+    color: #8b6b61;
+    font-size: 0.95rem;
+    font-style: italic;
+    line-height: 1.4;
+    margin-bottom: 0.5;
+    min-height: 40px; /* Ensures consistent height */
+}
+
+/* Footer with Price and Button */
+.item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f0e6d6; /* line above footer */
+}
+
+.price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #c3949a;
+}
+
+/* Add to Cart Button */
+.btn-add {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #c3949a;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 7px #999;
+    transition: background 0.3s, transform 0.3s;
+  }
+  
+.btn-add:active:hover{  /* when hovering AND clicked*/
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
+.btn-add:hover {
+    background: #e6bcc2;
+    transform: translateY(-2px);
+}
+
+/* ============================== */
+/* CONTACT SECTION */
+.contact-content{
+    margin: 4rem;
+    padding-bottom: 2rem;
+}
+
+.contact-content h3{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 550;
+    color:#5d4037;
+}
+
+.contact-content p{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-style:'Cormorant Garamond', serif;
+    color:#80665e;
+}
+
+
+/* Responsive Design */
+@media (max-width: 1024px) { /*targets tablets (slightly changes layout)*/
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    nav {
+        text-align: center;
+        gap: 0.5rem;
+    }
+
+    .menu-items {
+        grid-template-columns: repeat(2, 1fr); /* fr = flexible fraction, divison of leftover space
+        gap: 1.5rem;*/
+    } /*"On tablets (768px and below). Reduced minimum column width from 300px to 280px, decreased gap slightly. Ensures still 
+    get 2 columns on most tablets instead of dropping to 1 too early." */
+    
+    .menu-item {
+        margin-bottom: 1rem;
+    }
+}
+
+ @media (max-width: 480px) { /*for larger phones and phones in general? */
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav {
+        text-align: center;
+    }
+
+    .menu-items {
+        grid-template-columns: repeat(2, 1fr);  /* we want to fit two item cards on screen so for small screens with width 360, we did 180px*/
+        gap: 1rem;
+    }
+
+}
+
+/* Cart counter animation */
+/* Simple bump animation */
+.cart-count {
+    display: inline-block;
+    transition: transform 0.3s ease;  /*transition will start slow, then go fast, and end slow */
+    padding: 2px 6px;
+    border-radius: 50%;
+    background-color: #f0e6d6;
+}
+
+.cart-count.bump {
+    animation: bump 0.3s ease;
+}
+
+@keyframes bump {                /* creates an animation, starts from normal, grows a little then back to normal*/
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+}
