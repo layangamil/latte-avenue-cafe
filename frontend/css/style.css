@@ -302,8 +302,8 @@ nav {
     }
 
     .menu-items {
-        grid-template-columns: repeat(2, 1fr); /* fr = flexible fraction, divison of leftover space
-        gap: 1.5rem;*/
+        grid-template-columns: repeat(2, 1fr); /* fr = flexible fraction, divison of leftover space*/
+        gap: 1.5rem;
     } /*"On tablets (768px and below). Reduced minimum column width from 300px to 280px, decreased gap slightly. Ensures still 
     get 2 columns on most tablets instead of dropping to 1 too early." */
     
@@ -375,7 +375,7 @@ h1{
 
 }
 
-.roll{
+.role{
     color: #8b6b61;
     font-family: 'Playfair Display', serif;
     font-size: 1.2rem;
