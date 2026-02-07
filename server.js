@@ -175,6 +175,6 @@ app.get('/api/profile', auth, (req, res) => {
     res.json({ message: "Access granted", user: req.user });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on http://localhost://0.0.0.0:${PORT}`);
 });
