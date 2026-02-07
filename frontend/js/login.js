@@ -79,7 +79,7 @@ async function registerUser(firstName, lastName, email, password) {
         
         // Check if account was created
         if (data.message && data.message.includes('created')) {
-            alert('Account created! Please login.');
+            alert('Account created! You may login.');
             // Clear the form fields
             document.getElementById('customer-signup-firstname').value = '';
             document.getElementById('customer-signup-lastname').value = '';
