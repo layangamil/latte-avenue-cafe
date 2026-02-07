@@ -388,11 +388,16 @@ h1{
 
 .input-container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
 }
 
+.input-container input:focus{
+    outline-color: #5d4037;
+    
+}
 
 .input-container input{
+    width: 50%;
     font-style: italic;
     padding: 0.6rem;
     margin-bottom: 0.5rem;
