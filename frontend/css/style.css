@@ -25,12 +25,16 @@
     justify-content: space-between;    /* Logo LEFT, links RIGHT 
     align-items: center;               /* Center vertically 
 }*/
+.logo a{
+    text-decoration: none;
+}
 
 .logo h1 {
     font-family: 'Playfair Display', serif;
     font-size: 2.2rem;                 /* rem = scales with browser settings (accessible) , px = less flexible */
     font-weight: 900;
     color: #8b6b61;
+    text-decoration: none;
     
 }
 
