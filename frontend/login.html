@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- view-port tag to make website responsive on mobile devices, by setting width to the device width -->
+    <link rel="stylesheet" href="css/style.css">
+    <title>Latte Avenue - Shopping Cart</title>
+</head>
+
+<body>
+    <h1>Log in</h1>
+
+    <section class="login-container">
+        <div class="role">
+            <h3>Customer</h3>
+            <div class="customer-exist">
+                <div class="input-container">
+                    <form>
+                        <input type="email" id="customer-login-email" placeholder="E-mail Address" required>
+                        <input type="password" id="customer-login-password" placeholder="Password">
+                    </form>
+                </div>
+                <button class="btn-login">Log in</button>
+            </div>
+            <div class="customer-new">
+                <h4>Create new account?</h4>
+                <div class="input-container">
+                   <form>
+                        <input type="text" id="customer-signup-firstname" placeholder="First Name" required>
+                        <input type="text" id="customer-signup-lastname" placeholder="Last Name" required>
+                        <input type="email" id="customer-signup-email" placeholder="E-mail Address" required>
+                        <input type="password" id="customer-signup-password" placeholder="Password" required>
+                   </form>
+                </div>
+                <button class="btn-create">Create account</button>
+            </div>
+        </div>
+
+        <div class="role" id="admin-section">
+            <h3>Admin</h3>
+            <div class="input-container">
+                <form>
+                    <input type="email" id="admin-login-email" placeholder="E-mail Address" required>
+                    <input type="password" id="admin-login-password" placeholder="Password" required>
+                </form>
+            </div>
+            <button class="btn-login">Log in</button>
+        </div>
+
+    </section>
+</html>
+    <script src="js/login.js"></script>
+</body>
+    

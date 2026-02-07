@@ -31,12 +31,13 @@ function updateCartCount() {
 
 //3. Function to add item to cart
 function addToCart(itemId, itemName, itemPrice, button) {
+    console.log("Button received:", button);
     // Check if item already in cart
     let foundItem = null;
     for (let i = 0; i < cart.length; i++) {
         if (cart[i].id == itemId) {
             foundItem = cart[i];
-            break;   //stop looking
+            break;
         }
     }
 
@@ -70,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let itemPrice = this.getAttribute('data-price');
 
             //Add to cart
-            addToCart(itemId, itemName, itemPrice);  //this = the add button
+            addToCart(itemId, itemName, itemPrice, this);  //this = the add button
         });
     }
 });
