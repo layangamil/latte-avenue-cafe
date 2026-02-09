@@ -37,22 +37,23 @@ document.addEventListener('DOMContentLoaded', function(){
     } 
 });
 
-async function loginUser(email, password) {
-    try {
-        const response = await fetch('http://localhost:3000/api/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({email, password})
+async function loginUser(email, password) {  //async function will await for promises, modern way to handle API calls
+    try { //Request (client -> server)
+        const response = await fetch('http://localhost:3000/api/login', {  // API endpoint - fetch send HTTP request to backend
+            method: 'POST',                                                //API method - POST creating data (login attempt)
+            headers: {'Content-Type': 'application/json'},                 // Instruction for server - "im sending JSON"
+            body: JSON.stringify({email, password})                        //API data format - convert JS object to JSON string (standard format for APIs)
         });
-        const data = await response.json();
+          //Response (server -> client)
+        const data = await response.json();                                // Parse back to JS, now usable data
 
         if (data.token) {
             localStorage.setItem('token', data.token);
 
-            alert('Login Successful!');
+            //alert('Login Successful!');
             window.location.href = 'index.html';
         } else {
-            alert('Login failed: ' + (data.message || 'Invalid credentials'));
+            alert('Login failed:' + (data.message));
         }
     } catch (error) {
         console.log('Error:', error);
@@ -80,14 +81,14 @@ async function registerUser(firstName, lastName, email, password) {
         // Check if account was created
         if (data.message && data.message.includes('created')) {
             alert('Account created! You may login.');
-            // Clear the form fields
+            // Clear the form fields so user can login
             document.getElementById('customer-signup-firstname').value = '';
             document.getElementById('customer-signup-lastname').value = '';
             document.getElementById('customer-signup-email').value = '';
             document.getElementById('customer-signup-password').value = '';
         } else {
             // Show error message from server
-            alert('Error: ' + (data.message || 'Registration failed'));
+            alert('Error: ' + (data.message));
         }
     } catch (error) {
         // Network or connection error
