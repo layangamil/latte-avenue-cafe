@@ -188,7 +188,7 @@ nav {
 .menu-items {                          /* Menu Items Grid */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    gap: 5rem;
     
 }
                                        /* Individual Menu Item (Bubble/Card) */
@@ -199,8 +199,8 @@ nav {
 }
 
 .menu-item img {
-    width: 100%;
-    height: 200px;
+    width: 70%;
+    height: 150px;
     object-fit: cover;                  /* Crops image nicely */
     margin-top: 20px;
 }
@@ -392,8 +392,7 @@ h1{
 }
 
 .input-container input:focus{
-    outline-color: #5d4037;
-    
+    outline-color: #5d4037; 
 }
 
 .input-container input{
