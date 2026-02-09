@@ -6,7 +6,7 @@ function updateCartCount() {
     let cartCounter = document.getElementById('cart-count'); //ref to the DOM element (walkie talkie, communication)
     
     if (!cartCounter) { //"If cartCounter is NOT found (is null/undefined)..."
-        console.log("Cart count not found!");  //Safety check
+        console.log("Cart-count not found!");  //Safety check
         return;   //Stop the function here, don't continue 
     }
     
@@ -30,7 +30,7 @@ function updateCartCount() {
 }
 
 //3. Function to add item to cart
-function addToCart(itemId, itemName, itemPrice, button) {
+function addToCart(itemId, itemName, itemPrice) {
     // Check if item already in cart
     let foundItem = null;
     for (let i = 0; i < cart.length; i++) {
