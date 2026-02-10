@@ -23,7 +23,7 @@
 .header-content {
     display: flex;                     /* Use Flexbox for layout */
     justify-content: space-between;    /* Logo LEFT, links RIGHT */
-    align-items: flex-start;               /* align items at */
+    align-items: flex-start;            /* align items at top*/
 }
 
 .logo {

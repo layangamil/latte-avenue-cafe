@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function(){
 async function loginUser(email, password) {  //async function will await for promises, modern way to handle API calls
     try { //Request (client -> server)
         const response = await fetch('http://localhost:3000/api/login', {  // API endpoint - fetch send HTTP request to backend
-            method: 'POST',                                                //API method - POST creating data (login attempt)
+            method: 'POST',                                                //API method - POST processing data (login attempt)
             headers: {'Content-Type': 'application/json'},                 // Instruction for server - "im sending JSON"
             body: JSON.stringify({email, password})                        //API data format - convert JS object to JSON string (standard format for APIs)
         });
