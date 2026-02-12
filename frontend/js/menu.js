@@ -1,12 +1,19 @@
 //Create empty cart list  
 let cart = [];  
+
+// 1. save cart in localstorage and convert into
+const saved = localStorage.getItem('cart');
+if (saved) {
+    cart = JSON.parse(saved);
+}
+
 //2. Function to update the cart number in header
 function updateCartCount() { 
     // Get the single cart counter by ID
-    let cartCounter = document.getElementById('cart-count'); //ref to the DOM element (walkie talkie, communication)
+    let cartCounter = document.getElementById('cart-count'); // ref to the DOM element (walkie talkie, communication)
     
     if (!cartCounter) { //"If cartCounter is NOT found (is null/undefined)..."
-        console.log("Cart-count not found!");  //Safety check
+        console.log("Cart-count not found!");  // Safety check
         return;   //Stop the function here, don't continue 
     }
     
@@ -48,12 +55,14 @@ function addToCart(itemId, itemName, itemPrice) {
         cart.push({   //custom properties
             id: itemId,
             name: itemName,
-            price: parseFloat(itemPrice),
+            price: parseFloat(itemPrice),  // convert ot number for calculations
             quantity: 1
         });
     }
     // Calls first function to update display cart counter
     updateCartCount();
+
+    localStorage.setItem('cart', JSON.stringify(cart));
 }
 //4. waits till HTML loads then tuns remaining code to avoid errors.
 document.addEventListener('DOMContentLoaded', function() {
