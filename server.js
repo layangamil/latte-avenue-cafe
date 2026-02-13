@@ -10,6 +10,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 // Import CORS middleware to enable Cross-Origin Resource Sharing
 const cors = require('cors');
+// Import path module for working with file paths
+const path = require('path');
 // Create an Express application instance
 const app = express();
 // Define the port number the server will listen on
@@ -20,6 +22,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Middleware to enable CORS for all routes
 app.use(cors());
+
+//======================SERVE FRONTEND FILES========================
+//Serve static files from frontend folder
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // ================= AUTH MIDDLEWARE ===================================================================
 // Define authentication middleware function
