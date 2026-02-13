@@ -1,7 +1,7 @@
 const fetch = require('node-fetch'); // load fetch library
 
 // ---- REGISTER USER ----
-fetch('http://localhost:3000/api/register', {
+fetch('http://localhost:5000/api/register', {
   method: 'POST', // we are sending data
   headers: { 'Content-Type': 'application/json' }, // tells server it is JSON
   body: JSON.stringify({
