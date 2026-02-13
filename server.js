@@ -2,8 +2,8 @@
 require('dotenv').config();
 // Import the Express framework for building web servers
 const express = require('express');
-// Import MySQL2 library for database operations
-const mysql = require('mysql2');
+// Import MySQL2 library for database operations (PROMISE version)
+const mysql = require('mysql2/promise');
 // Import bcrypt library for password hashing and comparison
 const bcrypt = require('bcrypt');
 // Import jsonwebtoken library for creating/verifying JWT tokens
@@ -49,16 +49,19 @@ function auth(req, res, next) {
     });
 }
 
-// Create MySQL database connection using environment variables
-const db = mysql.createConnection({
+// Create MySQL database connection POOL using environment variables
+const db = mysql.createPool({
     host: process.env.DB_HOST,     // Database host from .env
     user: process.env.DB_USER,     // Database username from .env
     password: process.env.DB_PASS, // Database password from .env
-    database: process.env.DB_NAME  // Database name from .env
+    database: process.env.DB_NAME,  // Database name from .env
+    waitForConnections: true,      // Fixed: was waitForConnection (missing 's')
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
-// Attempt to connect to the database
-db.connect((err) => {
+// Test the connection (fixed: getConnection not getconnection)
+db.getConnection((err, connection) => {
     if (err) {
         // Log error if connection fails
         console.error('Database connection failed:', err);
@@ -66,6 +69,7 @@ db.connect((err) => {
     }
     // Log success message when connected
     console.log('Connected to MySQL database!');
+    connection.release(); // Release the connection back to the pool
 });
 
 // Test endpoint - responds to GET requests at root URL
@@ -86,318 +90,294 @@ function adminOnly(req, res, next) {
     next();
 }
 
-// Get menu from database - responds to GET requests at /api/menu
-app.get('/api/menu', (req, res) => {
-    // Query database for all products
-    db.query('SELECT * FROM product', (err, results) => {
-        // If error occurs, send 500 Internal Server Error
-        if (err) return res.status(500).json({ error: err });
-        // Send query results as JSON response
+// ================= MENU & ITEMS ENDPOINTS (CONVERTED TO ASYNC/AWAIT) ============================
+
+// Get menu from database
+app.get('/api/menu', async (req, res) => {
+    try {
+        const [results] = await db.query('SELECT * FROM product');
         res.json(results);
-    });
+    } catch (err) {
+        console.error('Error fetching menu:', err);
+        res.status(500).json({ error: 'Failed to fetch menu' });
+    }
 });
 
-// ================= GET ITEMS ========================================================================
-// Get all items - responds to GET requests at /api/items
-app.get('/api/items', (req, res) => {
-    // Query database for all products (same as menu endpoint)
-    db.query('SELECT * FROM product', (err, results) => {
-        if (err) return res.status(500).json({ error: err });
+// Get all items
+app.get('/api/items', async (req, res) => {
+    try {
+        const [results] = await db.query('SELECT * FROM product');
         res.json(results);
-    });
+    } catch (err) {
+        console.error('Error fetching items:', err);
+        res.status(500).json({ error: 'Failed to fetch items' });
+    }
 });
 
-// ================= ADD NEW ITEMS(STAFF) ================================================================
-// Add new item - protected route requiring auth and adminOnly middleware
-app.post('/api/items', auth, adminOnly, (req, res) => {
-    // Destructure item data from request body
-    const { name, price, category, ingredients, is_available } = req.body;
+// Add new item (staff only)
+app.post('/api/items', auth, adminOnly, async (req, res) => {
+    try {
+        const { name, price, category, ingredients, is_available } = req.body;
 
-    // SQL query with placeholders (?) to prevent SQL injection
-    const sql = `
-    INSERT INTO product (name, price, category, ingredients, is_available)
-    VALUES (?, ?, ?, ?, ?)
-    `;
+        const sql = `
+            INSERT INTO product (name, price, category, ingredients, is_available)
+            VALUES (?, ?, ?, ?, ?)
+        `;
 
-    // Execute SQL query with values
-    // is_available ?? true uses nullish coalescing: if undefined/null, default to true
-    db.query(sql, [name, price, category, ingredients, is_available ?? true],
-    (err, result) => {
-        if (err) return res.status(400).json({ error: err });
-        // Return success message with the auto-generated ID
+        const [result] = await db.query(sql, [name, price, category, ingredients, is_available ?? true]);
         res.json({ message: "Item added", id: result.insertId });
-    });
+    } catch (err) {
+        console.error('Error adding item:', err);
+        res.status(400).json({ error: err.message });
+    }
 });
 
-// ================= UPDATE ITEMS(STAFF) ===============================================================
-// Update existing item - protected route requiring auth and adminOnly middleware
-app.put('/api/items/:id', auth, adminOnly, (req, res) => {
-    // Get item ID from URL parameters
-    const { id } = req.params;
-    // Destructure updated data from request body
-    const { name, price, category, ingredients, is_available } = req.body;
+// Update item (staff only)
+app.put('/api/items/:id', auth, adminOnly, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, price, category, ingredients, is_available } = req.body;
 
-    // SQL UPDATE query with placeholders
-    const sql = `
-    UPDATE product
-    SET name=?, price=?, category=?, ingredients=?, is_available=?
-    WHERE product_id=?
-    `;
+        const sql = `
+            UPDATE product
+            SET name=?, price=?, category=?, ingredients=?, is_available=?
+            WHERE product_id=?
+        `;
 
-    // Execute update query
-    db.query(sql, [name, price, category, ingredients, is_available, id],
-    (err) => {
-        if (err) return res.status(400).json({ error: err });
+        await db.query(sql, [name, price, category, ingredients, is_available, id]);
         res.json({ message: "Item updated" });
-    });
+    } catch (err) {
+        console.error('Error updating item:', err);
+        res.status(400).json({ error: err.message });
+    }
 });
 
-// ================= DELETE ITEMS(STAFF) =============================================================
-// Delete item - protected route requiring auth and adminOnly middleware
-app.delete('/api/items/:id', auth, adminOnly, (req, res) => {
-    // Get item ID from URL parameters
-    const { id } = req.params;
-
-    // Execute DELETE query
-    db.query('DELETE FROM product WHERE product_id=?', [id], (err) => {
-        if (err) return res.status(400).json({ error: err });
+// Delete item (staff only)
+app.delete('/api/items/:id', auth, adminOnly, async (req, res) => {
+    try {
+        const { id } = req.params;
+        await db.query('DELETE FROM product WHERE product_id=?', [id]);
         res.json({ message: "Item deleted" });
-    });
+    } catch (err) {
+        console.error('Error deleting item:', err);
+        res.status(400).json({ error: err.message });
+    }
 });
 
 // ================= REGISTER USER ===================================================================
-// User registration endpoint - uses async/await for asynchronous operations
 app.post('/api/register', async (req, res) => {
-  try {
-    // Destructure user data from request body
-    const { email, password, first_name, last_name } = req.body;
+    try {
+        const { email, password, first_name, last_name } = req.body;
 
-    // Hash password with bcrypt (10 salt rounds)
-    const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert new user into database with 'customer' role
-    await db.query(
-      'INSERT INTO users (email, password_hash, first_name, last_name, role) VALUES (?, ?, ?, ?, ?)',
-      [email, hashedPassword, first_name, last_name, 'customer']
-    );
+        await db.query(
+            'INSERT INTO users (email, password_hash, first_name, last_name, role) VALUES (?, ?, ?, ?, ?)',
+            [email, hashedPassword, first_name, last_name, 'customer']
+        );
 
-    // Send success response
-    res.json({ message: 'User created successfully' });
+        res.json({ message: 'User created successfully' });
 
-  } catch (err) {
-    // Log error and send 500 Internal Server Error response
-    console.error(err);
-    res.status(500).json({ error: 'Registration failed' });
-  }
+    } catch (err) {
+        console.error('Registration error:', err);
+        res.status(500).json({ error: 'Registration failed' });
+    }
 });
 
 // ================= LOGIN ROUTE ===============================================================
-app.post('/api/login', (req, res) => {
-    // Destructure login credentials from request body
-    const { email, password } = req.body;
+app.post('/api/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        console.log("Login attempt - email:", email);
 
-    // Query database for user with matching email
-    db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
-        // If error or no user found, send 400 Bad Request
-        if (err || results.length === 0)
+        // Query database for user with matching email
+        const [results] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+
+        // If no user found, send 400 Bad Request
+        if (results.length === 0) {
+            console.log("User not found in database");
             return res.status(400).json({ message: "User not found" });
+        }
 
-        // Get first user from results (should be only one due to unique email)
         const user = results[0];
 
         // Compare provided password with hashed password in database
         const match = await bcrypt.compare(password, user.password_hash);
-        // If passwords don't match, send 401 Unauthorized
-        if (!match) return res.status(401).json({ message: "Wrong password" });
 
-        // Create JWT token with user ID and role, expires in 1 hour
+        if (!match) {
+            console.log("Password mismatch");
+            return res.status(401).json({ message: "Wrong password" });
+        }
+
+        // Create JWT token
         const token = jwt.sign(
             { id: user.user_id, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
 
-        // Send token in response
+        console.log("Login successful for:", email);
         res.json({ token });
-    });
+
+    } catch (err) {
+        console.error('Login error:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
+// ================= SHOPPING CART ENDPOINTS (CONVERTED TO ASYNC/AWAIT) ===========================
 
+// GET /api/cart - get user's cart
+app.get('/api/cart', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
 
+        const sql = `
+            SELECT sc.cart_id, sc.product_id, sc.quantity, p.name, p.price, p.category, p.ingredients
+            FROM shopping_cart sc
+            JOIN product p ON sc.product_id = p.product_id
+            WHERE sc.user_id = ?
+        `;
 
-
-//=================SHOPPING CART=============================================
-//GET /api/cart - get user's cart
-app.get('/api/cart', auth, (req, res) => {
-    const userId = req.user.id;
-
-    const sql = `
-        SELECT sc.cart_id, sc.product_id, sc.quantity, p.name, p.price, p.category, p.ingredients
-        FROM shopping_cart sc
-        JOIN product p ON sc.product_id = p.product_id
-        WHERE sc.user_id = ?
-    `;
-
-    db.query(sql, [userId], (err, results) => {
-        if (err) {
-            console.error('Error fetching cart:', err);
-            return res.status(500).json({ error: 'Failed to fetch cart'});
-        }
+        const [results] = await db.query(sql, [userId]);
 
         let total = 0;
         results.forEach(item => {
             total += parseFloat(item.price) * item.quantity;
         });
-        //Calculate total
+
         res.json({
             items: results,
             total: total
         });
-    });
+    } catch (err) {
+        console.error('Error fetching cart:', err);
+        res.status(500).json({ error: 'Failed to fetch cart' });
+    }
 });
 
-//POST /api/cart -add items to cart
-app.post('/api/cart', auth, (req, res) => {
-    const userId = req.user.id;
-    const { product_id, quantity } = req.body;
+// POST /api/cart - add items to cart
+app.post('/api/cart', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { product_id, quantity } = req.body;
 
-    if (!product_id) {
-        return res.status(400).json({ error: 'Product ID is required' });
-    }
-
-    //Check if product exists & is available
-    db.query('SELECT * FROM product WHERE product_id = ? AND is_available = TRUE', [product_id], (err, productResults) => {
-        if (err) {
-            console.error('Error checking product:', err);
-            return res.status(500).json({ error: 'Database error' });
+        if (!product_id) {
+            return res.status(400).json({ error: 'Product ID is required' });
         }
+
+        // Check if product exists & is available
+        const [productResults] = await db.query(
+            'SELECT * FROM product WHERE product_id = ? AND is_available = TRUE',
+            [product_id]
+        );
 
         if (productResults.length === 0) {
-            return res.status(404).json({ error: 'product not found or unavailable'});
+            return res.status(404).json({ error: 'Product not found or unavailable' });
         }
 
-        //Check if item already in cart
-        db.query('SELECT * FROM shopping_cart WHERE user_id = ? AND product_id = ?',
-            [userId, product_id],
-            (err, cartResults) => {
-                if (err) {
-                    console.error('Error checking cart:', err);
-                    return res.status(500).json({ error: 'Database error' });
-                }
-
-                if (cartResults.length > 0) {
-                    //Item exists - update the qunatity
-                    const newQuantity = cartResults[0].quantity + (quantity || 1);
-                    db.query('UPDATE shopping_cart SET quantity = ? WHERE cart_id = ?',
-                        [newQuantity, cartResults[0].cart_id],
-                        (err) => {
-                            if (err) {
-                                console.error('Error updating cart:', err);
-                                return res.status(500).json({ error: 'Failed to update cart' });
-                            }
-                            res.json({ message: 'Cart updated successfully' });
-                        }
-                    );
-                } else {
-                    //Item doesn't exist
-                    db.query('INSERT INTO shopping_cart (user_id, product_id, quantity) VALUES (?, ?, ?)',
-                        [userId, product_id, quantity || 1],
-                        (err, result) => {
-                            if (err) {
-                                console.error('Error adding to cart:', err);
-                                return res.status(500).json({ error: 'Failed to add to cart' });
-                            }
-                            res.json({
-                                message: 'Item added to cart',
-                                cart_id: result.insertId
-                            });
-                        }
-                    );
-                }
-            }
+        // Check if item already in cart
+        const [cartResults] = await db.query(
+            'SELECT * FROM shopping_cart WHERE user_id = ? AND product_id = ?',
+            [userId, product_id]
         );
-    });
+
+        if (cartResults.length > 0) {
+            // Item exists - update the quantity
+            const newQuantity = cartResults[0].quantity + (quantity || 1);
+            await db.query(
+                'UPDATE shopping_cart SET quantity = ? WHERE cart_id = ?',
+                [newQuantity, cartResults[0].cart_id]
+            );
+            res.json({ message: 'Cart updated successfully' });
+        } else {
+            // Item doesn't exist - insert new
+            const [result] = await db.query(
+                'INSERT INTO shopping_cart (user_id, product_id, quantity) VALUES (?, ?, ?)',
+                [userId, product_id, quantity || 1]
+            );
+            res.json({
+                message: 'Item added to cart',
+                cart_id: result.insertId
+            });
+        }
+    } catch (err) {
+        console.error('Error adding to cart:', err);
+        res.status(500).json({ error: 'Failed to add to cart' });
+    }
 });
 
-//PUT /api/cart/:product_id - Update quantity
-app.put('/api/cart/:product_id', auth, (req, res) => {
-    const userId = req.user.id;
-    const productId = req.params.product_id;
-    const { quantity } = req.body;
+// PUT /api/cart/:product_id - Update quantity
+app.put('/api/cart/:product_id', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const productId = req.params.product_id;
+        const { quantity } = req.body;
 
-    // Validate quantity
-    if (!quantity || quantity < 1) {
-        return res.status(400).json({ error: 'Quantity must be at least 1' });
-    }
-
-    //Update quantity for a specific cart item
-    const sql = 'UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?';
-
-    db.query(sql, [quantity, userId, productId], (err, result) => {
-        if (err) {
-            console.error('Error updating quantity:', err);
-            return res.status(500).json({ error: 'Failed to update quantity' });
+        // Validate quantity
+        if (!quantity || quantity < 1) {
+            return res.status(400).json({ error: 'Quantity must be at least 1' });
         }
+
+        // Update quantity for a specific cart item
+        const [result] = await db.query(
+            'UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?',
+            [quantity, userId, productId]
+        );
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Item not found in cart' });
         }
 
         res.json({ message: 'Quantity updated successfully' });
-    });
+    } catch (err) {
+        console.error('Error updating quantity:', err);
+        res.status(500).json({ error: 'Failed to update quantity' });
+    }
 });
 
-//DELETE /api/cart/:product_id -remove item
-app.delete('/api/cart/:product_id', auth, (req, res) => {
-    const userId = req.user.id;
-    const productId = req.params.product_id;
+// DELETE /api/cart/:product_id - remove item
+app.delete('/api/cart/:product_id', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const productId = req.params.product_id;
 
-    //Remove a specific item from the cart
-    const sql = 'DELETE FROM shopping_cart WHERE user_id = ? AND product_id = ?';
-
-    db.query(sql, [userId, productId], (err, result) => {
-        if (err) {
-            console.error('Error removing item:', err);
-            return res.status(500).json({ error: 'Failed to remove item' });
-        }
+        const [result] = await db.query(
+            'DELETE FROM shopping_cart WHERE user_id = ? AND product_id = ?',
+            [userId, productId]
+        );
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Item not found in cart' });
         }
 
         res.json({ message: 'Item removed from cart' });
-    });
+    } catch (err) {
+        console.error('Error removing item:', err);
+        res.status(500).json({ error: 'Failed to remove item' });
+    }
 });
 
-//DELETE /api/cart -clear entire cart
-app.delete('/api/cart', auth, (req, res) => {
-    const userId = req.user.id;
+// DELETE /api/cart - clear entire cart
+app.delete('/api/cart', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
 
-    //Remove all items from user's cart
-    const sql = 'DELETE FROM shopping_cart WHERE user_id = ?';
+        await db.query('DELETE FROM shopping_cart WHERE user_id = ?', [userId]);
 
-    db.query(sql, [userId], (err, result) => {
-        if (err) {
-            console.error('Error clearing cart:', err);
-            return res.status(500).json({ error: 'Failed to clear cart' });
-        }
-
-        res.json({ message: 'cart cleared successfully' });
-    });
+        res.json({ message: 'Cart cleared successfully' });
+    } catch (err) {
+        console.error('Error clearing cart:', err);
+        res.status(500).json({ error: 'Failed to clear cart' });
+    }
 });
 
-
-
-
-// ================= PROFILE (PROTECTED) ================================================================
-// Protected profile endpoint - requires auth middleware
+// ================= PROFILE (PROTECTED) ============================================================
 app.get('/api/profile', auth, (req, res) => {
-    // Send user data attached by auth middleware
     res.json({ message: "Access granted", user: req.user });
 });
 
 // Start server listening on specified port and all network interfaces
 app.listen(PORT, '0.0.0.0', () => {
-    // Log server start message
     console.log(`Server running on http://localhost:${PORT}`);
 });
