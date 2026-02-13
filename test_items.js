@@ -1,6 +1,6 @@
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-const BASE = "http://localhost:3000";
+const BASE = "http://localhost:5000";
 
 async function run() {
     try {
