@@ -433,7 +433,7 @@ ________________________________________________________________________________
     display: flex;
     justify-content: space-between;
     background-color: #faf7f2;
-    margin: 1rem auto;
+    margin: 2rem auto;
     padding: 1rem 1rem;
     border-radius:5px;
     box-shadow: 0 5px 15px rgba(139, 107, 97, 0.2);
