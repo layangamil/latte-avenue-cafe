@@ -23,6 +23,11 @@
                     <a href="index.html" class="nav-item">Home</a>
                     <a href="index.html#menu" class="nav-item">Menu</a>
                     <a href="index.html#contact" class="nav-item">Contact</a>
+                    <a href="cart.html" class="nav-item">
+                        <i class="fas fa-shopping-bag"></i>
+                        <strong>Cart</strong>
+                        <span id="cart-count" class="cart-count">0</span> <!-- span, bc it doesnt break line (inline -element) JS needs a unique id to find and update cart nr. class cart-count is for styling, ID for JS -->
+                    </a>
                 </nav>
             </div>
         </div>
@@ -30,20 +35,18 @@
     <section class="cart-page">
         <div class="container">
             <h1>Your Shopping Cart</h1>
-
-            <div id="container-cart-items" class="container-cart-items">
+            <div id="cart-items-container" class="cart-items-container">
                 <!-- cart.js will add items here-->
             </div>
 
-            <div class="cart-info">
+            <div class="cart-summary">
                 <div class="cart-total">
-                    <h3>Total SEK (inkl.tax) : </h3>
+                    <h3>Total SEK (inkl.tax):</h3>
                     <span id="cart-total" class="total-amount">0.00</span>
                 </div>
-                <button id="checkout-btn" class="btn btn-primary">Proceed to Checkout</button>
+                <button id="checkout-btn" class="btn-primary">Proceed to Checkout</button>
             </div>
         </div>
-        
     </section>
 
     <script src="js/menu.js"></script>
