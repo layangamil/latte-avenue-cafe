@@ -363,15 +363,20 @@ nav {
 
 /* LOG IN PAGE: ______________________________________________________________________________________________________________________________
 ________________________________________________________________________________________________________________________________*/
-h1{
+.login-page h1{
     color:#8b6b61;
     font-family: 'Playfair Display', serif;;
     font-size: 2.3rem;
-    font-weight: 600;
-    margin: 2rem;
+    font-weight: 600;               
+    margin: 2rem 0.3rem; 
+    margin-bottom: 0rem;              /* centers horisontally (0 top/bottom, auto left/right) */
+    padding:0px; 
 }
 
 .login-container {
+    max-width: 1200px;                 /* common web design pattern, to fit larger screens */
+    margin: 0 auto;                    /* centers horisontally (0 top/bottom, auto left/right) */
+    padding:0px; 
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -427,6 +432,16 @@ ________________________________________________________________________________
 
 .cart-items-container {
     margin:0;
+}
+
+.cart-page h1 {
+    color:#8b6b61;
+    font-family: 'Playfair Display', serif;;
+    font-size: 2.3rem;
+    font-weight: 600;               
+    margin: 2rem 0.3rem; 
+    margin-bottom: 0rem;              /* centers horisontally (0 top/bottom, auto left/right) */
+    padding:0px; 
 }
 
 .cart-item {
