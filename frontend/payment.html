@@ -2,12 +2,12 @@
 <html lang="en"> <!-- tells browser and screen readers page is in english-->
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- view-port tag to make website responsive on mobile devices, by setting width to the device width -->
+    <meta name="viewport" content= "width=device-width, initial-scale=1.0"> <!-- view-port tag to make website responsive on mobile devices, by setting width to the device width -->
     <title>Latte Avenue</title>
     <link rel="stylesheet" href= "css/style.css"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- 'Font Awesome' is an icon library. for shopping bag icon, plus icon, coffee mug -->
+    <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- 'Font Awesome' is an icon library. for shopping bag icon, plus icon, coffee mug -->
+    <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/simple-icons/9.0.0/simple-icons.min.css">
 </head>
-
 <body>
     <!-- Header -->
     <header class="main-header">
@@ -22,3 +22,86 @@
             </div>
         </div>
     </header>
+
+    <section class="payment-section">
+        <div class="container">
+            <h1>Payment</h1>
+
+            <div class="payment-wrapper">
+                <!-- Left side: order summary -->
+                 <div class="payment-order-box">
+                    <h2>Order Summary</h2>
+                    <div id="payment-order-items" class="payment-order-items">
+                        <!-- JS will write here -->
+                    </div>
+                    <div class="payment-total-box">
+                        <div class="payment-row">
+                            <span>Subtotal</span>
+                            <span id="payment-subtotal">0 SEK</span>
+                        </div>
+                        <div class="payment-row">
+                            <span>Tax(6%)</span>
+                            <span id="payment-tax">0 SEK</span>
+                        </div>
+                        <div class="payment-row payment-final">
+                            <strong>Total</strong>
+                            <strong><span id="payment-total">0 SEK</span></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right side: Payment methods -->
+                <div class="payment-method-box">
+                    <h2>Please Select Payment Method</h2>
+
+                    <!-- VISA CARD -->
+                     <label class="payment-option-label">
+                        <input type="radio" name="paymentMethod" value="visa" checked>
+                        <div class="payment-option-content">
+                            <i class="si si-visa"></i>
+                            <span>Visa</span>
+                        </div>
+                    </label>
+
+                    <!-- APPLE PAY -->
+                    <label class="payment-option-label">
+                        <input type="radio" name="paymentMethod" value="applepay">
+                        <div class="payment-option-content">
+                            <i class="si si-applepay"></i>
+                            <span>Apple Pay</span>
+                        </div>
+                    </label>
+
+                    <!-- KLARNA -->
+                    <label class="payment-option-label">
+                        <input type="radio" name="paymentMethod" value="klarna">
+                        <div class="payment-option-content">
+                            <i class="si si-klarna"></i>
+                            <span>Klarna</span>
+                        </div>
+                    </label>
+
+                    <!-- Entering card details (only if Visa is chosen)-->
+                    <div id="card-details-container" class="card-details-box">
+                        <h3>Enter Card Details</h3>
+                        <input type="text" placeholder="Card Number" class="payment-input" id="card-number">
+
+                        <div class="payment-row-fields">
+                            <input type="text" placeholder="MM/YY" class="payment-input-half" id="card-expiry">
+                            <input type="text" placeholder="CVC" class="payment-input-half" id="card-cvc">
+                        </div>
+
+                        <input type="text" placeholder="Card Holder Name" class="payment-input" id="card-name">
+                    </div>
+
+                    <button id="place-order-btn" class="payment-action-btn">Place Order</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/menu.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/payment.js"></script>
+</body>
+</html>
