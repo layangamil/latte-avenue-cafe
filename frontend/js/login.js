@@ -51,8 +51,9 @@ async function loginUser(email, password) {  //async function will await for pro
         if (data.token) {
             localStorage.setItem('token', data.token);
 
-            //alert('Login Successful!');
-            window.location.href = 'index.html';
+            const redirectTo = localStorage.getItem('redirectAfterLogin') || 'index.html';
+            localStorage.removeItem('redirectAfterLogin');
+            window.location.href = redirectTo;
         } else {
             alert('Login failed:' + (data.message));
         }
