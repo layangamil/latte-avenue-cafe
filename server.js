@@ -372,6 +372,337 @@ app.delete('/api/cart', auth, async (req, res) => {
     }
 });
 
+// ================= ORDER ENDPOINTS ==================================
+//POST /api/orders -Convert cart to order
+
+app.post('/api/orders', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        //STart transaction
+        const connection = await db.getConnection();
+        await connection.beginTransaction();
+
+        try {
+            //1) Get user's cart items
+            const [cartItems] = await connection.query(
+                `SELECT sc.product_id, sc.quantity, p.price, p.name 
+                 FROM shopping_cart sc
+                 JOIN product p ON sc.product_id = p.product_id
+                 WHERE sc.user_id = ?`,
+                [userId]
+            );
+
+            if (cartItems.length === 0) {
+                await connection.rollback();
+                connection.release();
+                return res.status(400).json({ error: 'Cart is empty' });
+            }
+
+            //2) Calaculate total amount
+            let totalAmount = 0;
+            cartItems.forEach(item => {
+                totalAmount += parseFloat(item.price) * item.quantity;
+            });
+
+            //3) Create the order
+            const [orderResult] = await connection.query(
+                `INSERT INTO \`order\` (user_id, total_amount, status) 
+                 VALUES (?, ?, 'pending')`,
+                [userId, totalAmount]
+            );
+
+            const orderId = orderResult.insertId;
+
+            //4) Add items to the order_item table
+            for (const item of cartItems) {
+                await connection.query(
+                    `INSERT INTO order_item (order_id, product_id, quantity, price_at_time) 
+                     VALUES (?, ?, ?, ?)`,
+                    [orderId, item.product_id, item.quantity, item.price]
+                );
+            }
+
+            //5) Clear shopping cart
+            await connection.query('DELETE FROM shopping_cart WHERE user_id = ?', [userId]);
+
+            //Commit tracsaction
+            await connection.commit();
+            connection.release();
+
+            res.status(201).json({
+                message: 'Order placed successfully',
+                order_id: orderId,
+                total_amount: totalAmount,
+                status: 'pending'
+            });
+        } catch (err) {
+            //Something went wrong, rollback changes
+            await connection.rollback();
+            connection.release();
+            throw err;
+        }
+
+    } catch (err) {
+        console.error('Error creating order:', err);
+        res.status(500).json({ error: 'Failed to create order' });
+    }
+});
+
+//GET /api/orders/:id -get order details
+
+app.get('/api/orders/:id', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const orderId = req.params.id;
+        const isStaff = req.user.role === 'staff';
+
+        //Get order details
+        const [orderDetails] = await db.query(
+            `SELECT o.*, u.email, u.first_name, u.last_name 
+             FROM \`order\` o
+             JOIN users u ON o.user_id = u.user_id
+             WHERE o.order_id = ?`,
+            [orderId]
+        );
+
+        if (orderDetails.length === 0) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        const order = orderDetails[0];
+
+        //Check persmissions. Only STaff & order owner can view
+        if (!isStaff && order.user_id !== userId) {
+            return res.status(403).json({ error: 'Access denied' });
+        }
+
+        //Get order items
+        const [orderItems] = await db.query(
+            `SELECT oi.*, p.name, p.category 
+             FROM order_item oi
+             JOIN product p ON oi.product_id = p.product_id
+             WHERE oi.order_id = ?`,
+            [orderId]
+        );
+
+        //Calculate if order can be cancelled (within 1 minute)
+        const now = new Date();
+        const orderTime = new Date(order.created_at);
+        const minutesSinceOrder = (now - orderTime) / (1000 * 60);
+        const canCancel = order.status === 'pending' && minutesSinceOrder < 1;
+        
+        res.json({
+            order: order,
+            items: orderItems,
+            can_cancel: canCancel,
+            time_remaining: canCancel ? Math.max(0, 60 - (now - orderTime) / 1000) : 0
+        });
+        
+    } catch (err) {
+        console.error('Error fetching order:', err);
+        res.status(500).json({ error: 'Failed to fetch order' });
+    }
+});
+
+//GET /api/orders -get all orders for user (or staff)
+
+app.get('/api/orders', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const isStaff = req.user.role === 'staff';
+
+        let query;
+        let params = [];
+
+        if (isStaff) {
+            //Can see all orders
+            query = `SELECT o.*, u.email, u.first_name, u.last_name 
+                     FROM \`order\` o
+                     JOIN users u ON o.user_id = u.user_id
+                     ORDER BY o.created_at DESC`;
+        } else {
+            //Customers only see their own orders
+            query = `SELECT * FROM \`order\` 
+                     WHERE user_id = ? 
+                     ORDER BY created_at DESC`;
+            params = [userId];
+        }
+
+        const [orders] =await db.query(query, params);
+
+        //Get item count for each order
+        for (let order of orders) {
+            const [items] = await db.query(
+                'SELECT COUNT(*) as count FROM order_item WHERE order_id = ?',
+                [order.order_id]
+            );
+
+            order.item_count = items[0].count;
+        }
+
+        res.json(orders);
+
+    } catch (err) {
+        console.error('Error fetching orders:', err);
+        res.status(500).json({ error: 'Failed to fetch orders' });
+    }
+});
+
+//PUT /api/orders/:id/status -staff updates status
+
+app.put('/api/orders/:id/status', auth, async (req, res) => {
+    try {
+        //Only staff can update status
+        if (req.user.role !== 'staff') {
+            return res.status(403).json({ error: 'Staff only' });
+        }
+
+        const orderId = req.params.id;
+        const { status } = req.body;
+        const staffId = req.user.id;
+
+        //Validate status
+        const validStatuses = ['pending', 'preparing', 'ready', 'completed', 'cancelled'];
+
+        if (!validStatuses.includes(status)) {
+            return res.status(400).json({ error: 'Invalid status' });
+        }
+
+        //Check if order exists
+        const [orderCheck] = await db.query('SELECT * FROM `order` WHERE order_id = ?', [orderId]);
+
+        if (orderCheck.length === 0) {
+            return res.status(400).json({ error: 'Order not found' });
+        }
+
+        const currentStatus = orderCheck[0].status;
+
+        //Define valid status transition
+        const validTransitions = {
+            'pending': ['preparing', 'cancelled'],
+            'preparing': ['ready', 'cancelled'], //Hmm, only staff can cancel here? Not customer
+            'ready': ['completed'],
+            'completed': [],
+            'cancelled': []
+        };
+
+        if (!validTransitions[currentStatus].includes(status)) {
+            return res.status(400).json({
+                error: `Cannot change status from ${currentStatus} to ${status}`
+            });
+        }
+
+        //If settring to ready, set estimated pick up time (30 mins from now)
+        let estimatedPickup = null;
+        if (status === 'ready') {
+            estimatedPickup = new Date(Date.now() + 30 * 60000); // 30 mins
+        }
+
+        //Update order status
+        await db.query(
+            `UPDATE \`order\` 
+             SET status = ?, 
+                 estimated_pickup_time = COALESCE(?, estimated_pickup_time),
+                 updated_at = CURRENT_TIMESTAMP
+             WHERE order_id = ?`,
+            [status, estimatedPickup, orderId]
+        );
+
+        res.json({
+            message: `Order status updated to ${status}`,
+            order_id: orderId,
+            status: status,
+            estimated_pickup: estimatedPickup
+        });
+
+    } catch (err) {
+        console.error('Error updating order status:', err);
+        res.status(500).json({ error: 'Failed to update order status' });
+    }
+});
+
+//DELETE /api/orders/:id/cancel -cancel order within time limit
+
+app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const orderId = req.params.id;
+        const isStaff = req.user.role === 'staff';
+
+        //Grt order details
+        const [orderCheck] = await db.query('SELECT * FROM `order` WHERE order_id = ?', [orderId]);
+
+        if (orderCheck.length === 0) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        const order = orderCheck[0];
+
+        //Check permissions
+        if (!isStaff && order.user_id !== userId) {
+            return res.status(403).json({ error: 'Access denied' });
+        }
+
+        //Check if order can be cancelled
+        if (order.status !== 'pending') {
+            return res.status(400).json({ error: 'Only pending orders can be cancelled'});
+        }
+
+        //Check 1 min window (unless staff)
+        if (!isStaff) {
+            const now = new Date();
+            const orderTime = new Date(order.created_at);
+            const minutesSinceOrder = (now - orderTime) / (1000 * 60);
+
+            if (minutesSinceOrder > 1) {
+                return res.status(400).json({
+                    error: 'Order can only be cancelled within 1 minute of placing'
+                });
+            }
+        }
+
+        await db.query(
+            `UPDATE \`order\` 
+             SET status = 'cancelled', 
+                 cancelled_at = CURRENT_TIMESTAMP 
+             WHERE order_id = ?`,
+            [orderId]
+        );
+
+        res.json({
+            message: 'Order cancelled successfully',
+            order_id: orderId
+        });
+
+    } catch (err) {
+        console.error('Error cancelling order', err);
+        res.status(500).json({ error: 'Failed to cancel order' });
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ================= PROFILE (PROTECTED) ============================================================
 app.get('/api/profile', auth, (req, res) => {
     res.json({ message: "Access granted", user: req.user });
