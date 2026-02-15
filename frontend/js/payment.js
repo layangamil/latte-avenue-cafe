@@ -42,9 +42,9 @@ function showOrder(cart){  //takes cart array as argument
     }
 
     document.getElementById('payment-order-items').innerHTML = itemsHtml;
-    document.getElementById('payment-subtotal').textContent = subtotal.toFixed(2) + 'SEK';
-    document.getElementById('payment-tax').textContent = (subtotal * 0.06).toFixed(2) + 'SEK';
-    document.getElementById('payment-total').textContent = subtotal.toFixed(2) + 'SEK'; 
+    document.getElementById('payment-subtotal').textContent = subtotal.toFixed(2) + ' SEK';
+    document.getElementById('payment-tax').textContent = (subtotal * 0.06).toFixed(2) + ' SEK';
+    document.getElementById('payment-total').textContent = subtotal.toFixed(2) + ' SEK'; 
 
 }
 
