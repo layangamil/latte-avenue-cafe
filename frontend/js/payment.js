@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function(){ //w/o we might not find place order button
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     if (cart.length === 0) {
         alert('Your cart is empty!');
@@ -8,11 +8,11 @@ document.addEventListener('DOMContentLoaded', function(){
 
     showOrder(cart);
 
-    document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => { //looking for button with type 'radio' and name 'paymentMethod'. for each button run the following:
         radio.addEventListener('change', function() {
             const cardForm = document.getElementById('card-details-container');
             if (cardForm) {
-                cardForm.style.display = this.value === 'visa' ? 'block' : 'none';
+                cardForm.style.display = this.value === 'visa' ? 'block' : 'none'; //if the method is visa, then show block (visa form) otherwise let display hide form
             }
         });
     });
@@ -22,11 +22,11 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 });
 
-function showOrder(cart){
-    let subtotal = 0;
-    let itemsHtml = '';
+function showOrder(cart){  //takes cart array as argument
+    let subtotal = 0;  
+    let itemsHtml = '';  //HTML for all items
 
-    for (let item of cart){
+    for (let item of cart){  //like ' for item in' loop
         const itemTotal = item.price * item.quantity;
         subtotal += itemTotal;
 
@@ -49,7 +49,7 @@ function showOrder(cart){
 }
 
 async function placeOrder(cart) {
-    const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const method = document.querySelector('input[name="paymentMethod"]:checked').value;  // checks which button that is 'checked'  and gets its value '.value' (visa, applepay or klarna)
 
     if (method === 'visa') {
         const cardNumber = document.getElementById('card-number')?.value;
@@ -63,7 +63,7 @@ async function placeOrder(cart) {
         }
     }
 
-    const total = cart.reduce((sum, item) => sum (item.price * item.quantity), 0);
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
     const orderData = {
         items: cart.map(item => ({
@@ -86,9 +86,9 @@ async function placeOrder(cart) {
         const response = await fetch('http://localhost:5000/api/orders', {
 
             method: 'POST',
-            header: {
+            headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer' + token
+                'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify(orderData)
         });
@@ -97,8 +97,8 @@ async function placeOrder(cart) {
 
         if (response.ok) {
             localStorage.removeItem('cart');
-            if (typeof updateCartCount == 'fucnction') updateCartCount();
-            window.location.href = 'order_confirmation.html';
+            if (typeof updateCartCount == 'function') updateCartCount();
+            window.location.href = 'order-confirmation.html';
         } else{
             alert ('Order failed: ' + (data.message || 'Unknown error'));
             btn.textContent = 'Place Order';
@@ -108,7 +108,7 @@ async function placeOrder(cart) {
         console.log('Error:', error);
         alert('Cannot connect to server');
 
-        const btn = document.getElementById('Place-order-btn');
+        const btn = document.getElementById('place-order-btn');
         btn.textContent = 'Place Order';
         btn.disabled = false;
     }
