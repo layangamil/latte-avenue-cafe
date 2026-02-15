@@ -34,7 +34,7 @@ function showOrder(cart){  //takes cart array as argument
             <div class = "payment-order-item">
                 <div class="payment-item-info">
                     <span class="payment-item-name">${item.name}</span>
-                    <span class="payment-item-qty">${item.quantity}</span>
+                    <span class="payment-item-qty">${item.quantity}x</span>
                 </div>
                 <span class=payment-item-price">${itemTotal.toFixed(2)} SEK</span>
             </div>
@@ -65,8 +65,8 @@ async function placeOrder(cart) {
 
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-    const orderData = {
-        items: cart.map(item => ({
+    const orderData = {  //gets all the info that will be sent to backend
+        items: cart.map(item => ({  // map() creates an array where every item get reformated to macth backend
             menuItemId: item.id,
             name: item.name,
             price: item.price,
@@ -77,16 +77,16 @@ async function placeOrder(cart) {
         status: 'confirmed'
     };
 
-    try {
+    try { //will try to run code inside this try and if smth wrong happens, catch will catch the error
         const btn = document.getElementById('place-order-btn');
-        btn.textContent = 'processing'
-        btn.disabled = true;
+        btn.textContent = 'processing' //once button is clicked, change display text to 'Processing' instead of 'place order'
+        btn.disabled = true; // make button unclickable so customer doesnt press multiple times
         
         const token = localStorage.getItem('token');
         const response = await fetch('http://localhost:5000/api/orders', {
 
             method: 'POST',
-            headers: {
+            headers: { //tells backend: we're sending JSON-string and customer is logged in ('token')
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
@@ -95,10 +95,10 @@ async function placeOrder(cart) {
 
         const data = await response.json();
 
-        if (response.ok) {
-            localStorage.removeItem('cart');
-            if (typeof updateCartCount == 'function') updateCartCount();
-            window.location.href = 'order-confirmation.html';
+        if (response.ok) { //if success
+            localStorage.removeItem('cart');//cart element no longer in localStorage since order placed
+            if (typeof updateCartCount == 'function') updateCartCount(); //looks for function updateCartCount() to change to 0
+            window.location.href = 'order-confirmation.html'; // finally takes to order-confirmation page
         } else{
             alert ('Order failed: ' + (data.message || 'Unknown error'));
             btn.textContent = 'Place Order';

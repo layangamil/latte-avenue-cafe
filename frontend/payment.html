@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content= "width=device-width, initial-scale=1.0"> <!-- view-port tag to make website responsive on mobile devices, by setting width to the device width -->
-    <title>Latte Avenue</title>
+    <title>Latte Avenue - Checkout</title>
     <link rel="stylesheet" href= "css/style.css"> 
     <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- 'Font Awesome' is an icon library. for shopping bag icon, plus icon, coffee mug -->
     <link rel="stylesheet" href= "https://cdn.jsdelivr.net/npm/simple-icons-font@v9/font/simple-icons.min.css">
@@ -25,7 +25,7 @@
 
     <section class="payment-section">
         <div class="container">
-            <h1>Payment</h1>
+            <h1>Checkout</h1>
 
             <div class="payment-wrapper">
                 <!-- Left side: order summary -->
@@ -37,11 +37,11 @@
                     <div class="payment-total-box">
                         <div class="payment-row">
                             <span>Subtotal</span>
-                            <span id="payment-subtotal">0 SEK</span>
+                            <span id="payment-subtotal" class="payment-subtotal">0 SEK</span>
                         </div>
                         <div class="payment-row">
                             <span>Tax(6%)</span>
-                            <span id="payment-tax">0 SEK</span>
+                            <span id="payment-tax" class="payment-tax">0 SEK</span>
                         </div>
                         <div class="payment-row payment-final">
                             <strong>Total</strong>
@@ -52,34 +52,36 @@
 
                 <!-- Right side: Payment methods -->
                 <div class="payment-method-box">
-                    <h2>Please Select Payment Method</h2>
+                    <h2>Select Payment Method</h2>
 
-                    <!-- VISA CARD -->
-                     <label class="payment-option-label">
-                        <input type="radio" name="paymentMethod" value="visa" checked>
-                        <div class="payment-option-content">
-                            <i class="si si-visa"></i>
-                            <span>Visa</span>
-                        </div>
-                    </label>
-
-                    <!-- APPLE PAY -->
-                    <label class="payment-option-label">
-                        <input type="radio" name="paymentMethod" value="applepay">
-                        <div class="payment-option-content">
-                            <i class="si si-applepay"></i>
-                            <span>Apple Pay</span>
-                        </div>
-                    </label>
-
-                    <!-- KLARNA -->
-                    <label class="payment-option-label">
-                        <input type="radio" name="paymentMethod" value="klarna">
-                        <div class="payment-option-content">
-                            <i class="si si-klarna"></i>
-                            <span>Klarna</span>
-                        </div>
-                    </label>
+                    <div class="checkout-methods">
+                         <!-- VISA CARD -->
+                        <label class="payment-option-label">
+                           <input type="radio" name="paymentMethod" value="visa" checked>
+                           <div class="payment-option-content">
+                               <i class="si si-visa"></i>
+                           </div>
+                       </label>
+   
+                       <!-- APPLE PAY -->
+                       <label class="payment-option-label">
+                           <input type="radio" name="paymentMethod" value="applepay">
+                           <div class="payment-option-content">
+                               <i class="si si-applepay"></i>
+                               <span>Apple Pay</span>
+                           </div>
+                       </label>
+   
+                       <!-- KLARNA -->
+                       <label class="payment-option-label">
+                           <input type="radio" name="paymentMethod" value="klarna">
+                           <div class="payment-option-content">
+                               <i class="si si-klarna"></i>
+                               <span>Klarna</span>
+                           </div>
+                       </label>
+                    </div>
+                    
 
                     <!-- Entering card details (only if Visa is chosen)-->
                     <div id="card-details-container" class="card-details-box">

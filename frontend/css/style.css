@@ -514,4 +514,106 @@ nav {
 /*===================================================================*/
                       /* PAYMENT PAGE:*/
 /*===================================================================*/
- 
+.payment-section h1{
+    margin: 2rem 0rem;
+    color:#8b6b61;
+    font-family: 'Playfair Display', serif;;
+    font-size: 2.8rem;
+    font-weight: 600;                
+}
+
+.payment-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.payment-order-box h2{
+    color:#5d4037;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.payment-order-items{
+    margin-bottom: 2rem;
+}
+
+
+.payment-order-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 6rem;
+    margin-bottom: 0.5rem;
+    color:#5d4037;
+    font-size: 1rem;
+}
+
+
+.payment-item-qty {
+    color:#5d4037;
+    font-weight: 700;
+    margin: 0rem 1rem;
+}
+
+
+.payment-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    color:#5d4037;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.payment-final {
+    font-size: 1.5rem;
+    margin-top:1.5rem;
+}
+
+.payment-method-box h2{
+    color:#5d4037;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.checkout-methods {
+    display:flex;
+    justify-content: space-between;
+    margin: 3rem 0rem;
+}
+
+.payment-option-content i{
+    font-size: 2rem;
+}
+
+.card-details-box h3{
+    color:#5d4037;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.card-details-box input{
+    height: 40px;
+    margin: 0.5rem 0rem;
+    padding: 0 1rem;
+}
+
+.payment-input {
+    width: 500px;
+}
+
+.payment-input-half {
+    width: 100px;
+}
+
+.payment-action-btn {
+    background-color:#8b6b61;
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size:1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 5px;
+    border: none;
+    margin-top:1rem;
+    
+}
