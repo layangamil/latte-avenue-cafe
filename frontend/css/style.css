@@ -397,12 +397,13 @@ nav {
     padding: 0.4rem;
 }
 
-.role{
+.role h3{
     color: #8b6b61;
     font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
+    font-size: 2rem;
     font-weight: 600;
-    width: 45%;
+
+    margin-bottom: 2rem;
 }
 
 .input-container {
@@ -415,7 +416,7 @@ nav {
 }
 
 .input-container input{
-    width: 50%;
+    width: 400px;
     padding: 0.6rem;
     margin-bottom: 0.5rem;
     border:1px solid #8b6b61;
@@ -430,6 +431,14 @@ nav {
 
 .customer-exist {
     margin-bottom: 2rem;
+}
+
+.customer-new h4{
+    color: #8b6b61;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
 /*===================================================================*/
                       /* CART PAGE:*/
@@ -510,6 +519,26 @@ nav {
     padding: 1rem 2rem;
     border-radius: 5px;
     border: none;
+}
+
+.empty-cart{
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    
+    margin: 2rem 1rem;
+}
+
+.empty-cart p{
+    color:#5d4037;
+    font-size: 1.3rem;
+}
+
+.empty-cart a{
+    padding: 0rem 1rem;
+    color: #e6bcc2;
+    font-size: 1.3rem;
+    font-style: italic;
 }
 /*===================================================================*/
                       /* PAYMENT PAGE:*/
@@ -598,6 +627,10 @@ nav {
     padding: 0 1rem;
 }
 
+.card-details-box input:focus{
+    outline-color: #5d4037; 
+}
+
 .payment-input {
     width: 500px;
 }
@@ -612,8 +645,11 @@ nav {
     font-family: 'Playfair Display', serif;
     font-size:1rem;
     padding: 1rem 1.5rem;
-    border-radius: 5px;
+    border-radius: 2px;
     border: none;
     margin-top:1rem;
-    
+}
+
+.payment-action-btn:hover{
+    background-color:#614b44;
 }
