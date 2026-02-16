@@ -10,10 +10,6 @@
     padding:0px; 
 }
 
-body {
-    margin: 0;
-    padding: 0;
-}
 /*===================================================================*/
                       /* HOME PAGE:*/
 /*===================================================================*/
@@ -382,7 +378,7 @@ nav {
     clear: both;
     background-color:#a1887f;
     margin-bottom: 0;
-    padding: 3rem 0rem 4rem 0rem;
+    padding: 3rem 0rem 3rem 0rem;
 }
 
 .footer-section h4{
@@ -397,6 +393,7 @@ nav {
     margin: 0rem 5rem;
     letter-spacing:0.1rem;
     font-style: italic;
+    margin-bottom: 1.5rem;
 }
 
 .footer-section p{
@@ -693,4 +690,16 @@ nav {
 
 .payment-action-btn:hover{
     background-color:#614b44;
+}
+/*===================================================================*/
+                      /* PAYMENT PAGE:*/
+/*===================================================================*/
+.order-confirmation-page h1{
+    color:#8b6b61;
+    font-family: 'Playfair Display', serif;;
+    font-size: 2.3rem;
+    font-weight: 600;               
+    margin: 2rem 0.3rem; 
+    margin-bottom: 0rem;              /* centers horisontally (0 top/bottom, auto left/right) */
+    padding:0px;
 }

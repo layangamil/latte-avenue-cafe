@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
             const email = document.getElementById('customer-login-email').value;
             const password = document.getElementById('customer-login-password').value;
-            loginUser(email, password);
+            loginUser(email, password, 'customer');
         });
     }
 
@@ -32,24 +32,30 @@ document.addEventListener('DOMContentLoaded', function(){
             const email = document.getElementById('admin-login-email').value;
             const password = document.getElementById('admin-login-password').value;
 
-            loginUser(email, password);
+            loginUser(email, password, 'staff');
         });
     } 
 });
 
-async function loginUser(email, password) {  //async function will await for promises, modern way to handle API calls
+async function loginUser(email, password, role) {  //async function will await for promises, modern way to handle API calls
     try { //Request (client -> server)
         //AYAN CHANGED FROM 3000 -> 5000!!!!!!!!!!!!!!!
         const response = await fetch('http://localhost:5000/api/login', {  // API endpoint - fetch send HTTP request to backend
             method: 'POST',                                                //API method - POST processing data (login attempt)
             headers: {'Content-Type': 'application/json'},                 // Instruction for server - "im sending JSON"
-            body: JSON.stringify({email, password})                        //API data format - convert JS object to JSON string (standard format for APIs)
+            body: JSON.stringify({
+                email: email, 
+                password: password,
+                loginRole: role
+            })
+                                    //API data format - convert JS object to JSON string (standard format for APIs)
         });
           //Response (server -> client)
         const data = await response.json();                                // Parse back to JS, now usable data
 
         if (data.token) {
             localStorage.setItem('token', data.token);
+            localStorage.setItem('userRole', role);
 
             const redirectTo = localStorage.getItem('redirectAfterLogin') || 'index.html';
             localStorage.removeItem('redirectAfterLogin');
