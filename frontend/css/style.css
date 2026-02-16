@@ -9,6 +9,11 @@
     margin: 0 auto;                    /* centers horisontally (0 top/bottom, auto left/right) */
     padding:0px; 
 }
+
+body {
+    margin: 0;
+    padding: 0;
+}
 /*===================================================================*/
                       /* HOME PAGE:*/
 /*===================================================================*/
@@ -278,11 +283,12 @@ nav {
     transform: translateY(-2px);
 }
 
-/* ================ */
+/* =============== */
 /* CONTACT SECTION */
 .contact-content{
     margin: 4rem;
     padding-bottom: 2rem;
+    text-align: center;
 }
 
 .contact-content h3{
@@ -365,6 +371,38 @@ nav {
     100% { transform: scale(1); }
 }
 
+/* ============ */
+/* FOOTER SECTION*/
+.footer-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    clear: both;
+    background-color:#a1887f;
+    margin-bottom: 0;
+    padding: 3rem 0rem 4rem 0rem;
+}
+
+.footer-section h4{
+    color:#593e35;
+    font-size: 1.4rem;
+    letter-spacing: 6px;
+    margin-bottom:1.5rem;
+}
+
+.socials a{
+    color:#e6bcc2;
+    margin: 0rem 5rem;
+    letter-spacing:0.1rem;
+    font-style: italic;
+}
+
+.footer-section p{
+    margin-top: 1rem;
+}
+
 /*===================================================================*/
                       /* LOGIN PAGE:*/
 /*===================================================================*/
@@ -443,7 +481,11 @@ nav {
 /*===================================================================*/
                       /* CART PAGE:*/
 /*===================================================================*/
- 
+.cart-page{
+    min-height: 50vh;
+    margin-bottom: 3rem;
+} 
+
 .cart-items-container {
     margin:0;
 }
@@ -492,7 +534,7 @@ nav {
 .cart-summary {
     float: right;
     padding: 1rem 0;;
-    margin: 2rem 0;
+    margin: 2rem 0rem 8rem 0rem;
 }
 
 .cart-summary .cart-total{
@@ -597,8 +639,6 @@ nav {
     font-size: 1.5rem;
     margin-top:1.5rem;
 }
-
-
 
 .payment-method-box h2{
     color:#5d4037;
