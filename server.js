@@ -375,79 +375,8 @@ app.delete('/api/cart', auth, async (req, res) => {
 // ================= ORDER ENDPOINTS ==================================
 //POST /api/orders -Convert cart to order
 
-app.post('/api/orders', auth, async (req, res) => {
-    try {
-        const userId = req.user.id;
 
-        //STart transaction
-        const connection = await db.getConnection();
-        await connection.beginTransaction();
 
-        try {
-            //1) Get user's cart items
-            const [cartItems] = await connection.query(
-                `SELECT sc.product_id, sc.quantity, p.price, p.name 
-                 FROM shopping_cart sc
-                 JOIN product p ON sc.product_id = p.product_id
-                 WHERE sc.user_id = ?`,
-                [userId]
-            );
-
-            if (cartItems.length === 0) {
-                await connection.rollback();
-                connection.release();
-                return res.status(400).json({ error: 'Cart is empty' });
-            }
-
-            //2) Calaculate total amount
-            let totalAmount = 0;
-            cartItems.forEach(item => {
-                totalAmount += parseFloat(item.price) * item.quantity;
-            });
-
-            //3) Create the order
-            const [orderResult] = await connection.query(
-                `INSERT INTO \`order\` (user_id, total_amount, status) 
-                 VALUES (?, ?, 'pending')`,
-                [userId, totalAmount]
-            );
-
-            const orderId = orderResult.insertId;
-
-            //4) Add items to the order_item table
-            for (const item of cartItems) {
-                await connection.query(
-                    `INSERT INTO order_item (order_id, product_id, quantity, price_at_time) 
-                     VALUES (?, ?, ?, ?)`,
-                    [orderId, item.product_id, item.quantity, item.price]
-                );
-            }
-
-            //5) Clear shopping cart
-            await connection.query('DELETE FROM shopping_cart WHERE user_id = ?', [userId]);
-
-            //Commit tracsaction
-            await connection.commit();
-            connection.release();
-
-            res.status(201).json({
-                message: 'Order placed successfully',
-                order_id: orderId,
-                total_amount: totalAmount,
-                status: 'pending'
-            });
-        } catch (err) {
-            //Something went wrong, rollback changes
-            await connection.rollback();
-            connection.release();
-            throw err;
-        }
-
-    } catch (err) {
-        console.error('Error creating order:', err);
-        res.status(500).json({ error: 'Failed to create order' });
-    }
-});
 
 //GET /api/orders/:id -get order details
 
@@ -683,8 +612,90 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
 
 
 
+// ================= PAYMENT ORDER ENDPOINT ===========================
+//POST /api/orders -Place order directly from payment page
 
+app.post('/api/orders', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { items, total, paymentMethod, status } = req.body;
 
+        //Vaidate input
+        if (!items || items.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'No items in order'
+            });
+        }
+
+        if (!paymentMethod) {
+            return res.status(400).json({
+                success: false,
+                message: 'Payment method required'
+            });
+        }
+
+        //Start transaction
+        const connection = await db.getConnection();
+        await connection.beginTransaction();
+
+        try {
+            //Create the order
+            const [orderResult] = await connection.query(
+                `INSERT INTO \`order\` (user_id, total_amount, status, payment_method) 
+                 VALUES (?, ?, ?, ?)`,
+                [userId, total, 'pending', paymentMethod]
+            );
+
+            const orderId = orderResult.insertId;
+
+            //Add items to order_item table
+            for (const item of items) {
+                //Verify product exists
+                const [productCheck] = await connection.query(
+                    'SELECT price FROM product WHERE product_id = ?',
+                    [item.menuItemId]
+                );
+
+                if (productCheck.length === 0) {
+                    throw new Error(`Product ${item.menuItemId} not found`);
+                }
+
+                await connection.query(
+                    `INSERT INTO order_item (order_id, product_id, quantity, price_at_time) 
+                     VALUES (?, ?, ?, ?)`,
+                    [orderId, item.menuItemId, item.quantity, item.price]
+                );
+            }
+
+            //Clear the shopping cart
+            await connection.query('DELETE FROM shopping_cart WHERE user_id = ?', [userId]);
+
+            //Commit transaction
+            await connection.commit();
+            connection.release();
+
+            //Send success response
+            res.status(201).json({
+                success: true,
+                orderId: orderId.toString(),
+                message: 'Order confirmed'
+            });
+
+        } catch (err) {
+            await connection.rollback();
+            connection.release();
+            throw err;
+        }
+
+    } catch (err) {
+        console.error('Error creating order from payment:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to create order'
+        });
+    }
+});
 
 
 
