@@ -187,8 +187,8 @@ app.post('/api/register', async (req, res) => {
 // ================= LOGIN ROUTE ===============================================================
 app.post('/api/login', async (req, res) => {
     try {
-        const { email, password } = req.body;
-        console.log("Login attempt - email:", email);
+        const { email, password, loginRole } = req.body;
+        console.log("Login attempt - email:", email, "as role:", loginRole);
 
         // Query database for user with matching email
         const [results] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
@@ -200,6 +200,18 @@ app.post('/api/login', async (req, res) => {
         }
 
         const user = results[0];
+
+        //Check if user is trying to log in with correct role
+        if (loginRole === 'staff' && user.role !== 'staff') {
+            console.log("User tried to log in as staff but is not staff");
+            return res.status(403).json({ message: "Access denied: Not a staff account" });
+        }
+
+        if (loginRole === 'customer' && user.role !== 'customer') {
+            console.log("User tried to log in as a customer but is not a customer");
+            return res.status(403).json({ message: "Access denied: Not a customer account" });
+        }
+        
 
         // Compare provided password with hashed password in database
         const match = await bcrypt.compare(password, user.password_hash);
