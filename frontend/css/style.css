@@ -695,6 +695,8 @@ nav {
                       /* PAYMENT PAGE:*/
 /*===================================================================*/
 .order-confirmation-page h1{
+    display: flex;
+    justify-content: center;
     color:#8b6b61;
     font-family: 'Playfair Display', serif;;
     font-size: 2.3rem;
