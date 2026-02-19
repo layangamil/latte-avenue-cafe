@@ -21,15 +21,27 @@
                 </div>
                 <nav>
                     <!-- navigation links -->
-     <!-- **  -->   <a href="login.html" class="nav-item"><strong>Login</strong></a>
                     <a href="index.html" class="nav-item">Home</a>
-                    <a href="#menu" class="nav-item">Menu</a>
-                    <a href="#contact" class="nav-item">Contact</a>
+                    <a href="index.html#menu" class="nav-item">Menu</a>
+                    <a href="index.html#contact" class="nav-item">Contact</a>
                     <a href="cart.html" class="nav-item">
                         <i class="fas fa-shopping-bag"></i>
-                        <strong>Cart</strong>
                         <span id="cart-count" class="cart-count">0</span> <!-- span, bc it doesnt break line (inline -element) JS needs a unique id to find and update cart nr. class cart-count is for styling, ID for JS -->
                     </a>
+                    <a href="login.html" id="loginLink" class="nav-item">
+                        <i class="fa-solid fa-circle-user"></i><strong>Login</strong>
+                    </a>
+                    
+                    <div class="dropdown" id="accountDropdown" style="display:none">
+                        <button>My Account ▼</button>
+                        <div class="dropdown-content">
+                            <a href="profile.html">
+                                <i class="fa-solid fa-circle-user"></i></i>Profile
+                            </a>
+                            <a href="my-orders.html">Orders</a>
+                            <a href="#" id="logoutBtn">Sign Out</a>
+                        </div>
+                    </div>
                 </nav>
             </div>
         </div>
