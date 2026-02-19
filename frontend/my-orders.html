@@ -1,13 +1,15 @@
-<!DOCtype html>
-<html>
+<!DOCTYPE html>
+<html lang="en"> <!-- tells browser and screen readers page is in english-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- view-port tag to make website responsive on mobile devices, by setting width to the device width -->
-    <title>Latte Avenue - Cart</title>
+    <title>Latte Avenue - My Orders</title>
     <link rel="stylesheet" href= "css/style.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- 'Font Awesome' is an icon library. for shopping bag icon, plus icon, coffee mug -->
 </head>
+
 <body>
+    <!-- Header -->
     <header class="main-header">
         <div class="container"> <!-- common pattern to limit content width and center it, in css-->
             <div class="header-content">
@@ -44,37 +46,29 @@
             </div>
         </div>
     </header>
-    <section class="cart-page">
+
+    <section class="orders-page">
         <div class="container">
-            <h1>Your Shopping Cart</h1>
-            <div id="cart-items-container" class="cart-items-container">
-                <!-- cart.js will add items here-->
+            <h1>My Orders</h1>
+            <div class="current-order-section">
+                <h2>Current Order</h2>
+                <div id="current-order-box" class="order-box">
+                    <!--JS will write code here-->
+                    <p>Loading order...</p>
+                </div>
             </div>
 
-            <div class="cart-summary">
-                <div class="cart-total">
-                    <h3>Total SEK (incl.tax):</h3>
-                    <span id="cart-total" class="total-amount">0.00</span>
+            <div class="order-history-section">
+                <h2>Previous Orders</h2>
+                <div id="order-history-box" class="order-box">
+                    <!--JS will write code here-->
+                    <p>Loading history...</p>
                 </div>
-                <button id="checkout-btn" class="btn-primary">Proceed to Checkout</button>
             </div>
         </div>
     </section>
 
-    <footer class="footer-section">
-        <div class="container">
-            <h4>Follow us on our socials</h4>
-            <div class="socials">
-                <a href="https://www.instagram.com/latte_avenue_sthlm/" target="_blank">Instagram</a>
-                <a href="https://www.tiktok.com/@latte_avenue_sthlm?lang=en-GB" target="_blank">TikTok</a>
-                <a href="https://www.facebook.com/profile.php?id=61588507070670" target="_blank">Facebook</a>
-            </div>
-            <p>© 2026 Latte Avenue Café. All rights reserved.</p>
-        </div>
-    </footer>
-
     <script src="js/header.js"></script>
-    <script src="js/menu.js"></script>
-    <script src="js/cart.js"></script>
+    <script src="js/my-orders.js"></script>
 </body>
 </html>
