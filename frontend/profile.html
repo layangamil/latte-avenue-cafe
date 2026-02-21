@@ -47,18 +47,29 @@
 
     <section class="profile-page">
         <div class="container">
-            <h1>Hello <span id="display-firstname-header"></span>!</h1>
-            <div class="account-manage" >
-                <h3>Account Management</h3>
-                <p>You may change your personal information</p>
-                <div id="profile-info">
-                    <p><strong>First Name:</strong> <span id="display-firstname"></span></p>
-                    <p><strong>Last Name:</strong> <span id="display-lastname"></span></p>
-                    <p><strong>E-mail:</strong> <span id="display-email"></span></p>
+            <div class="page-header">
+                <h1>Hello <span id="display-firstname-header"></span>!</h1>
+            </div>
+            <div class="account-section">
+                <div class="profile-section-header">
+                    <div class="section-header">
+                        <h2>My Information</h3>
+                        <p>You may view your personal information</p>
+                    </div>
                 </div>
+                <div id="profile-info" class="profile-info">
+                    <p><strong>First Name:  </strong> <span id="display-firstname"></span></p>
+                    <p><strong>Last Name:  </strong> <span id="display-lastname"></span></p>
+                    <p><strong>E-mail:  </strong> <span id="display-email"></span></p>
+                </div>
+            </div>
                 <!-- where chnages will happen (only password)-->
-                <div class="password-section">
-                    <h3>Change Password</h3>
+            <div class="password-section">
+                <div class="section-header">
+                    <h2>Change Password</h3>
+                    <p>You may reset your password</p>
+                </div>
+                <div class="password-section-container">
                     <form id="passwordForm">
                         <input type="password" id="currentPassword" placeholder="Enter Current Password" required>
                         <input type="password" id="newPassword" placeholder="Enter New Password" required>
