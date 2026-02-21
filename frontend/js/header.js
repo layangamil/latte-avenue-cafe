@@ -1,26 +1,39 @@
-document.addEventListener('DomContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function(){
     const token = localStorage.getItem('token');
+    const role = localStorage.getItem('userRole');
     const loginLink = document.getElementById('loginLink');
     const accountDropdown = document.getElementById('accountDropdown');
+    const adminNav = document.getElementById('adminNav');
 
     if(token){
-        if(loginLink) loginLink.style.display = 'none';
-        if(accountDropdown) accountDropdown.style.display = 'inline-block';
+        loginLink.style.display = 'none';
+        
+        if (role === 'staff'){
+            accountDropdown.style.display = 'none';
+            adminNav.style.display = 'block';
+        } else{
+            accountDropdown.style.display = 'block';
+            adminNav.style.display = 'none';
+        }
     } else {
-        if(loginLink) loginLink.style.display = 'inline-block';
-        if(accountDropdown) accountDropdown.style.display = 'none';
+        loginLink.style.display = 'block';
+        accountDropdown.style.display = 'none';
+        adminNav.style.display = 'none';
     }
 
-    const logoutBtn = document.getElementById('logoutBtn');
-    if(logoutBtn){
-        logoutBtn.addEventListener('click', function(event){
+    const customerSignoutBtn = document.getElementById('logoutBtn');
+    if(customerSignoutBtn){
+        customerSignoutBtn.addEventListener('click', function(event){
             event.preventDefault(); //stops what the button standard behaviour, go to '#' and instead does below
+            signout();
+        });
+    }
 
-            localStorage.removeItme('token'); //preventDefault() makes so that localStorage has time to removeItem osv, then navigates (best practice for logout btns, gives control)
-            localStorage.removeItem('userRole');
-            //leaving cart so items are still in cart despite not being logged in
-
-            window.location.href = 'index.html'; 
+    const adminSignoutBtn = document.getElementById('adminLogoutBtn');
+    if (adminSignoutBtn){
+        adminSignoutBtn.addEventListener('click', function(event){
+            event.preventDefault();
+            signout();
         });
     }
 
@@ -28,3 +41,7 @@ document.addEventListener('DomContentLoaded', function(){
         updateCartCount();
     }
 });
+
+function signout(){
+
+}
