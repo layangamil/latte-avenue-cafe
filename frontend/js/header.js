@@ -43,5 +43,8 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 function signout(){
+    localStorage.removeItem('token');
+    localStorage.removeItem('userRole');
 
+    window.location.href = 'index.html';
 }
