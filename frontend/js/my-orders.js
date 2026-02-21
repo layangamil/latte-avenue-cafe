@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function(){
-    //const token = localStorage.getItem('token');
-    //if (!token){
-    //    window.location.href = 'login.html';
-    //    return;
-    //}
+    const token = localStorage.getItem('token');
+    if (!token){
+        window.location.href = 'login.html';
+        return;
+    }
     loadOrders();
 
 });
@@ -12,7 +12,7 @@ async function loadOrders() {
     const token = localStorage.getItem('token');
 
     try {
-        const response = await fetch('http://localhost:5000/api/orders', {
+        const response = await fetch('http://localhost:5000/api/orders/myorders', {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -46,10 +46,10 @@ function displayOrders(orders){
     }
     // Show current order
     const currentBox = document.getElementById('current-order-box');
-    if (currentBox) {
+    if (currentOrder) {
         currentBox.innerHTML = renderCurrentOrder(currentOrder);
     } else {
-        currentBox.innerHTML = '<p class="no-order">No active order</p>'
+        currentBox.innerHTML = '<p class="no-order">No active order</p>';
     }
 
     //show order history
@@ -61,7 +61,7 @@ function displayOrders(orders){
         }
         historyBox.innerHTML = html;
     } else {
-        historyBox.innerHTML = '<p class="no-order">No previous orders</p>'
+        historyBox.innerHTML = '<p class="no-order">No previous orders</p>';
     }
 }
 
@@ -78,11 +78,36 @@ function renderCurrentOrder(order){
                 <span>Order #${order.id}</span>
                 <span class="status-${order.status}">${order.status}</span>
             </div>
-            <div cass="order-body>
+            <div class="order-body">
                 <p><strong>Estimated Pickup Time:</strong> ${order.pickupTime || 'Not set'}</p>
                 <ul>${itemsHtml}</ul>
                 <p class="order-total"><strong>Total:</strong> ${order.total} SEK</p>
             </div>
         </div>
     `;
+}
+
+function renderHistoryOrder(order){
+    let summary = '';
+    for (let i = 0; i < order.items.length; i++){
+        if (i > 0) summary += ', ';
+        summary += `${order.items[i].quantity}x ${order.items[i].name}`;
+    }
+    return `
+        <div class="order-card history">
+            <div class="order-header">
+                <span>Order #${order.id}</span>
+                <span>${order.date || ''}</span>
+            </div>
+            <div class="order-body">
+                <p>${summary}</p>
+                <p class="order-total">Total: ${order.total} SEK</p>
+            </div>
+        </div>
+    `;
+}
+
+function showError(message){
+    document.getElementById('current-order-box').innerHTML = `<p class="error-message">${message}</p>`;
+    document.getElementById('order-history-box').innerHTML = '';
 }

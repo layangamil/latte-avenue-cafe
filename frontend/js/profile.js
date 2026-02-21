@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function(){
-    //const token = localStorage.getItem('token');
-    //if(!token){
-    //    window.location.href = 'login.html';
-    //    return;
-    //}
+    const token = localStorage.getItem('token');
+    if(!token){
+        window.location.href = 'login.html';
+        return;
+    }
     loadUserProfile();
 
     document.getElementById('passwordForm').addEventListener('submit', async function(e){
