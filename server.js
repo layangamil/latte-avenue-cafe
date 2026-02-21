@@ -390,6 +390,54 @@ app.delete('/api/cart', auth, async (req, res) => {
 
 
 
+//GET /api/orders/myorders -Get current user's orders with items
+app.get('/api/orders/myorders', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        console.log("Fetching orders fro user ID:", userId);
+
+        //Get all orders for this user
+        const [orders] = await db.query(
+            `SELECT order_id as id, 
+                    status, 
+                    total_amount as total,
+                    DATE_FORMAT(order_date, '%Y-%m-%d') as date,
+                    DATE_FORMAT(estimated_pickup_time, '%H:%i') as pickupTime
+             FROM \`order\` 
+             WHERE user_id = ? 
+             ORDER BY order_date DESC`,
+            [userId]
+        );
+
+        console.log("Found orders:", orders.length);
+
+        //For each order, get its items
+        for (let order of orders) {
+            const [items] = await db.query(
+                `SELECT p.name, oi.quantity, oi.price_at_time as price
+                 FROM order_item oi
+                 JOIN product p ON oi.product_id = p.product_id
+                 WHERE oi.order_id = ?`,
+                [order.id]
+            );
+
+            order.items = items;
+        }
+
+        //Always return the array even if empty
+        res.json(orders);
+
+    } catch (err) {
+        console.error('Error fetching user orders:', err);
+        res.status(500).json({ message: 'Failed to fetch orders' });
+    }
+});
+
+
+
+
+
+
 //GET /api/orders/:id -get order details
 
 app.get('/api/orders/:id', auth, async (req, res) => {
@@ -715,21 +763,95 @@ app.post('/api/orders', auth, async (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // ================= PROFILE (PROTECTED) ============================================================
-app.get('/api/profile', auth, (req, res) => {
-    res.json({ message: "Access granted", user: req.user });
+//GET /api/profile -Get user profile info
+app.get('/api/profile', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        const [users] = await db.query(
+            'SELECT first_name, last_name, email FROM users WHERE user_id = ?',
+            [userId]
+        );
+
+        if (users.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const user = users[0];
+        res.json({
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email
+        });
+
+    } catch (err) {
+        console.error('Error fetching profile:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
+
+//PUT /api/profile/password -Update user password
+app.put('/api/profile/password', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { currentPassword, newPassword } = req.body;
+
+        //Validate input
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({
+                message: 'Current password and new password are required'
+            });
+        }
+
+        //Get user's current password hash
+        const [users] = await db.query(
+            'SELECT password_hash FROM users WHERE user_id = ?',
+            [userId] 
+        );
+
+        if (users.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const user = users[0];
+
+        //Verify current password
+        const match = await bcrypt.compare(currentPassword, user.password_hash);
+
+        if(!match) {
+            return res.status(401).json({
+                message: 'Current password is incorrect'
+            });
+        }
+
+        //Hash new password 
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+        //Update password in database
+        await db.query(
+            'UPDATE users SET password_hash = ? WHERE user_id = ?',
+            [hashedNewPassword, userId]
+        );
+
+        res.json({
+            message: 'Password updated successfully'
+        });
+
+    } catch (err) {
+        console.error('Error updating password:', err);
+        res.status(500).json({
+            message: 'Failed to update password'
+        });
+    }
+});
+
+
+
+
+
+
+
 
 // Start server listening on specified port and all network interfaces
 app.listen(PORT, '0.0.0.0', () => {
