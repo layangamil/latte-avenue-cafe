@@ -403,16 +403,6 @@ nav {
 /*===================================================================*/
                       /* LOGIN PAGE:*/
 /*===================================================================*/
-.login-page h1{
-    color:#8b6b61;
-    font-family: 'Playfair Display', serif;;
-    font-size: 2.3rem;
-    font-weight: 600;               
-    margin: 2rem 0.3rem; 
-    margin-bottom: 0rem;              /* centers horisontally (0 top/bottom, auto left/right) */
-    padding:0px; 
-}
-
 .login-container {
     max-width: 1200px;                 /* common web design pattern, to fit larger screens */
     margin: 0 auto;                    /* centers horisontally (0 top/bottom, auto left/right) */
@@ -426,6 +416,7 @@ nav {
 .login-container button{
     background-color: #e6bcc2;
     color:#fff;
+    font-family: 'Playfair Display', serif;
     font-size: 1rem;
     border-radius: 10px;
     border-color:#e6bcc2;
@@ -461,7 +452,7 @@ nav {
 .input-container input::placeholder{
     color: #a1887f;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 .customer-exist {
@@ -485,16 +476,6 @@ nav {
 
 .cart-items-container {
     margin:0;
-}
-
-.cart-page h1 {
-    color:#8b6b61;
-    font-family: 'Playfair Display', serif;;
-    font-size: 2.3rem;
-    font-weight: 600;               
-    margin: 2rem 0.3rem; 
-    margin-bottom: 0rem;              /* centers horisontally (0 top/bottom, auto left/right) */
-    padding:0px; 
 }
 
 .cart-item {
@@ -581,13 +562,6 @@ nav {
 /*===================================================================*/
                       /* PAYMENT PAGE:*/
 /*===================================================================*/
-.payment-section h1{
-    margin: 2rem 0rem;
-    color:#8b6b61;
-    font-family: 'Playfair Display', serif;;
-    font-size: 2.8rem;
-    font-weight: 600;                
-}
 
 .payment-wrapper {
     display: flex;
@@ -692,7 +666,7 @@ nav {
     background-color:#614b44;
 }
 /*===================================================================*/
-                      /* PAYMENT PAGE:*/
+                      /* ORDER CONFIRMATION PAGE:*/
 /*===================================================================*/
 .order-confirmation-page h1{
     display: flex;
@@ -705,3 +679,83 @@ nav {
     margin-bottom: 0rem;              /* centers horisontally (0 top/bottom, auto left/right) */
     padding:0px;
 }
+
+/*===================================================================*/
+                      /* PROFILE PAGE:*/
+/*===================================================================*/
+.page-header h1{
+    color:#8b6b61;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.3rem;
+    font-weight: 600;
+    margin: 2rem 0rem;
+}
+
+.section-header h2{
+    color:#8b6b61;
+    font-family:'Cormorant Garamond', serif;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.section-header p{
+    color:#8b6b61;
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    margin-bottom: 2rem;
+}
+
+.profile-info{
+    color:#5d4037;
+    margin-bottom: 6rem;
+}
+
+.profile-info p{
+    margin-bottom: 1rem;
+}
+
+.profile-info span{
+    margin-bottom: 1rem;
+}
+
+.password-section-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 400px;
+    margin-right: auto;
+}
+
+.password-section-container input{
+    width: 400px;
+    height: 2rem;
+    padding: 0.6rem;
+    margin-bottom: 0.5rem;
+    border:1px solid #8b6b61;
+    border-radius: 0.7rem;
+}
+
+.password-section-container input:focus{
+    outline-color: #5d4037; 
+}
+
+.password-section-container input::placeholder{
+    color: #a1887f;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+}
+
+.password-section-container button{
+    background-color: #e6bcc2;
+    font-family: 'Playfair Display', serif;
+    color:#fff;
+    font-size: 1rem;
+    border-radius: 10px;
+    border-color:#e6bcc2;
+    padding: 0.4rem;
+}
+/*===================================================================*/
+                      /* MY ORDERS PAGE:*/
+/*===================================================================*/
+
