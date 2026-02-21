@@ -683,6 +683,10 @@ nav {
 /*===================================================================*/
                       /* PROFILE PAGE:*/
 /*===================================================================*/
+.profile-page{
+    margin-bottom: 10rem;
+}
+
 .page-header h1{
     color:#8b6b61;
     font-family: 'Playfair Display', serif;
