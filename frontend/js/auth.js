@@ -1,3 +1,4 @@
+/*
 //auth -Handles all authentication UI
 //Run on every page to check Login status
 
@@ -21,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
             logout();
         });
     }
+
 });
 
 function checkLoginStatus() {
@@ -91,9 +93,11 @@ function logout() {
         //Clear ALL user data
         localStorage.removeItem('token');
         localStorage.removeItem('userRole');
-        localStorgae.removeItem('cart'); //Optional: Clear cart on logout
+        localStorage.removeItem('cart'); //Optional: Clear cart on logout
 
         //Redirect to home page
         window.location.href = 'index.html';
     }
 }
+
+*/
