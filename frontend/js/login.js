@@ -38,6 +38,18 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 async function loginUser(email, password, role) {  //async function will await for promises, modern way to handle API calls
+    //change made here until 'try' 
+    const existingToken = localStorage.getItem('token');
+    if (existingToken){
+        const confirmLogout = confirm ('You are already logged in. Do you want to logout first?');
+        if (confirmLogout) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userRole');
+        } else {
+            return;
+        }
+    }
+    
     try { //Request (client -> server)
 
         const response = await fetch('http://localhost:5000/api/login', {  // API endpoint - fetch send HTTP request to backend
@@ -56,6 +68,8 @@ async function loginUser(email, password, role) {  //async function will await f
         if (data.token) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('userRole', role);
+
+            //updateUIForloggedUser(role); 
 
             const redirectTo = localStorage.getItem('redirectAfterLogin') || 'index.html';
             localStorage.removeItem('redirectAfterLogin');

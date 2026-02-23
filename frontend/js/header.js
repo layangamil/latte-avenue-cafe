@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(){
+    
+    updateCartCount(); //change made here 
+    
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
     const loginLink = document.getElementById('loginLink');
@@ -41,6 +44,15 @@ document.addEventListener('DOMContentLoaded', function(){
         updateCartCount();
     }
 });
+
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const cartCounter = document.getElementById('cart-count');
+    if (cartCounter) {
+        cartCounter.textcontent = totalItems;
+    }
+}
 
 function signout(){
     localStorage.removeItem('token');
