@@ -28,7 +28,7 @@ function checkLoginStatus() {
     const userRole = localStorage.getItem('userRole');
 
     const accountDropdown = document.getElementById('accountDropdown');
-    const adminNav = document.querySelector('.nav-item[style*="display:none"]'); //The admin nav section
+    const adminNav = document.getElementById('adminNav'); //The admin nav section
 
     const loginLink = document.getElementById('loginLink');
 
