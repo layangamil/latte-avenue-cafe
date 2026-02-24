@@ -4,6 +4,16 @@
     box-sizing: border-box;            /* ? */
 }
 
+html, body{
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
 .container {
     max-width: 1200px;                 /* common web design pattern, to fit larger screens */
     margin: 0 auto;                    /* centers horisontally (0 top/bottom, auto left/right) */
@@ -378,6 +388,7 @@ nav {
     clear: both;
     background-color:#a1887f;
     margin-bottom: 0;
+    margin-top: auto;
     padding: 3rem 0rem 3rem 0rem;
 }
 
