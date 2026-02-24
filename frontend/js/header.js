@@ -8,26 +8,15 @@ document.addEventListener('DOMContentLoaded', function(){
 function updateUIBasedOnLogin(){
 
     const token = localStorage.getItem('token');
-    const role = localStorage.getItem('userRole');
     const loginLink = document.getElementById('loginLink');
     const accountDropdown = document.getElementById('accountDropdown');
-    const adminNav = document.getElementById('adminNav');
 
     if(token){
         if (loginLink) loginLink.style.display = 'none';
-        
-        if (role === 'staff'){
-            if (accountDropdown) accountDropdown.style.display = 'none';
-            if (adminNav) adminNav.style.display = 'flex';
-        } else{
-            if (accountDropdown) accountDropdown.style.display = 'block';
-            if (adminNav) adminNav.style.display = 'none';
-        }
-
+        if (accountDropdown) accountDropdown.style.display = 'block';
     } else {
         if (loginLink) loginLink.style.display = 'inline-block';
         if(accountDropdown) accountDropdown.style.display = 'none';
-        if (adminNav) adminNav.style.display = 'none';
     }
 }
 
@@ -37,14 +26,6 @@ function setupSignoutButtons(){
     if(customerSignoutBtn){
         customerSignoutBtn.addEventListener('click', function(event){
             event.preventDefault(); //stops what the button standard behaviour, go to '#' and instead does below
-            signout();
-        });
-    }
-
-    const adminSignoutBtn = document.getElementById('adminSignoutBtn');
-    if (adminSignoutBtn){
-        adminSignoutBtn.addEventListener('click', function(event){
-            event.preventDefault();
             signout();
         });
     }
@@ -62,9 +43,7 @@ function updateCartCount() {
 function signout(){
     if (confirm('Are you sure you want to sign out?')) {
         localStorage.removeItem('token');
-        localStorage.removeItem('userRole');
-
-        window.location.reload(); 
+        localStorage.removeItem('userRole'); 
 
         window.location.href = 'index.html';
     }
