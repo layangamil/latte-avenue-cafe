@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin - Menu Managent</title>
+    <title>Admin - Menu Management</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
 </head>
@@ -36,7 +36,7 @@
                 <h1>Menu Management</h1>
             </div>
             
-            <!--Desserts Section -->
+            <!--Drinks Section -->
             <div class="drinks-manage">
                 <div class="section-header">
                     <h2>Drinks Menu</h2>
@@ -56,7 +56,7 @@
                     <h2>Desserts Menu</h2>
                 </div>
 
-                <div class="items-list" id="dessert-list">
+                <div class="items-list" id="desserts-list">
                     <!--JS will fill in code here-->
                     <p>Loading desserts...</p>
                 </div>
@@ -79,12 +79,12 @@
 
                         <div class="form-group">
                             <label>Price (SEK):</label>
-                            <input type="number" id="itemPrice" step=0.1 required>
+                            <input type="number" id="itemPrice" step="0.1" required>
                         </div>
 
                         <div class="form-group">
-                            <label>Description/ Allergy:</label>
-                            <textarea id="itemDescription" rows="2" required>
+                            <label>Description/Allergy:</label>
+                            <textarea id="itemDescription" rows="2" required></textarea>
                         </div>
 
                         <div class="form-actions">
@@ -98,7 +98,7 @@
            <!--Bottom buttons -->
             <div class="bottom-actions">
                 <button onclick="saveAllChanges()" class="btn-primary">Save Changes</button>
-                <button onclick="cancelAllChanges()" class="btn-primary" >Cancel Changes</button>
+                <button onclick="cancelAllChanges()" class="btn-secondary" >Cancel Changes</button>
            </div>
         </div>
     </section>
@@ -113,6 +113,6 @@
             }
         }
     </script>
-    <script src="js/order-manage.js"></script>
+    <script src="js/menu-manage.js"></script>
 </body>
 </html>

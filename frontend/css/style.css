@@ -120,6 +120,7 @@ nav {
     display: inline-block;              /* Allows padding and behaves like button */
     background: #e6bcc2;
     color: white;
+    cursor: pointer;
     padding: 1rem 2.5rem;
     border-radius: 2px;
     text-decoration: none;
@@ -267,6 +268,7 @@ nav {
 .btn-add {
     display: inline-block;
     padding: 15px 25px;
+    margin-bottom: 2rem;
     font-size: 0.8rem;
     cursor: pointer;
     text-align: center;
@@ -275,13 +277,13 @@ nav {
     background-color: #8b6b61;
     border: none;
     border-radius: 15px;
-    box-shadow: 0 7px #999;
+    box-shadow: 0 3px #999;
     transition: background 0.3s, transform 0.3s;
   }
   
 .btn-add:active:hover{                  /* when hovering AND clicked*/
     box-shadow: 0 5px #666;
-    transform: translateY(4px);
+    transform: translateY(2px);
   }
 
 .btn-add:hover {
@@ -388,7 +390,7 @@ nav {
     clear: both;
     background-color:#a1887f;
     margin-bottom: 0;
-    margin-top: auto;
+    margin-top: 5rem;
     padding: 3rem 0rem 3rem 0rem;
 }
 
@@ -481,8 +483,9 @@ nav {
                       /* CART PAGE:*/
 /*===================================================================*/
 .cart-page{
-    min-height: 50vh;
+    min-height: 60vh;
     margin-bottom: 3rem;
+    padding-bottom: 2rem;
 } 
 
 .cart-items-container {
@@ -521,13 +524,16 @@ nav {
 }
 
 .cart-summary {
-    float: right;
-    padding: 1rem 0;;
-    margin: 2rem 0rem 8rem 0rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: 2rem 0rem 4rem 0rem;
+    padding: 2rem 0rem 4rem 0rem;
 }
 
 .cart-summary .cart-total{
     margin: 1rem 0;
+    text-align: right;
 }
 
 .cart-total h3{
@@ -540,7 +546,11 @@ nav {
 .cart-total span{
     font-size: 1.2rem;
     color: #5d4037;
+}
 
+#checkout-btn {
+    margin-top: 1rem;
+    width: 220px;
 }
 
 .btn-primary {              
@@ -548,7 +558,7 @@ nav {
     color: white;
     font-family: 'Playfair Display', serif;
     padding: 1rem 2rem;
-    border-radius: 5px;
+    border-radius: 2px;
     border: none;
 }
 
@@ -556,7 +566,7 @@ nav {
     display: flex;
     flex-direction:column;
     align-items: center;
-    margin: 8rem 1rem 4rem 1rem;
+    margin: 4rem 1rem 4rem 1rem;
 }
 
 .empty-cart p{
@@ -798,4 +808,66 @@ nav {
 /*===================================================================*/
                       /* MY ORDERS PAGE:*/
 /*===================================================================*/
+
+/*===================================================================*/
+                      /* MENU - MANAGE PAGE:*/
+/*===================================================================*/
+.menu-manage-page {
+    margin-bottom: 5rem;
+    padding-bottom: 5rem;
+}
+
+.items-list {
+    margin: 1rem 0 2rem 0;
+}
+
+.popup-overlay {
+    margin-bottom: 1rem;
+}
+
+.popup-content h3{
+    color:#8b6b61;
+    font-family:'Cormorant Garamond', serif;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 0.5rem;
+}
+
+.form-group label{
+    color:#593e35;
+    margin-right: 0.5rem;
+}
+
+.form-group input:focus{
+    outline-color:#593e35;
+}
+
+.btn-secondary {
+    background-color: white;
+    color:#8b6b61;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.form-actions .btn-primary{
+    padding:0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.btn-secondary:hover {
+    color:#593e35;
+    transform: translateY(-2px); 
+}
+
+.bottom-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
 
