@@ -50,9 +50,6 @@ function setupSignoutButtons(){
     }
 }
 
-
-
-
 function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -66,6 +63,8 @@ function signout(){
     if (confirm('Are you sure you want to sign out?')) {
         localStorage.removeItem('token');
         localStorage.removeItem('userRole');
+
+        window.location.reload(); 
 
         window.location.href = 'index.html';
     }
