@@ -34,12 +34,12 @@ async function loadOrders() {
 
 //displaying orders function
 function displayOrders(orders){
-    let currentOrder = null;
+    let currentOrder = [];
     let history = [];
 
     for (let i = 0; i < orders.length; i++){
         if (orders[i].status !== 'completed') {
-            currentOrder = orders[i];
+            currentOrder.push(orders[i]);
         } else {
             history.push(orders[i]);
         }
