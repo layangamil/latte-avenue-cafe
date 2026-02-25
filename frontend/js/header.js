@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function(){
 function updateUIBasedOnLogin(){
 
     const token = localStorage.getItem('token');
+    const role = localStorage.getitem('userRole');
     const loginLink = document.getElementById('loginLink');
     const accountDropdown = document.getElementById('accountDropdown');
 
@@ -32,11 +33,11 @@ function setupSignoutButtons(){
 }
 
 function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    const cartCounter = document.getElementById('cart-count');
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]'); 
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0); //sum (ackumulator) item(current element in array) 0 (start value)
+    const cartCounter = document.getElementById('cart-count'); //element that shows nr in header
     if (cartCounter) {
-        cartCounter.textContent = totalItems;
+        cartCounter.textContent = totalItems;  //show total Items nr in cart icon
     }
 }
 
