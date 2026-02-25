@@ -34,20 +34,24 @@ async function loadOrders() {
 
 //displaying orders function
 function displayOrders(orders){
-    let currentOrder = [];
+    let currentOrders = [];
     let history = [];
 
     for (let i = 0; i < orders.length; i++){
         if (orders[i].status !== 'completed') {
-            currentOrder.push(orders[i]);
+            currentOrders.push(orders[i]);
         } else {
             history.push(orders[i]);
         }
     }
     // Show current order
     const currentBox = document.getElementById('current-order-box');
-    if (currentOrder) {
-        currentBox.innerHTML = renderCurrentOrder(currentOrder);
+    if (currentOrders.length > 0) {
+        let html = '';
+        for (let i = 0; i < currentOrders.length; i++){
+            html += renderCurrentOrder(currentOrders[i]);
+        }
+        currentBox.innerHTML = html;
     } else {
         currentBox.innerHTML = '<p class="no-order">No active order</p>';
     }
@@ -67,11 +71,16 @@ function displayOrders(orders){
 
 function renderCurrentOrder(order){
     let itemsHtml = '';
-    for (let i = 0; i < order.items.length; i++){
-        const item = order.items[i];
-        itemsHtml += `<li>${item.quantity}x ${item.name} - ${item.price * item.quantity} SEK</li>`;
+    if (order.items && order.items.length > 0){
+        for (let i = 0; i < order.items.length; i++){
+            const item = order.items[i];
+            itemsHtml += `<li>${item.quantity}x ${item.name} - ${item.price * item.quantity} SEK</li>`;
+        }
+    } else {
+        itemsHtml = '<li>No items</li>'; // fallback if no items exist
     }
-    
+
+
     return `
         <div class="order-card current">
             <div class="order-header">
@@ -89,10 +98,16 @@ function renderCurrentOrder(order){
 
 function renderHistoryOrder(order){
     let summary = '';
-    for (let i = 0; i < order.items.length; i++){
-        if (i > 0) summary += ', ';
-        summary += `${order.items[i].quantity}x ${order.items[i].name}`;
+    
+    if (order.items && order.items.length > 0){
+        for (let i = 0; i < order.items.length; i++){
+            if (i > 0) summary += ', ';
+            summary += `${order.items[i].quantity}x ${order.items[i].name}`;
+        }
+    } else {
+        summary = 'No items';
     }
+    
     return `
         <div class="order-card history">
             <div class="order-header">
