@@ -74,7 +74,6 @@ async function placeOrder(cart) {
         })),
         total: total,
         paymentMethod: method,
-        status: 'confirmed'
     };
 
     try { //will try to run code inside this try and if smth wrong happens, catch will catch the error
