@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function(){
-    const token = localStorage.getItem('token');
+    /*const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
 
     if (!token || role != 'staff'){
         window.location.href = 'login.html';
         return;
-    }
+    }*/
 
     loadMenuItems();
 
