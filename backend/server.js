@@ -133,7 +133,7 @@ app.post('/api/items', auth, adminOnly, async (req, res) => {
 });
 
 
-// GET /api/items/:id - Get single menu item (Update button)
+// GET /api/items/:id - Get single menu item (Update button) //////?????
 app.get('/api/items/:id', auth, async (req, res) => {
     try {
         const [item] = await db.query('SELECT * FROM product WHERE product_id = ?', [req.params.id]);
