@@ -132,6 +132,24 @@ app.post('/api/items', auth, adminOnly, async (req, res) => {
     }
 });
 
+
+// GET /api/items/:id - Get single menu item (Update button)
+app.get('/api/items/:id', auth, async (req, res) => {
+    try {
+        const [item] = await db.query('SELECT * FROM product WHERE product_id = ?', [req.params.id]);
+        
+        if (item.length === 0) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
+        
+        res.json(item[0]);  //Send back item details
+    } catch (err) {
+        console.error('Error fetching item:', err);
+        res.status(500).json({ error: 'Failed to fetch item' });
+    }
+});
+
+
 // Update item (staff only)
 app.put('/api/items/:id', auth, adminOnly, async (req, res) => {
     try {
