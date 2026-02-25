@@ -26,6 +26,7 @@ async function loadAllOrders() {
     }
 }
 
+/*
 function displayOrders(orders) {
     const container = document.getElementById('orders-list');
     let html = '';
@@ -40,6 +41,8 @@ function displayOrders(orders) {
         }
 
         const customerName = order.first_name + ' ' + order.last_name;
+        
+
 
         html += `
             <div class="order-card" data-id="${order.id}">
@@ -66,8 +69,62 @@ function displayOrders(orders) {
     }
     container.innerHTML = html;
 }
+    */
 
-async function viewOrder(orderId) {
+async function loadAllOrders() {
+    const token = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('http://localhost:5000/api/orders', {
+            headers: {'Authorization': 'Bearer ' + token}
+        });
+
+        const orders = await response.json();
+        displayOrders(orders);
+
+    } catch (error) {
+        console.log('Error: ', error);
+    }
+}
+
+function displayOrders(orders) {
+    const container = document.getElementById('orders-list');
+    let html = '';
+
+    for (let i = 0; i < orders.length; i++){
+        const order = orders[i];
+
+        // ANVÄND RÄTT FÄLTNAMN FRÅN BACKEND
+        const orderId = order.order_id;                 // från backend: order_id
+        const orderTotal = order.total_amount;          // från backend: total_amount
+        const customerName = order.first_name + ' ' + order.last_name;
+        const itemsSummary = `${order.item_count} items`;  // från backend: item_count
+
+        html += `
+            <div class="order-card" data-id="${orderId}">
+                <div>
+                    <strong>Order #${orderId}</strong> - ${customerName}
+                    <br>Status: ${order.status}
+                    <br>Items: ${itemsSummary}
+                    <br>Total: ${orderTotal} SEK
+                </div>
+                <div>
+                    <button onclick="viewOrder(${orderId})">View</button>
+                    <select onchange="updateStatus(${orderId}, this.value)">
+                        <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                        <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>Preparing</option>
+                        <option value="ready" ${order.status === 'ready' ? 'selected' : ''}>Ready</option>
+                        <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
+                        <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                    </select>
+                </div>
+            </div>
+        `;
+    }
+    container.innerHTML = html;
+}
+
+async function viewOrder(orderId) { 
     const token = localStorage.getItem('token');
 
     const response = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
