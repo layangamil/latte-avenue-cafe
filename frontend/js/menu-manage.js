@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function(){
-    /*const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
 
     if (!token || role != 'staff'){
         window.location.href = 'login.html';
         return;
-    }*/
+    }
 
     loadMenuItems();
 
@@ -39,7 +39,7 @@ async function loadMenuItems(){
 }
 
 function displayItems(containerId, items) {
-    const container = document.getElementById(containerId);
+    const container = document.getElementById(containerId);  //'drinks-list' or 'desserts-list'
 
     if (items.length === 0){
         container.innerHTML = '<p>No items found.</p>';
