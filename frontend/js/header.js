@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function(){
 function updateUIBasedOnLogin(){
 
     const token = localStorage.getItem('token');
-    const role = localStorage.getitem('userRole');
+    const role = localStorage.getItem('userRole');
     const loginLink = document.getElementById('loginLink');
     const accountDropdown = document.getElementById('accountDropdown');
 
