@@ -832,7 +832,7 @@ nav {
 .order-card{
     max-width: 350px;
     width: 100%;
-    margin: 0 auto 2rem auto;
+    margin: 0 0 2rem 0;
     padding-bottom: 1rem;
     border-bottom: 1px solid #c3949a;
     font-family: 'Cormorant Garamond', serif;
@@ -868,7 +868,7 @@ nav {
 }
 
 /*===================================================================*/
-                      /* ADMIN - MENU - MANAGE PAGE:*/
+                      /* ADMIN - MENU MANAGE PAGE:*/
 /*===================================================================*/
 .menu-manage-page {
     margin-bottom: 5rem;
@@ -936,7 +936,7 @@ nav {
     padding: 2rem 0;
 }
 
-.order.list{
+.order-list{
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
