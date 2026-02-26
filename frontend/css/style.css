@@ -829,6 +829,43 @@ nav {
 /*===================================================================*/
                       /* CUSTOMER - MY ORDERS PAGE:*/
 /*===================================================================*/
+.order-card current{
+    max-width: 350px;
+    width: 100%;
+    margin: 0 auto 2rem auto;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #c3949a;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.order-header span:last-child em{
+    background-color:#faf7f2;
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color:#c3949a;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.order-body {
+    color:#8b6b61;
+}
+
+.order-body .order-total{
+    margin-top: 0.5rem;
+    color:#5d4037;
+    display: flex;
+    justify-content: space-between;
+}
 
 /*===================================================================*/
                       /* ADMIN - MENU - MANAGE PAGE:*/
@@ -905,7 +942,6 @@ nav {
     gap: 2rem;
     justify-content: flex-start;
 }
-
 
 .order-card {
     width: calc(33.333% - 1.33rem);

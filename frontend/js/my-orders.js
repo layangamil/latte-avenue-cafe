@@ -84,8 +84,8 @@ function renderCurrentOrder(order){
     return `
         <div class="order-card current">
             <div class="order-header">
-                <span>Order #${order.id}</span>
-                <span class="status-${order.status}">${order.status}</span>
+                <span>Order #${order.id} - </span>
+                <span class="status-${order.status}"><em>${order.status}</em></span>
             </div>
             <div class="order-body">
                 <p><strong>Estimated Pickup Time:</strong> ${order.pickupTime || 'Not set'}</p>
