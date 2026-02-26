@@ -141,9 +141,18 @@ async function viewOrder(orderId) {
     alert(`Order #${order.order.id}
 Customer: ${order.order.first_name} ${order.order.last_name} 
 Status: ${order.order.status} 
-Items: ${JSON.stringify(order.items)} 
+Items: ${(formatItems(order.items))} 
 Total: ${order.order.total} SEK
 Can cancel: ${order.can_cancel}`);
+}
+
+function formatItems(items){
+    let result = '';
+    for (let i = 0; i < items.length; i++){
+        const item = items[i];
+        result += `${item.quantity}x ${item.name} - ${item.price_at_time}SEK\n`;
+    }
+    return result;
 }
 
 async function updateStatus(orderId, newStatus) {
