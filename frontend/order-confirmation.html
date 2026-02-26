@@ -47,11 +47,32 @@
         </div>
     </header>
 
-    <section class="order-confirmation-page">
-        <div class="container">
-            <h1>.✦ ݁Thank You For Your Order!✦ ݁</h1>
-        </div>     
-    </section>
+    <div class="content-wrapper">
+        <section class="order-confirmation-page">
+            <div class="container">
+                <div class="confirmation-box">
+                    <div class="page-header">
+                        <h1>.✦ ݁Thank You For Your Order!✦ ݁</h1>
+                    </div>
+                    
+                    <div id="confirmation-content" class="section-header">
+                        <h2>Your Order ID: <span id="order-id-display" class="order-id-display"></span></h3>
+                    
+                        <div id="cancel-section" class="cancel-section">
+                            <h3>Wish to cancel order?</h2>
+                            <p>You may cancel order within: <span id="countdown-timer">60</span> seconds</p>
+                            <button id="cancel-order-btn" class="btn-primary">Cancel</button>
+                        </div>
+        
+                        <div class="cancel-message" id="cancel-message" style="display:none;">
+                            <p>Order has been cancelled!</p>
+                        </div>
+                    </div>    
+                </div>   
+            </div>
+        </section>
+    </div>
+    
 
     <footer class="footer-section">
         <div class="container">
@@ -66,6 +87,6 @@
     </footer>
 
     <script src="js/header.js"></script>
-    <script src="js/header.js"></script>
+    <script src="js/order-confirmation.js"></script>
 </body>
 </html>

@@ -1,21 +1,21 @@
 document.addEventListener('DOMContentLoaded', function(){
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    displayCart(cart);
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');  //getting data from localStorage with key 'cart', if not, use empty array
+    displayCart(cart);  //call fucntion that shows the 'cart' element we just got
 
     const checkoutBtn = document.getElementById('checkout-btn');
-    if(checkoutBtn) {
+    if(checkoutBtn) { //if button exists
         checkoutBtn.addEventListener('click', function(){
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             if (cart.length === 0) {
-                alert('Your cart is empty!');
+                alert('Your cart is empty!');  //if cart is empty, show error msg and return
                 return;
             }
 
-            if (localStorage.getItem('token')){
+            if (localStorage.getItem('token')){  //if logged in, redirect to payment page
                 window.location.href = 'payment.html';
-            }else {
-                localStorage.setItem('redirectAfterLogin', 'payment.html');
-                window.location.href = 'login.html';
+            }else { 
+                localStorage.setItem('redirectAfterLogin', 'payment.html'); //else, in localStorage save 'after logging in, go to payment.html'
+                window.location.href = 'login.html'; //first redirect to login page
             }
         });
     }
@@ -42,7 +42,8 @@ function displayCart(cart) {
         total += itemTotal;
         totalItems += item.quantity;
 
-        html +=`
+        // `` allows us to write HTML with variables inside ${}
+        html +=`  
             <div class="cart-item">
                 <div>
                     <h3>${item.name}</h3>
@@ -56,19 +57,19 @@ function displayCart(cart) {
         `;
     }
 
-    container.innerHTML = html;
-    totalEl.textContent = `${total.toFixed(2)}`;
+    container.innerHTML = html;  // HTML code inside cart-items-container now has the new HTML code
+    totalEl.textContent = `${total.toFixed(2)}`;  //updating what total price shows on cart page
 
     const counter = document.getElementById('cart-count');
     if (counter){
-        counter.textContent = totalItems;
+        counter.textContent = totalItems;  //display cart nr in header
     }
 }
 
-function removeFromCart(id) {
-    let cart = JSON.parse(localStorage.getItem('cart')|| '[]');
-    cart = cart.filter(item => item.id != id);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    displayCart(cart);
+function removeFromCart(id) {  //takes item id for that specific item
+    let cart = JSON.parse(localStorage.getItem('cart')|| '[]'); //get current cart from storage
+    cart = cart.filter(item => item.id != id); // create new array with items whose id != one we're looking for
+    localStorage.setItem('cart', JSON.stringify(cart)); //save the new array to localStorage and convert o JSON format
+    displayCart(cart); //display the new cart without removed items
 }
-window.removeFromCart = removeFromCart;
+window.removeFromCart = removeFromCart; //makes function globally available. Since it's called from onclick in HTML (dynamic). W/o function only in file
