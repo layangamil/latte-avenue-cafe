@@ -1,5 +1,5 @@
 .content-wrapper {
-    flex: 1;
+    flex: 1 0 auto;
     width: 100%;
 }
 
@@ -11,13 +11,16 @@
 
 html, body{
     height: 100%;
-    margin: 0 !important;
+    margin: 0;
+    overflow: visible;
 }
 
 body {
     display: flex !important;
     flex-direction: column;
     min-height: 100vh;
+    overflow: visible;
+    padding-top: 120px;
 }
 
 .container {
@@ -35,12 +38,13 @@ body {
 .main-header {
     background: #fff;
     padding: 1.5rem 0;
-    position: sticky;                  /* Sticks to top when scrolling */     
-    top: 0;                            /* Stick from the very top */ 
+    position: fixed;                  /* Sticks to top when scrolling */     
+    top: 0;
+    left: 0;
+    right: 0;                            /* Stick from the very top */ 
     z-index: 9999;      
     flex-shrink: 0;     
     width: 100%;          /* Ensures header is above other content (these 3 often used together) */
-    align-self: flex-start;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);  /*  X ,  Y,   blur(soft edge),  color(5% black opacity)    */
 }
 
@@ -83,6 +87,8 @@ nav {
 }
 
 .nav-item {
+    display: inline-flex;
+    align-items: center;
     text-decoration: none;
     color: #8b6b61;
     font-family: 'Cormorant Garamond', serif;
@@ -94,7 +100,6 @@ nav {
     color: #593e35;
     transform: translateY(-4px);
 }
-
 
 .nav-item i {                           /* Icons inside links */
     margin-right: 5px;                  /* 5px space between icon and text */
@@ -694,7 +699,6 @@ nav {
 /*===================================================================*/
                       /* ORDER CONFIRMATION PAGE:*/
 /*===================================================================*/
-
 .confirmation-box {
     text-align: center;
     max-width: 600px;
@@ -705,7 +709,11 @@ nav {
 .cancel-section h3{
     color:#593e35;
     font-size: 1.2rem;
-    margin-top: 2rem;
+    margin-top: 4rem;
+}
+
+#cancel-order-btn {
+    margin-bottom: 3rem;
 }
 
 /*===================================================================*/
@@ -718,6 +726,16 @@ nav {
 .dropdown {
     position: relative;
     display: inline-block;  /* makes dropdown is next to other links*/
+}
+
+.dropdown button.nav-item {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
 }
 
 .dropdown-content {
@@ -745,7 +763,7 @@ nav {
     font-family: 'Playfair Display', serif;
     font-size: 2.3rem;
     font-weight: 600;
-    margin: 2rem 0rem;
+    margin: 4rem 0rem;
 }
 
 .section-header h2{
