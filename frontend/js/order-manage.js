@@ -102,21 +102,26 @@ function displayOrders(orders) {
 
         html += `
             <div class="order-card" data-id="${orderId}">
-                <div>
-                    <strong>Order #${orderId}</strong> - ${customerName}
+                <div class="order-header>
+                    <div class="order-title">
+                        <strong>Order #${orderId}</strong> - ${customerName}
+                    </div>
+
+                    <div class="order-actions>
+                        <button class="btn-tertiary" onclick="viewOrder(${orderId})">View</button>
+                        <select onchange="updateStatus(${orderId}, this.value)">
+                            <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                            <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>Preparing</option>
+                            <option value="ready" ${order.status === 'ready' ? 'selected' : ''}>Ready</option>
+                            <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
+                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="order-details">
                     <br>Status: ${order.status}
                     <br>Items: ${itemsSummary}
                     <br>Total: ${orderTotal} SEK
-                </div>
-                <div>
-                    <button onclick="viewOrder(${orderId})">View</button>
-                    <select onchange="updateStatus(${orderId}, this.value)">
-                        <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
-                        <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>Preparing</option>
-                        <option value="ready" ${order.status === 'ready' ? 'selected' : ''}>Ready</option>
-                        <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
-                        <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-                    </select>
                 </div>
             </div>
         `;
