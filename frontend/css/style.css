@@ -1,23 +1,29 @@
+.content-wrapper {
+    flex: 1;
+    width: 100%;
+}
+
 * {                                    /*The * selector means 'apply to EVERY element.' The first two lines remove all default browser margins and padding so we have complete control over spacing.*/ 
     margin: 0;
     padding: 0;
-    box-sizing: border-box;            /* ? */
+    box-sizing: border-box;            /* makes padding and border included in elements total width/height */
 }
 
 html, body{
     height: 100%;
-    margin: 0;
+    margin: 0 !important;
 }
 
 body {
-    display: flex;
+    display: flex !important;
     flex-direction: column;
+    min-height: 100vh;
 }
 
 .container {
     max-width: 1200px;                 /* common web design pattern, to fit larger screens */
     margin: 0 auto;                    /* centers horisontally (0 top/bottom, auto left/right) */
-    padding:0px; 
+    padding:20px; 
 }
 
 /*===================================================================*/
@@ -31,7 +37,10 @@ body {
     padding: 1.5rem 0;
     position: sticky;                  /* Sticks to top when scrolling */     
     top: 0;                            /* Stick from the very top */ 
-    z-index: 9999;                     /* Ensures header is above other content (these 3 often used together) */
+    z-index: 9999;      
+    flex-shrink: 0;     
+    width: 100%;          /* Ensures header is above other content (these 3 often used together) */
+    align-self: flex-start;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);  /*  X ,  Y,   blur(soft edge),  color(5% black opacity)    */
 }
 
@@ -386,12 +395,10 @@ nav {
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    position: relative;
-    clear: both;
     background-color:#a1887f;
     margin-bottom: 0;
-    margin-top: 5rem;
-    padding: 3rem 0rem 3rem 0rem;
+    padding: 2rem 0rem;
+    flex-shrink: 0;
 }
 
 .footer-section h4{
@@ -412,7 +419,6 @@ nav {
 .footer-section p{
     margin-top: 1rem;
 }
-
 /*===================================================================*/
                       /* LOGIN PAGE:*/
 /*===================================================================*/
@@ -527,8 +533,7 @@ nav {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    margin: 2rem 0rem 4rem 0rem;
-    padding: 2rem 0rem 4rem 0rem;
+    margin: 2rem 0rem;
 }
 
 .cart-summary .cart-total{
@@ -550,7 +555,7 @@ nav {
 
 #checkout-btn {
     margin-top: 1rem;
-    width: 220px;
+    width: 270px;
 }
 
 .btn-primary {              
@@ -689,16 +694,18 @@ nav {
 /*===================================================================*/
                       /* ORDER CONFIRMATION PAGE:*/
 /*===================================================================*/
-.order-confirmation-page h1{
-    display: flex;
-    justify-content: center;
-    color:#8b6b61;
-    font-family: 'Playfair Display', serif;;
-    font-size: 2.3rem;
-    font-weight: 600;               
-    margin: 2rem 0.3rem; 
-    margin-bottom: 0rem;              /* centers horisontally (0 top/bottom, auto left/right) */
-    padding:0px;
+
+.confirmation-box {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.cancel-section h3{
+    color:#593e35;
+    font-size: 1.2rem;
+    margin-top: 2rem;
 }
 
 /*===================================================================*/
@@ -757,14 +764,10 @@ nav {
 
 .profile-info{
     color:#5d4037;
-    margin-bottom: 6rem;
+    margin-bottom: 4rem;
 }
 
-.profile-info p{
-    margin-bottom: 1rem;
-}
-
-.profile-info span{
+.profile-info p, span{
     margin-bottom: 1rem;
 }
 

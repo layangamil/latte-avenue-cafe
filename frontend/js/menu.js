@@ -1,40 +1,12 @@
 //Create empty cart list  
 let cart = [];  
 
-// 1. save cart in localstorage and convert into
+// 1. save cart in localstorage and convert into Json string
 const saved = localStorage.getItem('cart');
 if (saved) {
     cart = JSON.parse(saved);
 }
 
-//2. Function to update the cart number in header
-function updateCartCount() { 
-    // Get the single cart counter by ID
-    let cartCounter = document.getElementById('cart-count'); // ref to the DOM element (walkie talkie, communication)
-    
-    if (!cartCounter) { //"If cartCounter is NOT found (is null/undefined)..."
-        console.log("Cart-count not found!");  // Safety check
-        return;   //Stop the function here, don't continue 
-    }
-    
-    // Calculate total items
-    let totalItems = 0;
-    for (let i = 0; i < cart.length; i++) {   // Keep going while i is less than number of items in cart
-        if (cart[i] && cart[i].quantity) {    //If this item exists AND has a quantity...
-            totalItems += cart[i].quantity;   // Add the quantity to total
-        }
-    }
-    
-    cartCounter.textContent = totalItems;   //Updates displayed number 
-    
-    // Animate only if cartCounter is more than 0
-    if (totalItems > 0) {
-        cartCounter.classList.add('bump');
-        setTimeout(function() {
-            cartCounter.classList.remove('bump');  // adds the css class bump to this cartCounter (nr)
-        }, 300);
-    }
-}
 
 //3. Function to add item to cart
 function addToCart(itemId, itemName, itemPrice) {
