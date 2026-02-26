@@ -80,9 +80,8 @@ function renderCurrentOrder(order){
         itemsHtml = '<li>No items</li>'; // fallback if no items exist
     }
 
-
     return `
-        <div class="order-card current">
+        <div class="order-card">
             <div class="order-header">
                 <span>Order #${order.id} - </span>
                 <span class="status-${order.status}"><em>${order.status}</em></span>
@@ -90,33 +89,38 @@ function renderCurrentOrder(order){
             <div class="order-body">
                 <p><strong>Estimated Pickup Time:</strong> ${order.pickupTime || 'Not set'}</p>
                 <ul>${itemsHtml}</ul>
-                <p class="order-total"><strong>Total:</strong> ${order.total} SEK</p>
+                <p class="order-total">
+                <span><strong>Total:</strong></span>
+                <span>${order.total} SEK</span>
+                </p>
             </div>
         </div>
     `;
 }
 
 function renderHistoryOrder(order){
-    let summary = '';
-    
+    let summaryHtml = '';
     if (order.items && order.items.length > 0){
         for (let i = 0; i < order.items.length; i++){
-            if (i > 0) summary += ', ';
-            summary += `${order.items[i].quantity}x ${order.items[i].name}`;
+            const item = order.items[i];
+            summaryHtml += `<li>${item.quantity}x ${item.name} - ${item.price * item.quantity} SEK</li>`;
         }
     } else {
-        summary = 'No items';
+        summaryHtml = '<li>No items</li>'; // fallback if no items exist
     }
     
     return `
-        <div class="order-card history">
+        <div class="order-card">
             <div class="order-header">
                 <span>Order #${order.id}</span>
-                <span>${order.date || ''}</span>
+                <span>Placed: <em>${order.date || ''}</em></span>
             </div>
             <div class="order-body">
-                <p>${summary}</p>
-                <p class="order-total">Total: ${order.total} SEK</p>
+                <ul>${summaryHtml}</ul>
+                <p class="order-total">
+                <span><strong>Total:</strong></span>
+                <span>${order.total} SEK</span>
+                </p>
             </div>
         </div>
     `;
