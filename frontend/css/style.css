@@ -717,7 +717,7 @@ nav {
 }
 
 /*===================================================================*/
-                      /* PROFILE PAGE:*/
+                      /* CUSTOMER - PROFILE PAGE:*/
 /*===================================================================*/
 .profile-page{
     margin-bottom: 10rem;
@@ -827,11 +827,11 @@ nav {
     padding: 0.4rem;
 }
 /*===================================================================*/
-                      /* MY ORDERS PAGE:*/
+                      /* CUSTOMER - MY ORDERS PAGE:*/
 /*===================================================================*/
 
 /*===================================================================*/
-                      /* MENU - MANAGE PAGE:*/
+                      /* ADMIN - MENU - MANAGE PAGE:*/
 /*===================================================================*/
 .menu-manage-page {
     margin-bottom: 5rem;
@@ -892,3 +892,54 @@ nav {
     gap: 1rem;
 }
 
+/*===================================================================*/
+                      /* ADMIN - ORDER MANAGE PAGE:*/
+/*===================================================================*/
+.order-card {
+    background-color:#faf7f2;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(139, 107, 97, 0.1);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e6bcc2;
+}
+
+.order-title {
+    font-size: 1rem;
+    color:#5d4037;
+}
+
+.order-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.order-details {
+    color:#8b6b61;
+    line-height: 1.6;
+}
+
+.btn-tertiary {
+    background-color:#e6bcc2;
+    color:#faf7f2;
+    font-weight: 600;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.btn-tertiary:hover {
+    color:#c3949a;
+    transform: translateY(-1px); 
+}
