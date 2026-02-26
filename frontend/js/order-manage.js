@@ -102,12 +102,12 @@ function displayOrders(orders) {
 
         html += `
             <div class="order-card" data-id="${orderId}">
-                <div class="order-header>
+                <div class="order-header">
                     <div class="order-title">
                         <strong>Order #${orderId}</strong> - ${customerName}
                     </div>
 
-                    <div class="order-actions>
+                    <div class="order-actions">
                         <button class="btn-tertiary" onclick="viewOrder(${orderId})">View</button>
                         <select onchange="updateStatus(${orderId}, this.value)">
                             <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
@@ -119,9 +119,9 @@ function displayOrders(orders) {
                     </div>
                 </div>
                 <div class="order-details">
-                    <br>Status: ${order.status}
-                    <br>Items: ${itemsSummary}
-                    <br>Total: ${orderTotal} SEK
+                    <p><strong>Status:</strong> ${order.status}</p>
+                    <p><strong>Items:</strong> ${itemsSummary}</p>
+                    <p><strong>Total:</strong> ${orderTotal} SEK</p>
                 </div>
             </div>
         `;
@@ -141,7 +141,8 @@ async function viewOrder(orderId) {
     alert(`Order #${order.order.id}
 Customer: ${order.order.first_name} ${order.order.last_name} 
 Status: ${order.order.status} 
-Items: ${(formatItems(order.items))} 
+Items: 
+${(formatItems(order.items))}
 Total: ${order.order.total} SEK
 Can cancel: ${order.can_cancel}`);
 }

@@ -895,51 +895,74 @@ nav {
 /*===================================================================*/
                       /* ADMIN - ORDER MANAGE PAGE:*/
 /*===================================================================*/
+.order-manage-page {
+    padding: 2rem 0;
+}
+
+.order.list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: flex-start;
+}
+
+
 .order-card {
+    width: calc(33.333% - 1.33rem);
+    min-width: 300px;
     background-color:#faf7f2;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    border-radius: 5px;
+    padding: 1.5rem;
+    border-radius: 8px;
     box-shadow: 0 2px 5px rgba(139, 107, 97, 0.1);
+    margin-bottom: 0;
 }
 
 .order-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid #e6bcc2;
 }
 
 .order-title {
-    font-size: 1rem;
+    font-size: 1.3rem;
     color:#5d4037;
 }
 
 .order-actions {
-    display: flex;
-    gap: 1rem;
+    display:flex;
+    gap:0.5rem;
     align-items: center;
 }
 
 .order-details {
     color:#8b6b61;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 .btn-tertiary {
-    background-color:#e6bcc2;
+    background-color:#8b6b61;
     color:#faf7f2;
     font-weight: 600;
     border: none;
-    padding: 0.4rem 1rem;
+    padding: 0.4rem 0.8rem;
     border-radius: 4px;
     cursor: pointer;
     transition: background 0.3s, transform 0.3s;
 }
 
 .btn-tertiary:hover {
-    color:#c3949a;
+    color:#5d4037;
     transform: translateY(-1px); 
+}
+
+.order-actions select {
+    padding: 0.4rem;
+    border: none;
+    border-radius: 4px;
+    background-color: white;
+    color:#5d4037;
+    cursor: pointer;
 }
