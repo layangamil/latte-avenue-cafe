@@ -876,31 +876,53 @@ nav {
 }
 
 .items-list {
-    margin: 1rem 0 2rem 0;
+    margin: 1.5rem 0;
 }
 
-.popup-overlay {
+.menu-item-row {
+    background-color: #faf7f2;
+    padding: 1rem;
     margin-bottom: 1rem;
+    border-radius: 4px;
 }
-
-.popup-content h3{
-    color:#8b6b61;
-    font-family:'Cormorant Garamond', serif;
-    font-weight: 600;
+/* första row w all input fält (4st)*/
+.fields-row {
+    display: flex;
+    gap: 0.5rem;
     margin-bottom: 0.5rem;
+    width: 100%;
 }
 
-.form-group {
-    margin-bottom: 0.5rem;
+/*  field bredd */
+.field-name {
+    width: 149px;
 }
 
-.form-group label{
-    color:#593e35;
-    margin-right: 0.5rem;
+.field-price {
+    width: 69px;
 }
 
-.form-group input:focus{
-    outline-color:#593e35;
+.field-description {
+    width: 249px;
+}
+
+.field-image {
+    width: 200px;
+}
+
+.item-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.btn-tertiary.update-btn{
+    background-color:#f0e6d6;
+    color:#5d4037;
+}
+
+.btn-tertiary.update-btn:hover{
+    background-color:#eddcc0;
 }
 
 .btn-secondary {
@@ -913,11 +935,6 @@ nav {
     transition: background 0.3s, transform 0.3s;
 }
 
-.form-actions .btn-primary{
-    padding:0.5rem 1rem;
-    font-size: 0.9rem;
-}
-
 .btn-secondary:hover {
     color:#593e35;
     transform: translateY(-2px); 
@@ -927,6 +944,7 @@ nav {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+    margin-top: 2rem;
 }
 
 /*===================================================================*/

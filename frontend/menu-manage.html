@@ -47,7 +47,7 @@
                     <p>Loading drinks</p>
                 </div>
     
-                <button class="btn-add" onclick="openAddForm('drinks')">+ Add New Drink</button>
+                <button class="btn-add" onclick="addNewRow('drinks')">+ Add New Drink</button>
             </div>
 
             <!--Desserts Section -->
@@ -61,10 +61,10 @@
                     <p>Loading desserts...</p>
                 </div>
 
-                <button class="btn-add" onclick="openAddForm('desserts')">+Add New Dessert</button>
+                <button class="btn-add" onclick="addNewRow('desserts')">+Add New Dessert</button>
             </div>
             
-           <!--pop-up form (same for add and update)-->
+           <!--pop-up form (same for add and update)--
            <div id="popupForm" class="popup-overlay" style="display:none;">
                 <div class="popup-content">
                     <h3 id="popupTitle">Add New Item</h3>
@@ -93,12 +93,12 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> -->
 
            <!--Bottom buttons -->
             <div class="bottom-actions">
                 <button onclick="saveAllChanges()" class="btn-primary">Save Changes</button>
-                <button onclick="cancelAllChanges()" class="btn-secondary" >Cancel Changes</button>
+                <button onclick="cancelAllChanges()" class="btn-secondary">Cancel Changes</button>
            </div>
         </div>
     </section>
