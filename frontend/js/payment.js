@@ -82,9 +82,7 @@ async function placeOrder(cart) {
         btn.disabled = true; // make button unclickable so customer doesnt press multiple times
         
         const token = localStorage.getItem('token');
-        console.log('Token being sent:', token);  // changes
         const response = await fetch('http://localhost:5000/api/orders', {
-
             method: 'POST',
             headers: { //tells backend: we're sending JSON-string and customer is logged in ('token')
                 'Content-Type': 'application/json',
@@ -92,8 +90,8 @@ async function placeOrder(cart) {
             },
             body: JSON.stringify(orderData)
         });
-
-        const data = await response.json();
+        
+        const data = await response.json(); //changes
 
         if (response.ok) { //if success
             localStorage.removeItem('cart');//cart element no longer in localStorage since order placed
