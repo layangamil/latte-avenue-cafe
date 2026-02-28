@@ -18,12 +18,23 @@ document.addEventListener('DOMContentLoaded', function(){
                 window.location.href = 'login.html'; //first redirect to login page
             }
         });
+    } else {
+        console.log('Checkout button not found');
     }
 });
 
 function displayCart(cart) {
     const container = document.getElementById('cart-items-container');
     const totalEl = document.getElementById('cart-total');
+    //changes
+    console.log('Container found:', container);
+    console.log('Total element found:', totalEl);
+
+    // If container doesn't exist, stop execution
+    if (!container) {
+        console.error('Cart container not found! Make sure cart.html has id="cart-items-container"');
+        return;
+    }
 
     if (cart.length === 0){
         container.innerHTML = 
@@ -58,7 +69,7 @@ function displayCart(cart) {
     }
 
     container.innerHTML = html;  // HTML code inside cart-items-container now has the new HTML code
-    totalEl.textContent = `${total.toFixed(2)}`;  //updating what total price shows on cart page
+    if(totalEl) totalEl.textContent = `${total.toFixed(2)}`;  //updating what total price shows on cart page
 
     const counter = document.getElementById('cart-count');
     if (counter){
