@@ -42,7 +42,7 @@ async function loadMenuItems(){
 function displayItems(containerId, items, category) {
     const container = document.getElementById(containerId);  //'drinks-list' or 'desserts-list'
 
-    if (items.length === 0){
+    if (items.length === 0 && (!newRows[category] || newRows[category].length === 0)){
         container.innerHTML = '<p>No items found.</p>';
         return;
     }
