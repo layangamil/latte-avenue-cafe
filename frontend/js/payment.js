@@ -100,7 +100,7 @@ async function placeOrder(cart) {
 
             // ADD THIS LINE:
             console.log('Order data from backend:', data);
-            window.location.href = `order-confirmation.html?id=${data.order_id}`; // finally takes to order-confirmation page
+            window.location.href = `order-confirmation.html?id=${data.id}`; // finally takes to order-confirmation page
         } else{
             alert ('Order failed: ' + (data.message || 'Unknown error'));
             btn.textContent = 'Place Order';
