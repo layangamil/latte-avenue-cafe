@@ -53,7 +53,7 @@ function displayMenuItems(containerId, items){
                     <div class="item-footer">
                         <span class="price">${item.price} SEK</span>
                         <button class="btn-add" data-id="${item.product_id}" data-name="${item.name}" data-price="${item.price}">
-                            <i class="fas fa-plus"></i>+ Add
+                            <i class="fas fa-plus"></i>Add
                         </button>
                     </div>
                 </div>
