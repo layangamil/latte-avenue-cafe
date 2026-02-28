@@ -1,18 +1,14 @@
 document.addEventListener('DOMContentLoaded', function(){
-    // const token = localStorage.getItem('token');
-    // const role = localStorage.getItem('userRole');
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('userRole');
 
-    // if (!token || role != 'staff'){
-    //     window.location.href = 'login.html';
-    //     return;
-    // }
+    if (!token || role != 'staff'){
+        window.location.href = 'login.html';
+        return;
+    }
 
     loadMenuItems();
 
-    // document.getElementById('menuItemForm').addEventListener('submit', function(e){
-    //     e.preventDefault();
-    //     saveMenuItem();
-    //});
 });
 
 let newRows = {
@@ -67,55 +63,21 @@ function displayItems(containerId, items, category) {
                 </div>
                 
                 <div class="item-actions">
-                    <button class="btn-tertiary update-btn"  onclick="updateItem(${item.product_id})">Update</button>
-                    <button class="btn-tertiary" onclick="deleteItem(${item.product_id}, this)">Delete</button>
+                    <button class="btn-tertiary update-btn"  onclick="updateItem(${item.product_id}, this)">Update</button>
+                    <button class="btn-tertiary" onclick="deleteItem(${item.product_id})">Delete</button>
                 </div>
             </div>
         `;
     } 
-    
-    for (let i = 0; i < newRows[category].length; i++){
-        html += getNewItemRow(category, i);
+    //safety check to make sure newRows[category] exists before looping
+    if(newRows[category] && newRows[category].length > 0) {
+        for (let i = 0; i < newRows[category].length; i++){
+            html += getNewItemRow(category, i);
+        }
     }
+    container.innerHTML = html;
     
-    container.innerHTML = html;    
 }
-
-// // function openAddForm(category) {
-// //     document.getElementById('popupTitle').textContent = 'Add New Item';
-// //     document.getElementById('itemId').value = '';
-// //     document.getElementById('itemCategory').value = category;
-// //     document.getElementById('itemName').value = '';
-// //     document.getElementById('itemPrice').value = '';
-// //     document.getElementById('itemDescription').value = '';
-// //     document.getElementById('popupForm').style.display = 'flex';
-// // }
-
-
-
-// async function openEditForm(id) {
-//     const token = localStorage.getItem('token');
-
-//     try {
-//         const response = await fetch(`http://localhost:5000/api/items/${id}`, {
-//             headers: {'Authorization': 'Bearer ' + token}
-//         });
-
-//         const item = await response.json();
-
-//         document.getElementById('popupTitle').textContent = 'Edit Item';
-//         document.getElementById('itemId').value = item.product_id;
-//         document.getElementById('itemCategory').value = item.category;
-//         document.getElementById('itemName').value = item.name;
-//         document.getElementById('itemPrice').value = item.price;
-//         document.getElementById('itemDescription').value = item.ingredients || '';
-//         document.getElementById('popupForm').style.display = 'flex';
-
-//     } catch(error) {
-//         console.log('Error:', error);
-//         alert('Could not load item details')
-//     }
-// }
 
 function getNewItemRow(category, index){
     return `
@@ -137,49 +99,6 @@ function getNewItemRow(category, index){
         </div>
     `;
 }
-
-// function closePopup() {
-//     document.getElementById('popupForm').style.display = 'none';
-// }
-
-// async function saveMenuItem() {
-//     const token = localStorage.getItem('token');
-//     const id = document.getElementById('itemId').value;
-
-//     const itemData = {
-//         name: document.getElementById('itemName').value,
-//         price: parseFloat(document.getElementById('itemPrice').value),
-//         category: document.getElementById('itemCategory').value,
-//         ingredients: document.getElementById('itemDescription').value,
-//         is_available: true
-//     };
-
-//     const url = id ?
-//         `http://localhost:5000/api/items/${id}` : `http://localhost:5000/api/items`;
-
-//     try {
-//         const response = await fetch(url, {
-//             method: id ? 'PUT' : 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': 'Bearer ' + token
-//             },
-//             body: JSON.stringify(itemData)
-//         });
-
-//         if (response.ok) {
-//             alert(id ? 'Item updated!' : 'Item added!');
-//             closePopup();
-//             loadMenuItems();
-//         } else {
-//             const data = await response.json();
-//             alert('Error: ' + data.error);
-//         }
-//     } catch (error){
-//         console.log('Error:', error);
-//         alert('Cannot connect to server');
-//     }
-// }
 
 function addNewRow(category){
     //Lägg till ny tom rad till arrayen
@@ -211,7 +130,7 @@ async function saveNewItem(category, index){
     const itemData = {
         name: name,
         price: price,
-        category: category,
+        category: category === 'drinks' ? 'drink' : 'dessert',
         ingredients: description,
         image_url: imageUrl,
         is_available: true
@@ -296,7 +215,7 @@ async function updateItem(id, buttonElement){
     }
 }
 
-async function deleteItem(id, buttonElement) {
+async function deleteItem(id) {
     if (!confirm('Delete this item?')) return;
 
     const token = localStorage.getItem('token');
