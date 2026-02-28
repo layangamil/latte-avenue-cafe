@@ -120,7 +120,7 @@ app.post('/api/items', auth, adminOnly, async (req, res) => {
         const { name, price, category, ingredients, is_available, image_url } = req.body;
 
         const sql = `
-            INSERT INTO product (name, price, category, ingredients, is_available)
+            INSERT INTO product (name, price, category, ingredients, is_available, image_url)
             VALUES (?, ?, ?, ?, ?, ?)
         `;
 
@@ -174,6 +174,35 @@ app.put('/api/items/:id', auth, adminOnly, async (req, res) => {
 app.delete('/api/items/:id', auth, adminOnly, async (req, res) => {
     try {
         const { id } = req.params;
+        
+        // Check if product is in any orders
+        const [orders] = await db.query(
+            'SELECT COUNT(*) as count FROM order_item WHERE product_id = ?',
+            [id]
+        );
+        
+        if (orders[0].count > 0) {
+            // Product has orders - just mark as unavailable instead
+            await db.query(
+                'UPDATE product SET is_available = false WHERE product_id = ?',
+                [id]
+            );
+            return res.json({ 
+                message: "Item hidden from menu (kept for order history)" 
+            });
+        } else {
+            // No orders - safe to delete
+            await db.query('DELETE FROM product WHERE product_id=?', [id]);
+            res.json({ message: "Item deleted permanently" });
+        }
+    } catch (err) {
+        console.error('Error deleting item:', err);
+        res.status(400).json({ error: err.message });
+    }
+});
+    /*
+    try {
+        const { id } = req.params;
         await db.query('DELETE FROM product WHERE product_id=?', [id]);
         res.json({ message: "Item deleted" });
     } catch (err) {
@@ -181,6 +210,9 @@ app.delete('/api/items/:id', auth, adminOnly, async (req, res) => {
         res.status(400).json({ error: err.message });
     }
 });
+*/
+
+
 
 // ================= REGISTER USER ===================================================================
 app.post('/api/register', async (req, res) => {
