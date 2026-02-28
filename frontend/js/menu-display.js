@@ -11,12 +11,12 @@ async function loadPublicMenu(){
 
         const drinks = items.filter(item => {
             console.log(`Item "${item.name}" category: "${item.category}"`); // ADD THIS
-            return item.category?.toLowerCase()==='drink';
+            return item.category?.toLowerCase().includes('drink');
         });
         
         const desserts = items.filter(item => {
             console.log(`Item "${item.name}" category: "${item.category}"`); // ADD THIS
-            return item.category?.toLowerCase()==='dessert';
+            return item.category?.toLowerCase().includes('dessert');
         });
         
         console.log('Drinks found:', drinks.length); // ADD THIS
