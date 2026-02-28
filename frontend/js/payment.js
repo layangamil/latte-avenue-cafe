@@ -82,6 +82,7 @@ async function placeOrder(cart) {
         btn.disabled = true; // make button unclickable so customer doesnt press multiple times
         
         const token = localStorage.getItem('token');
+        console.log('Token being sent:', token);  // changes
         const response = await fetch('http://localhost:5000/api/orders', {
 
             method: 'POST',
