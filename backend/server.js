@@ -117,14 +117,14 @@ app.get('/api/items', async (req, res) => {
 // Add new item (staff only)
 app.post('/api/items', auth, adminOnly, async (req, res) => {
     try {
-        const { name, price, category, ingredients, is_available } = req.body;
+        const { name, price, category, ingredients, is_available, image_url } = req.body;
 
         const sql = `
             INSERT INTO product (name, price, category, ingredients, is_available)
             VALUES (?, ?, ?, ?, ?)
         `;
 
-        const [result] = await db.query(sql, [name, price, category, ingredients, is_available ?? true]);
+        const [result] = await db.query(sql, [name, price, category, ingredients, is_available ?? true, image_url]);
         res.json({ message: "Item added", id: result.insertId });
     } catch (err) {
         console.error('Error adding item:', err);
@@ -154,15 +154,15 @@ app.get('/api/items/:id', auth, async (req, res) => {
 app.put('/api/items/:id', auth, adminOnly, async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, price, category, ingredients, is_available } = req.body;
+        const { name, price, category, ingredients, is_available, image_url } = req.body;
 
         const sql = `
             UPDATE product
-            SET name=?, price=?, category=?, ingredients=?, is_available=?
+            SET name=?, price=?, category=?, ingredients=?, is_available=?, image_url=?
             WHERE product_id=?
         `;
 
-        await db.query(sql, [name, price, category, ingredients, is_available, id]);
+        await db.query(sql, [name, price, category, ingredients, is_available, image_url, id]);
         res.json({ message: "Item updated" });
     } catch (err) {
         console.error('Error updating item:', err);
