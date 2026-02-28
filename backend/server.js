@@ -603,7 +603,7 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
         //If settring to ready, set estimated pick up time (30 mins from now)
         let estimatedPickup = null;
         if (status === 'ready') {
-            estimatedPickup = new Date(Date.now() + 30 * 60000); // 30 mins
+            estimatedPickup = new Date(Date.now() + 5 * 60000); // 5 mins
         }
 
         //Update order status
