@@ -121,7 +121,7 @@ app.post('/api/items', auth, adminOnly, async (req, res) => {
 
         const sql = `
             INSERT INTO product (name, price, category, ingredients, is_available)
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
 
         const [result] = await db.query(sql, [name, price, category, ingredients, is_available ?? true, image_url]);
