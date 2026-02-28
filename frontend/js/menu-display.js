@@ -7,8 +7,20 @@ async function loadPublicMenu(){
         const response = await fetch('http://localhost:5000/api/items');
         const items = await response.json();
         
-        const drinks = items.filter(item => item.category?.toLowerCase()==='drink');
-        const desserts = items.filter(item => item.category?.toLowerCase()==='dessert');
+        console.log('All items:', items); // ADD THIS
+
+        const drinks = items.filter(item => {
+            console.log(`Item "${item.name}" category: "${item.category}"`); // ADD THIS
+            return item.category?.toLowerCase()==='drink';
+        });
+        
+        const desserts = items.filter(item => {
+            console.log(`Item "${item.name}" category: "${item.category}"`); // ADD THIS
+            return item.category?.toLowerCase()==='dessert';
+        });
+        
+        console.log('Drinks found:', drinks.length); // ADD THIS
+        console.log('Desserts found:', desserts.length); // ADD THIS
 
         displayMenuItems('drinks-menu', drinks);
         displayMenuItems('desserts-menu', desserts);
