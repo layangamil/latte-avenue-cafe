@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function(){
         return;
     }
     loadOrders();
-
 });
 
 async function loadOrders() {
@@ -38,7 +37,7 @@ function displayOrders(orders){
     let history = [];
 
     for (let i = 0; i < orders.length; i++){
-        if (orders[i].status !== 'completed') {
+        if (orders[i].status !== 'completed' && orders[i].status !== 'cancelled') {
             currentOrders.push(orders[i]);
         } else {
             history.push(orders[i]);
