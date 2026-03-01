@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(){
-    
-    updateCartCount(); 
+    if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount(); //uses same function as menu.js CHANGED
+    }
     updateUIBasedOnLogin(); 
     setupSignoutButtons();
 });
@@ -31,15 +32,15 @@ function setupSignoutButtons(){
         });
     }
 }
-
-function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]'); 
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0); //sum (ackumulator) item(current element in array) 0 (start value)
-    const cartCounter = document.getElementById('cart-count'); //element that shows nr in header
-    if (cartCounter) {
-        cartCounter.textContent = totalItems;  //show total Items nr in cart icon
-    }
-}
+ //CHANGE
+// function updateCartCount() {
+//     const cart = JSON.parse(localStorage.getItem('cart') || '[]'); 
+//     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0); //sum (ackumulator) item(current element in array) 0 (start value)
+//     const cartCounter = document.getElementById('cart-count'); //element that shows nr in header
+//     if (cartCounter) {
+//         cartCounter.textContent = totalItems;  //show total Items nr in cart icon
+//     }
+// }
 
 function signout(){
     if (confirm('Are you sure you want to sign out?')) {
