@@ -26,7 +26,7 @@ body {
 .container {
     max-width: 1200px;                 /* common web design pattern, to fit larger screens */
     margin: 0 auto;                    /* centers horisontally (0 top/bottom, auto left/right) */
-    padding:20px; 
+    padding: 0 20px; 
 }
 
 /*===================================================================*/
@@ -204,7 +204,6 @@ nav {
     background: #ffffff; 
 }
 
-
 .menu-category {          
     margin-bottom: 5rem;
 }
@@ -217,6 +216,7 @@ nav {
     display: flex;
     align-items: center;
     gap: 10px;
+    padding-left: 0;
 }
 
 .menu-category h3 i {
@@ -225,12 +225,87 @@ nav {
 
 .menu-items {                          /* Menu Items Grid */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 6rem;
-    
+    gap: 1rem;
+    padding: 1rem 0;
 }
-                                       /* Individual Menu Item (Bubble/Card) */
-.menu-item {
+
+@media (max-width: 600px) {           /*response mobile*/
+    .menu-items {
+        grid-template-columns: repeat(8, 160px);
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .menu-item{
+        scroll-snap-align: start;
+        width: 160px;
+    }
+
+    .items-content h4{
+        font-size: 0.9rem;
+    }
+
+    .item-content p{
+        font-size: 0.65rem;
+        min-height: 35px;
+    }
+
+    .price {
+        font-size: 1rem;
+    }
+
+    .btn-add {
+        padding: 8px 12px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (min-width: 601px)  and (max-width: 1024px) {           /*response tablet*/
+    .menu-items {
+        grid-template-columns: repeat(3, 1fr);
+        overflow-x: visible;
+        gap: 1.5rem;
+    }
+
+    .menu-item {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1025px) {           /*response desktop*/
+    .menu-items {
+        grid-template-columns: repeat(4, 1fr);
+        overflow-x: visible;
+        gap: 2rem;
+    }
+
+    .menu-item {
+        width: 100%;
+    }
+
+    .item-content h4{
+        font-size: 1.3rem;
+    }
+
+    .item-content p{
+        font-size: 0.9rem;
+        min-height: 40px;
+    }
+
+    .price {
+        font-size: 1rem;
+    }
+
+    .btn-add {
+        padding: 12pc 20px;
+        font-size: 0.8rem;
+    }
+}
+
+                                       
+.menu-item {                           /* Individual Menu Item (Bubble/Card) */
     background: white;
     border-radius: 15px;               /* Rounded corners for bubble effect */
     box-shadow: 0 5px 15px rgba(139, 107, 97, 0.2); /* Soft shadow */
@@ -244,19 +319,24 @@ nav {
 }
 
 .item-content {
-    padding: 1.5rem;
+    padding: 0.8rem;
 }
 
 .item-content h4 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
+    font-size: 1rem;
     color: #5d4037;
-    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f0e6d6;
 }
 
 .item-content p {
     color: #8b6b61;
-    font-size: 0.95rem;
+    font-size: 0.7rem;
     font-style: italic;
     line-height: 1.4;
     margin-bottom: 0.5;
@@ -274,7 +354,7 @@ nav {
 
 .price {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #8b6b61;
 }
@@ -304,7 +384,6 @@ nav {
     background: #5d4037;
     transform: translateY(-2px);
 }
-
 /* =============== */
 /* CONTACT SECTION */
 .contact-content{
@@ -830,6 +909,7 @@ nav {
                       /* CUSTOMER - MY ORDERS PAGE:*/
 /*===================================================================*/
 .order-card{
+    flex: 0 0 auto;
     max-width: 350px;
     width: 100%;
     margin: 0 0 2rem 0;
