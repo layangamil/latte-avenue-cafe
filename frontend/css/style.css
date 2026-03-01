@@ -946,6 +946,80 @@ nav {
     justify-content: space-between;
 }
 
+#current-order-box, #order-history-box {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(160px, 280px);
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 1rem 0.5rem 1.5rem;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 600px) {       /*mobile*/
+    #current-order-box, #order-history-box{
+        grid-auto-columns: 160px;
+        gap: 0.5rem;
+    }
+
+    .order-card {
+        padding: 0.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .order.card .order-header{
+        font-size: 1rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .order-card .order-body{
+        font-size:0.8rem;
+    }
+
+    .order-card .order-total{
+        font-size: 0.9rem;
+        margin-top: 0.3rem;
+    }
+
+    .order.header span:last-child em{
+        font-size: 0.7rem;
+        padding: 0.1rem 0.5rem;
+    }
+
+    .order-body ul{
+        margin: 0.3rem 0 0.5rem 1rem;
+    }
+
+    .order-body li{
+        font-size: 0.75rem;
+        line-height: 1.2;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px){  /*tablet*/
+    #current-order-box, #order-history-box{
+        grid-auto-columns: 220px;
+    }
+
+    .order-card {
+        padding: 1.2rem;
+    }
+
+    .order-card .order-header {
+        font-size: 1.1rem;
+    }
+
+    .order-card .order-body{
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 1025px) {    /*desktop*/
+    #current-order-box, #order-history-box{
+        grid-auto-columns: 280px;   
+    }
+}
 /*===================================================================*/
                       /* ADMIN - MENU MANAGE PAGE:*/
 /*===================================================================*/
