@@ -806,14 +806,8 @@ nav {
     display: inline-block;  /* makes dropdown is next to other links*/
 }
 
-.dropdown button.nav-item {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
+.profile-btn:hover {
+    transform: none;
 }
 
 .dropdown-content {
