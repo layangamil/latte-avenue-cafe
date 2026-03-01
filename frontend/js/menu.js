@@ -56,3 +56,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+window.updateCartCount = function () {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]'); 
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0); //sum (ackumulator) item(current element in array) 0 (start value)
+    const cartCounter = document.getElementById('cart-count'); //element that shows nr in header
+    if (cartCounter) {
+        cartCounter.textContent = totalItems;  //show total Items nr in cart icon
+    }
+};

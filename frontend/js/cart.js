@@ -82,5 +82,9 @@ function removeFromCart(id) {  //takes item id for that specific item
     cart = cart.filter(item => item.id != id); // create new array with items whose id != one we're looking for
     localStorage.setItem('cart', JSON.stringify(cart)); //save the new array to localStorage and convert o JSON format
     displayCart(cart); //display the new cart without removed items
+
+    if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount();
+    }
 }
 window.removeFromCart = removeFromCart; //makes function globally available. Since it's called from onclick in HTML (dynamic). W/o function only in file
