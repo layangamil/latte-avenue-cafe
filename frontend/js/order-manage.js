@@ -88,11 +88,14 @@ async function loadAllOrders() {
 }
 
 function displayOrders(orders) {
+    const activeOrders = orders.filter(order => order.status !== 'completed' && order.status !== 'cancelled');
+    
+    
     const container = document.getElementById('orders-list');
     let html = '';
 
-    for (let i = 0; i < orders.length; i++){
-        const order = orders[i];
+    for (let i = 0; i < activeOrders.length; i++){
+        const order = activeOrders[i];
 
         // ANVÄND RÄTT FÄLTNAMN FRÅN BACKEND
         const orderId = order.order_id;                 // från backend: order_id
@@ -126,7 +129,11 @@ function displayOrders(orders) {
             </div>
         `;
     }
-    container.innerHTML = html;
+    if (activeOrders.length === 0){
+        container.innerHTML = '<p class="no-orders">No active orders</p>'
+    }else {
+        container.innerHTML = html;
+    }
 }
 
 async function viewOrder(orderId) { 
