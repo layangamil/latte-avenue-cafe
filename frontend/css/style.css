@@ -584,6 +584,7 @@ nav {
 .cart-item {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: #faf7f2;
     margin: 2rem auto;
     padding: 1rem 1rem;
@@ -630,8 +631,19 @@ nav {
     color:#5d4037;
 }
 
-.item-subtotal p{
-    font-size: 1.2rem;
+.quantity {
+    font-weight: 600;
+    color:#5d4037;
+    min-width: 25px;
+    text-align: center;
+}
+
+.item-subtotal {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 600;
+    color:#5d4037;
 }
 
 .remove-btn {

@@ -69,8 +69,8 @@ function displayCart(cart) {
                     </div>
 
                     <div class="item-subtotal">
-                    <span>${itemTotal.toFixed(2)} SEK</span>
-                    <button onclick="removeFromCart(${item.id})" class="remove-btn"><i class="fa-solid fa-trash"></i></button>
+                        <span>${itemTotal.toFixed(2)} SEK</span>
+                        <button onclick="removeFromCart(${item.id})" class="remove-btn"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             </div>
