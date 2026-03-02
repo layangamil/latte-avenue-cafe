@@ -1157,7 +1157,7 @@ nav {
 
 .orders-list{
     display: grid;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 @media (max-width: 600px) {
