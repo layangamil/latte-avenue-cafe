@@ -80,9 +80,8 @@ function displayCart(cart) {
     container.innerHTML = html;  // HTML code inside cart-items-container now has the new HTML code
     if(totalEl) totalEl.textContent = `${total.toFixed(2)}`;  //updating what total price shows on cart page
 
-    const counter = document.getElementById('cart-count');
-    if (counter){
-        counter.textContent = totalItems;  //display cart nr in header
+    if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount();
     }
 }
 
