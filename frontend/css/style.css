@@ -1231,7 +1231,7 @@ nav {
 
 @media (min-width: 1025px){
     .orders-list {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
     }
 
     .order-card {
