@@ -601,6 +601,35 @@ nav {
     color:#5d4037;
 }
 
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: white;
+    padding: 0.3rem 0.5rem;
+    border-radius: 20px;
+    border: 1px solid #e6bcc2;
+}
+
+.qty-btn{
+    background:none;
+    border:none;
+    color:#8b6b61;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+}
+
+.qty-btn:hover{
+    color:#5d4037;
+}
+
 .item-subtotal p{
     font-size: 1.2rem;
 }
@@ -608,8 +637,13 @@ nav {
 .remove-btn {
     color:#5d4037;
     background-color: #faf7f2;
+    cursor: pointer;
     border: none;
     margin: 1rem 0;
+}
+
+.remove-btn:hover{
+    color: #48312a;
 }
 
 .cart-summary {
