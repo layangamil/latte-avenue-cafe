@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 async function loadPublicMenu(){
     try {
-        const response = await fetch('http://localhost:5000/api/items');
+        const response = await fetch('/api/items');
         const items = await response.json();
         
         console.log('All items:', items); // ADD THIS

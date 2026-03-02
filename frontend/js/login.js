@@ -52,7 +52,7 @@ async function loginUser(email, password, role) {  //async function will await f
     
     try { //Request (client -> server)
 
-        const response = await fetch('http://localhost:5000/api/login', {  // API endpoint - fetch send HTTP request to backend
+        const response = await fetch('/api/login', {  // API endpoint - fetch send HTTP request to backend
             method: 'POST',                                                //API method - POST processing data (login attempt)
             headers: {'Content-Type': 'application/json'},                 // Instruction for server - "im sending JSON"
             body: JSON.stringify({
@@ -86,7 +86,7 @@ async function loginUser(email, password, role) {  //async function will await f
 async function registerUser(firstName, lastName, email, password) {
     try {
         // Send registration data to backend
-        const response = await fetch('http://localhost:5000/api/register', {
+        const response = await fetch('/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
