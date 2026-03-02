@@ -76,7 +76,6 @@ function displayItems(containerId, items, category) {
         }
     }
     container.innerHTML = html;
-    
 }
 
 function getNewItemRow(category, index){
@@ -164,7 +163,7 @@ async function saveNewItem(category, index){
     }
 }
 
-async function updateItem(id, buttonElement){
+async function updateItem(id, buttonElement, silent=false){
     const token = localStorage.getItem('token');
 
     const row = buttonElement.closest('.menu-item-row');
@@ -245,26 +244,26 @@ function updatePublicMenu() {
     localStorage.setItem('menuUpdated', Date.now());
 }
 
-function saveAllChanges(){
-    alert('All changes saved!');
-    loadMenuItems();
-}
+// function saveAllChanges(){
+//     alert('All changes saved!');
+//     loadMenuItems();
+// }
 
-function cancelAllChanges(){
-    if (confirm('Discard all changes?')) {
-        //clear alla  nya rader
-        newRows = {
-            drinks: [],
-            desserts: []
-        };
-        loadMenuItems();
-    }
-}
+// function cancelAllChanges(){
+//     if (confirm('Discard all unsaved new changes?')) {
+//         //clear alla  nya rader
+//         newRows = {
+//             drinks: [],
+//             desserts: []
+//         };
+//         loadMenuItems();
+//     }
+// }
 
 window.addNewRow = addNewRow;
 window.updateItem = updateItem;
 window.deleteItem = deleteItem;
 window.saveNewItem = saveNewItem;
 window.cancelNewItem = cancelNewItem;
-window.saveAllChanges = saveAllChanges;
-window.cancelAllChanges = cancelAllChanges;
+// window.saveAllChanges = saveAllChanges;
+// window.cancelAllChanges = cancelAllChanges;

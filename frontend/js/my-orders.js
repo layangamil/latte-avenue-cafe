@@ -112,7 +112,7 @@ function renderHistoryOrder(order){
         <div class="order-card">
             <div class="order-header">
                 <span>Order #${order.id}</span>
-                <span>Placed: <em>${order.date || ''}</em></span>
+                <span><em>${order.date || ''}</em></span>
             </div>
             <div class="order-body">
                 <ul>${summaryHtml}</ul>

@@ -1141,12 +1141,12 @@ nav {
     transform: translateY(-2px); 
 }
 
-.bottom-actions {
+/* .bottom-actions {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
     margin-top: 2rem;
-}
+} */
 
 /*===================================================================*/
                       /* ADMIN - ORDER MANAGE PAGE:*/
