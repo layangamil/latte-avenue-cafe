@@ -21,7 +21,7 @@ async function loadMenuItems(){
     const token = localStorage.getItem('token');
     
     try{
-        const response = await fetch('http://localhost:5000/api/items', {
+        const response = await fetch('/api/items', {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -136,7 +136,7 @@ async function saveNewItem(category, index){
     };
     
     try {
-        const response = await fetch('http://localhost:5000/api/items', {
+        const response = await fetch('/api/items', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -189,7 +189,7 @@ async function updateItem(id, buttonElement, silent=false){
     };
 
     try {
-        const response = await fetch(`http://localhost:5000/api/items/${id}`, {
+        const response = await fetch(`/api/items/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -220,7 +220,7 @@ async function deleteItem(id) {
     const token = localStorage.getItem('token');
 
     try {
-        const response = await fetch(`http://localhost:5000/api/items/${id}`, {
+        const response = await fetch(`/api/items/${id}`, {
             method: 'DELETE',
             headers: {'Authorization': 'Bearer ' + token}
         });

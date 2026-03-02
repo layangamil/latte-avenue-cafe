@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
 async function loadOrderDetails(orderId){
     const token = localStorage.getItem('token');
     try{
-        const response = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
+        const response = await fetch(`/api/orders/${orderId}`, {
             headers: {'Authorization': 'Bearer ' + token}
         });
         if (!response.ok){
@@ -71,7 +71,7 @@ async function cancelOrder(orderId, timer, cancelSection, cancelMessage){
     clearInterval(timer);
 
     try {
-        const response = await fetch(`http://localhost:5000/api/orders/${orderId}/cancel`, {
+        const response = await fetch(`/api/orders/${orderId}/cancel`, {
             method: 'DELETE',
             headers: {'Authorization': 'Bearer ' + token}
         });

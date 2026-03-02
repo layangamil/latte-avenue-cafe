@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function(){
             }
 
             try {
-                const response = await fetch('http://localhost:5000/api/profile/password', {
+                const response = await fetch('/api/profile/password', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ async function loadUserProfile() {
     const token = localStorage.getItem('token');
 
     try {
-        const response = await fetch('http://localhost:5000/api/profile', {
+        const response = await fetch('/api/profile', {
             headers: {
                 'Authorization': 'Bearer ' + token
             }

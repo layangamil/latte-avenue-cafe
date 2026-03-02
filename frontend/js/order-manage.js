@@ -14,7 +14,7 @@ async function loadAllOrders() {
     const token = localStorage.getItem('token');
 
     try {
-        const response = await fetch('http://localhost:5000/api/orders', {
+        const response = await fetch('/api/orders', {
             headers: {'Authorization': 'Bearer ' + token}
         });
 
@@ -75,7 +75,7 @@ async function loadAllOrders() {
     const token = localStorage.getItem('token');
 
     try {
-        const response = await fetch('http://localhost:5000/api/orders', {
+        const response = await fetch('/api/orders', {
             headers: {'Authorization': 'Bearer ' + token}
         });
 
@@ -139,7 +139,7 @@ function displayOrders(orders) {
 async function viewOrder(orderId) { 
     const token = localStorage.getItem('token');
 
-    const response = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
+    const response = await fetch(`/api/orders/${orderId}`, {
         headers: { 'Authorization': 'Bearer ' + token}
     });
 
@@ -166,7 +166,7 @@ function formatItems(items){
 async function updateStatus(orderId, newStatus) {
     const token = localStorage.getItem('token');
 
-    const response = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+    const response = await fetch(`/api/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
