@@ -51,7 +51,7 @@ function displayMenuItems(containerId, items){
                     <p>Includes: ${item.ingredients || 'Nothing to specify :)'}</p>
 
                     <div class="item-footer">
-                        <span class="price">${item.price} SEK</span>
+                        <span class="price">${item.price} kr</span>
                         <button class="btn-add" data-id="${item.product_id}" data-name="${item.name}" data-price="${item.price}">
                             <i class="fas fa-plus"></i>Add
                         </button>

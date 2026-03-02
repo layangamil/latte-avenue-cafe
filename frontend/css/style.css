@@ -1022,6 +1022,14 @@ nav {
     padding-bottom: 5rem;
 }
 
+.page-header p{
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: rgba(255,255,255,0.9);
+}
+
 .items-list {
     margin: 1.5rem 0;
 }

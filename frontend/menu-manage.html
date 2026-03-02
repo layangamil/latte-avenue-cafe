@@ -32,6 +32,7 @@
         <div class="container">
             <div class="page-header">
                 <h1>Menu Management</h1>
+                <p>'Update' and 'save' button will save all changes. If you wish to cancel unsaved changes click 'Cancel unsaved changes'</p>
             </div>
             
             <!--Drinks Section -->
@@ -61,46 +62,14 @@
 
                 <button class="btn-add" onclick="addNewRow('desserts')">+Add New Dessert</button>
             </div>
-            
-           <!--pop-up form (same for add and update)--
-           <div id="popupForm" class="popup-overlay" style="display:none;">
-                <div class="popup-content">
-                    <h3 id="popupTitle">Add New Item</h3>
-                    <form id="menuItemForm">
-                        <input type="hidden" id="itemId">
-                        <input type="hidden" id="itemCategory">
-
-                        <div class="form-group">
-                            <label>Name:</label>
-                            <input type="text" id="itemName" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Price (SEK):</label>
-                            <input type="number" id="itemPrice" step="0.1" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Description/Allergy:</label>
-                            <textarea id="itemDescription" rows="2" required></textarea>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn-primary">Save</button>
-                            <button type="button" onclick="closePopup()" class="btn-secondary">Cancel</button>
-                        </div>
-                    </form>
-                </div>
-            </div> -->
 
            <!--Bottom buttons -->
             <div class="bottom-actions">
-                <button onclick="saveAllChanges()" class="btn-primary">Save Changes</button>
-                <button onclick="cancelAllChanges()" class="btn-secondary">Cancel Changes</button>
+                <!-- <button onclick="saveAllChanges()" class="btn-primary">Save Changes</button> -->
+                <button onclick="cancelAllChanges()" class="btn-primary">Cancel unsaved changes</button>
            </div>
         </div>
     </section>
-
 
     <script>
         function adminLogout() {
