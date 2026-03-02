@@ -7,7 +7,6 @@ if (saved) {
     cart = JSON.parse(saved);
 }
 
-
 //3. Function to add item to cart
 function addToCart(itemId, itemName, itemPrice) {
     // Check if item already in cart
@@ -32,8 +31,8 @@ function addToCart(itemId, itemName, itemPrice) {
         });
     }
     // Calls first function to update display cart counter
-    updateCartCount();
     localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
 }
 
 function setAddToCartButtons() {
