@@ -1157,7 +1157,7 @@ nav {
 
 .orders-list{
     display: grid;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 @media (max-width: 600px) {
@@ -1231,16 +1231,17 @@ nav {
 
 @media (min-width: 1025px){
     .orders-list {
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
     }
 
     .order-card {
-        padding: 0.8rem;
-        font-size: 0.85rem;
+        padding: 1rem;
+        font-size: 0.9rem;
     }
 
     .order-card strong{
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
 
     .order-actions {
