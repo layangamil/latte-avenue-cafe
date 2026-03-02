@@ -55,14 +55,23 @@ function displayCart(cart) {
 
         // `` allows us to write HTML with variables inside ${}
         html +=`  
-            <div class="cart-item">
-                <div>
+            <div class="cart-item" data-id="${item.id}">
+                <div class="cart-item-info">
                     <h3>${item.name}</h3>
                     <p>${item.price} x ${item.quantity}</p>
                 </div>
-                <div class="item-subtotal">
-                    <p>${itemTotal.toFixed(2)}  SEK</p>
+
+                <div class="cart-item-controls">
+                    <div class="quantity-control">
+                        <button onclick="decreaseQty(${item.id})" class="qty-btn"><i class="fa-solid fa-minus"></i></button>
+                        <span class="quantity">${item.quantity}</span>
+                        <button onclick="increaseQty(${item.id})" class="qty-btn"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+
+                    <div class="item-subtotal">
+                    <span>${itemTotal.toFixed(2)} SEK</span>
                     <button onclick="removeFromCart(${item.id})" class="remove-btn"><i class="fa-solid fa-trash"></i></button>
+                    </div>
                 </div>
             </div>
         `;
@@ -77,6 +86,49 @@ function displayCart(cart) {
     }
 }
 
+
+
+function decreaseQty(id){
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+    for (let i = 0; i < cart.length; i++){
+        if (cart[i].id == id){
+            if (cart[i].quantity > 1){
+                cart[i].quantity -= 1;
+            } else{
+                removeFromCart(id);
+            }
+            break;
+        }
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    displayCart(cart);
+
+    if(typeof window.updateCartCount === 'function'){
+        window.updateCartCount();
+    }
+}
+
+function increaseQty(id){
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+    for (let i = 0; i < cart.length; i++){
+        if (cart[i].id == id){
+            cart[i].quantity += 1;
+            break;
+        }
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    displayCart(cart);
+
+    if(typeof window.updateCartCount === 'function'){
+        window.updateCartCount();
+    }
+}
+
+
 function removeFromCart(id) {  //takes item id for that specific item
     let cart = JSON.parse(localStorage.getItem('cart')|| '[]'); //get current cart from storage
     cart = cart.filter(item => item.id != id); // create new array with items whose id != one we're looking for
@@ -87,4 +139,6 @@ function removeFromCart(id) {  //takes item id for that specific item
         window.updateCartCount();
     }
 }
+window.decreaseQty = decreaseQty;
+window.increaseQty = increaseQty;
 window.removeFromCart = removeFromCart; //makes function globally available. Since it's called from onclick in HTML (dynamic). W/o function only in file
