@@ -33,28 +33,27 @@ function addToCart(itemId, itemName, itemPrice) {
     }
     // Calls first function to update display cart counter
     updateCartCount();
-
     localStorage.setItem('cart', JSON.stringify(cart));
 }
-//4. waits till HTML loads then tuns remaining code to avoid errors.
-document.addEventListener('DOMContentLoaded', function() {
-    //set intial cart count
-    updateCartCount();
 
-    //add click event to all "Add to Cart" buttons
-    let addButtons = document.querySelectorAll('.btn-add'); //list of refrences for all menu-item buttons with diff data-ID
-    for (let i = 0; i < addButtons.length; i++) {
-        addButtons[i].addEventListener('click', function(event){ // 'event object' created when button is clicked, has click info like target, clientX, ..
-            //get item info from button's data attributes
+function setAddToCartButtons() {
+    let addButtons = document.querySelectorAll('.btn-add');
+    console.log('setting up', addButtons.length, 'add buttons');
+
+    for (let i = 0; i < addButtons.length; i++){
+        let newButton = addButtons[i].cloneNode(true);
+        addButtons[i].parentNode.replaceChild(newButton, addButtons[i]);
+
+        newButton.addEventListener('click', function(event){
             let itemId = this.getAttribute('data-id');
             let itemName = this.getAttribute('data-name');
             let itemPrice = this.getAttribute('data-price');
 
             //Add to cart
-            addToCart(itemId, itemName, itemPrice);  //this = the add button
+            addToCart(itemId, itemName, itemPrice);
         });
-    }
-});
+    } 
+}
 
 window.updateCartCount = function () {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]'); 
@@ -64,3 +63,17 @@ window.updateCartCount = function () {
         cartCounter.textContent = totalItems;  //show total Items nr in cart icon
     }
 };
+
+document.addEventListener('DOMContentLoaded', function() {
+    //set intial cart count
+    updateCartCount();
+
+    setTimeout(setAddToCartButtons, 100);
+});
+
+window.addEventListener('storage', function(e){
+    if (e.key === 'menuUpdated') {
+        setTimeout(setAddToCartButtons, 200);
+    }
+});
+
