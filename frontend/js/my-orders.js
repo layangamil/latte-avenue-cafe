@@ -66,6 +66,10 @@ function displayOrders(orders){
     } else {
         historyBox.innerHTML = '<p class="no-order">No previous orders</p>';
     }
+
+    if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount();
+    }
 }
 
 function renderCurrentOrder(order){

@@ -55,12 +55,16 @@ async function loadUserProfile() {
             }
         });
 
-        const user = await response.json();
+        const user = await response.json(); 
 
         document.getElementById('display-firstname-header').textContent = user.first_name;
         document.getElementById('display-firstname').textContent = user.first_name;
         document.getElementById('display-lastname').textContent = user.last_name;
         document.getElementById('display-email').textContent = user.email;
+
+        if (typeof window.updateCartCount === 'function') {
+            window.updateCartCount();
+        }
     } catch(error) {
         console.log('Error loading profile');
     }
