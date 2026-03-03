@@ -42,7 +42,7 @@ function displayMenuItems(containerId, items){
     let html = '';
     for (let i = 0; i < items.length; i++){
         const item = items[i];
-        const isSoldOut = (item.stock || 30) <= 0;
+        const isSoldOut = (item.stock || 0) <= 0;
         html += `
             <div class="menu-item ${isSoldOut ? 'sold-out' : ''}">
                 <img src="${item.image_url || 'https://placehold.co/600x400/000000/FFF'}" alt="${item.name}">
@@ -58,7 +58,7 @@ function displayMenuItems(containerId, items){
                                     data-id="${item.product_id}"
                                     data-name="${item.name}"
                                     data-price="${item.price}"
-                                    data-stock="${item.stock || 30}">
+                                    data-stock="${item.stock || 0}">
                                 <i class="fas fa-plus"></i>Add
                             </button>`
                         }
