@@ -52,6 +52,32 @@ async function placeOrder(cart) {
     const method = document.querySelector('input[name="paymentMethod"]:checked').value;  // checks which button that is 'checked' and gets its value '.value' (visa, applepay or klarna)
     const token = localStorage.getItem('token');
 
+    //sheck stock
+    try {
+        const stockResponse = await fetch('/api/check-stock', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({items: cart})
+        });
+
+        const stockResult = await stockResponse.json();
+
+        if (stockResult.outOfStock && stockResult.outOfStock.length > 0) {
+            const items = stockResult.outOfStock.map(i => i.name).join(', ');
+            alert(`Sorry these items are sold out: ${items}`);
+
+            const newCart = cart.filter(item => !stockResult.outOfStock.some(out => out.id == item.id));
+            localStorage.setItem('cart', JSON.stringify(newCart));
+            window.location.href = 'cart.html';
+            return;
+        }
+    } catch (error) {
+        console.log('Stock check error:', error);
+    }
+
     if (method === 'visa') {
         const cardNumber = document.getElementById('card-number')?.value;
         const cardExpiry = document.getElementById('card-expiry')?.value;
@@ -105,6 +131,7 @@ async function placeOrder(cart) {
             alert ('Order failed: ' + (data.message || 'Unknown error'));
             btn.textContent = 'Place Order';
             btn.disabled = false;
+            window.location.href = 'cart.html';
         }
     } catch (error) {
         console.log('Error:', error);
