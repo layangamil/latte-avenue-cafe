@@ -117,14 +117,17 @@ app.get('/api/items', async (req, res) => {
 // Add new item (staff only)
 app.post('/api/items', auth, adminOnly, async (req, res) => {
     try {
-        const { name, price, category, ingredients, is_available, image_url } = req.body;
+        const { name, price, category, ingredients, is_available, stock } = req.body;
 
         const sql = `
-            INSERT INTO product (name, price, category, ingredients, is_available, image_url)
+            INSERT INTO product (name, price, category, ingredients, is_available, stock)
             VALUES (?, ?, ?, ?, ?, ?)
         `;
 
-        const [result] = await db.query(sql, [name, price, category, ingredients, is_available ?? true, image_url]);
+        //Use stock ir provided by staff else use 99 as default
+        const stockValue = stock !== undefined ? stock : 99;
+
+        const [result] = await db.query(sql, [name, price, category, ingredients, is_available ?? true, stockValue]);
         res.json({ message: "Item added", id: result.insertId });
     } catch (err) {
         console.error('Error adding item:', err);
@@ -132,37 +135,19 @@ app.post('/api/items', auth, adminOnly, async (req, res) => {
     }
 });
 
-
-// GET /api/items/:id - Get single menu item (Update button) //////?????
-app.get('/api/items/:id', auth, async (req, res) => {
-    try {
-        const [item] = await db.query('SELECT * FROM product WHERE product_id = ?', [req.params.id]);
-        
-        if (item.length === 0) {
-            return res.status(404).json({ error: 'Item not found' });
-        }
-        
-        res.json(item[0]);  //Send back item details
-    } catch (err) {
-        console.error('Error fetching item:', err);
-        res.status(500).json({ error: 'Failed to fetch item' });
-    }
-});
-
-
 // Update item (staff only)
 app.put('/api/items/:id', auth, adminOnly, async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, price, category, ingredients, is_available, image_url } = req.body;
+        const { name, price, category, ingredients, is_available, stock } = req.body;
 
         const sql = `
             UPDATE product
-            SET name=?, price=?, category=?, ingredients=?, is_available=?, image_url=?
+            SET name=?, price=?, category=?, ingredients=?, is_available=?, stock=?
             WHERE product_id=?
         `;
 
-        await db.query(sql, [name, price, category, ingredients, is_available, image_url, id]);
+        await db.query(sql, [name, price, category, ingredients, is_available, stock, id]);
         res.json({ message: "Item updated" });
     } catch (err) {
         console.error('Error updating item:', err);
@@ -174,35 +159,6 @@ app.put('/api/items/:id', auth, adminOnly, async (req, res) => {
 app.delete('/api/items/:id', auth, adminOnly, async (req, res) => {
     try {
         const { id } = req.params;
-        
-        // Check if product is in any orders
-        const [orders] = await db.query(
-            'SELECT COUNT(*) as count FROM order_item WHERE product_id = ?',
-            [id]
-        );
-        
-        if (orders[0].count > 0) {
-            // Product has orders - just mark as unavailable instead
-            await db.query(
-                'UPDATE product SET is_available = false WHERE product_id = ?',
-                [id]
-            );
-            return res.json({ 
-                message: "Item hidden from menu (kept for order history)" 
-            });
-        } else {
-            // No orders - safe to delete
-            await db.query('DELETE FROM product WHERE product_id=?', [id]);
-            res.json({ message: "Item deleted permanently" });
-        }
-    } catch (err) {
-        console.error('Error deleting item:', err);
-        res.status(400).json({ error: err.message });
-    }
-});
-    /*
-    try {
-        const { id } = req.params;
         await db.query('DELETE FROM product WHERE product_id=?', [id]);
         res.json({ message: "Item deleted" });
     } catch (err) {
@@ -210,9 +166,6 @@ app.delete('/api/items/:id', auth, adminOnly, async (req, res) => {
         res.status(400).json({ error: err.message });
     }
 });
-*/
-
-
 
 // ================= REGISTER USER ===================================================================
 app.post('/api/register', async (req, res) => {
@@ -338,6 +291,12 @@ app.post('/api/cart', auth, async (req, res) => {
             return res.status(404).json({ error: 'Product not found or unavailable' });
         }
 
+        // Check stock
+        const product = productResults[0];
+        if (product.stock <= 0) {
+            return res.status(400).json({ error: 'Item is out of stock' });
+        }
+
         // Check if item already in cart
         const [cartResults] = await db.query(
             'SELECT * FROM shopping_cart WHERE user_id = ? AND product_id = ?',
@@ -431,6 +390,61 @@ app.delete('/api/cart', auth, async (req, res) => {
     } catch (err) {
         console.error('Error clearing cart:', err);
         res.status(500).json({ error: 'Failed to clear cart' });
+    }
+});
+
+
+// POST /api/cart/check-stock - verify stock for items
+app.post('/api/cart/check-stock', auth, async (req, res) => {
+    try {
+        const { items } = req.body;
+
+        if (!items || !Array.isArray(items)) {
+            return res.status(400).json({ error: 'Invalid items array' });
+        }
+
+        //array of product id's to check
+        const productIds = items.map(item => item.menuItemId);
+        if (productIds.length === 0) {
+            return res.json({ ok: true, outOfStock: [] })
+        }
+
+        const [rows] = await db.query(
+            `SELECT product_id, name, stock FROM product WHERE product_id IN (?)`,
+            [productIds]
+        );
+
+        const stockMap = {};
+        rows.forEach(row => {
+            stockMap[row.product_id] = row;
+        });
+
+        const outOfStock = [];
+        for (let item of items) {
+            const product = stockMap[item.menuItemId];
+            if (!product) {
+                outOfStock.push({ id: item.menuItemId, name: 'Unknown', reason: 'not_found' });
+            
+            } else if (product.stock < item.quantity) {
+                outOfStock.push({
+                    id: item.menuItemId,
+                    name: product.name,
+                    requested: item.quantity,
+                    available: product.stock,
+                    reason: 'insufficient'
+                });
+            }
+        }
+
+        if (outOfStock.length > 0) {
+            return res.json({ ok: false, outOfStock });
+        
+        } else {
+            return res.json({ ok: true, outOfStock: [] });
+        }
+    } catch (err) {
+        console.error('Error checking stock:', err);
+        res.status(500).json({ error: 'Failed to check stock' });
     }
 });
 
@@ -635,7 +649,7 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
         //If settring to ready, set estimated pick up time (30 mins from now)
         let estimatedPickup = null;
         if (status === 'ready') {
-            estimatedPickup = new Date(Date.now() + 5 * 60000); // 5 mins
+            estimatedPickup = new Date(Date.now() + 30 * 60000); // 30 mins
         }
 
         //Update order status
@@ -750,6 +764,36 @@ app.post('/api/orders', auth, async (req, res) => {
         await connection.beginTransaction();
 
         try {
+            //Stock check - get the current stock for all ordered items
+            const productIds = items.map(item => item.menuItemId);
+            const [stockRows] = await connection.query(
+                `SELECT product_id, name, stock FROM product WHERE product_id IN (?) FOR UPDATE`,
+                [productIds]
+            );
+            const stockMap = {};
+            stockRows.forEach(row => {
+                stockMap[row.product_id] = row;
+            });
+
+            //Verify there's enough stock for each item
+            for (let item of items) {
+                const product = stockMap[item.menuItemId];
+                if (!product) {
+                    throw new Error(`Product ${item.menuItemId} not found`);
+                }
+                if (product.stock < item.quantity) {
+                    throw new Error(`Insufficient stock for ${product.name}. Available: ${product.stock}, requested: ${item.quantity}`);
+                }
+            }
+
+            //Deduct stock quantity
+            for (let item of items) {
+                await connection.query(
+                    `UPDATE product SET stock = stock - ? WHERE product_id = ?`,
+                    [item.quantity, item.menuItemId]
+                );
+            }
+
             //Create the order
             const [orderResult] = await connection.query(
                 `INSERT INTO \`order\` (user_id, total_amount, status, payment_method) 
@@ -761,7 +805,7 @@ app.post('/api/orders', auth, async (req, res) => {
 
             //Add items to order_item table
             for (const item of items) {
-                //Verify product exists
+               /* //Verify product exists
                 const [productCheck] = await connection.query(
                     'SELECT price FROM product WHERE product_id = ?',
                     [item.menuItemId]
@@ -769,7 +813,7 @@ app.post('/api/orders', auth, async (req, res) => {
 
                 if (productCheck.length === 0) {
                     throw new Error(`Product ${item.menuItemId} not found`);
-                }
+                } */
 
                 await connection.query(
                     `INSERT INTO order_item (order_id, product_id, quantity, price_at_time) 
@@ -795,7 +839,11 @@ app.post('/api/orders', auth, async (req, res) => {
         } catch (err) {
             await connection.rollback();
             connection.release();
-            throw err;
+            //throw err;
+            res.status(400).json({
+                success: false,
+                message: err.message
+            });
         }
 
     } catch (err) {
