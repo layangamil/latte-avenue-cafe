@@ -53,7 +53,7 @@ function setAddToCartButtons() {
             let itemId = this.getAttribute('data-id');
             let itemName = this.getAttribute('data-name');
             let itemPrice = this.getAttribute('data-price');
-            let itemStock = parseInt(this.getAttribute('data-stock')) || 99;
+            let itemStock = parseInt(this.getAttribute('data-stock')) || 30;
 
             //Add to cart
             addToCart(itemId, itemName, itemPrice, itemStock);

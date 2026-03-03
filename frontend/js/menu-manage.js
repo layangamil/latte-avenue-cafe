@@ -61,7 +61,7 @@ function displayItems(containerId, items, category) {
 
                     <input type="text" class="field-image" value="${item.image_url || ''}" placeholder=" Image URL">
 
-                    <input type="number" class="field-stock" value="${item.stock || 99}" min="0" placeholder="stock">
+                    <input type="number" class="field-stock" value="${item.stock || 30}" min="0" placeholder="stock">
                 </div>
                 
                 <div class="item-actions">
@@ -92,7 +92,7 @@ function getNewItemRow(category, index){
 
                 <input type="text" class="field-image" id="new-${category}-${index}-image" placeholder="Image URL">
 
-                <input type="number" class="field-stock" id="new-${category}-${index}-stock"value="99" min="0" placeholder="stock">
+                <input type="number" class="field-stock" id="new-${category}-${index}-stock"value="30" min="0" placeholder="stock">
             </div>
 
             <div class="item-actions">
@@ -124,7 +124,7 @@ async function saveNewItem(category, index){
     const price = parseFloat(document.getElementById(`new-${category}-${index}-price`).value);
     const description = document.getElementById(`new-${category}-${index}-description`).value;
     const imageUrl = document.getElementById(`new-${category}-${index}-image`).value;
-    const stock = parseInt(document.getElementById(`new-${category}-${index}.stock`).value) || 99; 
+    const stock = parseInt(document.getElementById(`new-${category}-${index}.stock`).value) || 30; 
 
     if (!name || !price){
         alert('Name and price are required!');
@@ -177,7 +177,7 @@ async function updateItem(id, buttonElement, silent=false){
     const price = parseFloat(row.querySelector('.field-price').value);
     const description = row.querySelector('.field-description').value;
     const imageUrl = row.querySelector('.field-image').value;
-    const stock = parseInt(row.querySelector('.field-stock').value) || 99;
+    const stock = parseInt(row.querySelector('.field-stock').value) || 30;
     const category = row.dataset.category;
 
     if (!name || !price) {
