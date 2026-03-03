@@ -58,7 +58,7 @@ function displayMenuItems(containerId, items){
                                     data-id="${item.product_id}"
                                     data-name="${item.name}"
                                     data-price="${item.price}"
-                                    data-stock="${item.stock || 99}">
+                                    data-stock="${item.stock || 30}">
                                 <i class="fas fa-plus"></i>Add
                             </button>`
                         }
