@@ -42,7 +42,7 @@ function displayMenuItems(containerId, items){
     let html = '';
     for (let i = 0; i < items.length; i++){
         const item = items[i];
-        const isSoldOut = (item.stock || 99) <= 0;
+        const isSoldOut = (item.stock || 30) <= 0;
         html += `
             <div class="menu-item ${isSoldOut ? 'sold-out' : ''}">
                 <img src="${item.image_url || 'https://placehold.co/600x400/000000/FFF'}" alt="${item.name}">
