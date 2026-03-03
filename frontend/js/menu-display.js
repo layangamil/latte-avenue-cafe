@@ -32,7 +32,6 @@ async function loadPublicMenu(){
 
 function displayMenuItems(containerId, items){
     const container = document.getElementById(containerId);
-
     if (!container) return;
 
     if(items.length === 0){
@@ -43,8 +42,9 @@ function displayMenuItems(containerId, items){
     let html = '';
     for (let i = 0; i < items.length; i++){
         const item = items[i];
+        const isSoldOut = (item.stock || 99) <= 0;
         html += `
-            <div class="menu-item">
+            <div class="menu-item ${isSoldOut ? 'sold-out' : ''}">
                 <img src="${item.image_url || 'https://placehold.co/600x400/000000/FFF'}" alt="${item.name}">
                 <div class="item-content">
                     <h4>${item.name}</h4>
@@ -52,9 +52,16 @@ function displayMenuItems(containerId, items){
 
                     <div class="item-footer">
                         <span class="price">${item.price} kr</span>
-                        <button class="btn-add" data-id="${item.product_id}" data-name="${item.name}" data-price="${item.price}">
-                            <i class="fas fa-plus"></i>Add
-                        </button>
+                        ${isSoldOut ?
+                            `<span class="sold-out-label">SOLD OUT</span>`:
+                            `<button class="btn-add"
+                                    data-id="${item.product_id}"
+                                    data-name="${item.name}"
+                                    data-price="${item.price}"
+                                    data-stock="${item.stock || 99}">
+                                <i class="fas fa-plus"></i>Add
+                            </button>`
+                        }
                     </div>
                 </div>
             </div>

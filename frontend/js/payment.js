@@ -50,6 +50,7 @@ function showOrder(cart){  //takes cart array as argument
 
 async function placeOrder(cart) {
     const method = document.querySelector('input[name="paymentMethod"]:checked').value;  // checks which button that is 'checked' and gets its value '.value' (visa, applepay or klarna)
+    const token = localStorage.getItem('token');
 
     if (method === 'visa') {
         const cardNumber = document.getElementById('card-number')?.value;

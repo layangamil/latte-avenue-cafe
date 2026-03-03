@@ -228,6 +228,23 @@ nav {
     padding: 1rem 0;
 }
 
+/* SOLD OUT */
+.menu-item.sold-out {
+    opacity: 0.6;
+    filter: grayscale(40%);
+    position: relative;
+}
+
+.sold-out-label {
+    display: inline-block;
+    background-color: #999;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
 @media (max-width: 600px) {           /*response mobile*/
     .menu-items {
         grid-template-columns: repeat(8, 160px);
@@ -258,6 +275,11 @@ nav {
     .btn-add {
         padding: 8px 12px;
         font-size: 0.7rem;
+    }
+
+    .sold-out-label {
+        padding: 6px 10px;
+        font-size: 0.65rem;
     }
 }
 
@@ -298,11 +320,15 @@ nav {
     }
 
     .btn-add {
-        padding: 12pc 20px;
+        padding: 12px 20px;
         font-size: 0.8rem;
     }
-}
 
+    .sold-out-label {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
                                        
 .menu-item {                           /* Individual Menu Item (Bubble/Card) */
     background: white;
