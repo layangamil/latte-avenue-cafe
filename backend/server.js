@@ -124,8 +124,8 @@ app.post('/api/items', auth, adminOnly, async (req, res) => {
             VALUES (?, ?, ?, ?, ?, ?)
         `;
 
-        //Use stock ir provided by staff else use 99 as default
-        const stockValue = stock !== undefined ? stock : 99;
+        //Use stock ir provided by staff else use 30 as default
+        const stockValue = stock !== undefined ? stock : 30;
 
         const [result] = await db.query(sql, [name, price, category, ingredients, is_available ?? true, stockValue]);
         res.json({ message: "Item added", id: result.insertId });
