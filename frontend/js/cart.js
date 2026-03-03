@@ -4,14 +4,41 @@ document.addEventListener('DOMContentLoaded', function(){
 
     const checkoutBtn = document.getElementById('checkout-btn');
     if(checkoutBtn) { //if button exists
-        checkoutBtn.addEventListener('click', function(){
+        checkoutBtn.addEventListener('click', async function(){
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             if (cart.length === 0) {
                 alert('Your cart is empty!');  //if cart is empty, show error msg and return
                 return;
             }
 
-            if (localStorage.getItem('token')){  //if logged in, redirect to payment page
+            const token = localStorage.getItem('token');
+
+            try {
+                const stockResponse = await fetch('/api/check-stock', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({items: cart})
+                });
+
+                const stockResult = await stockResponse.json();
+
+                if (stockResult.outOfStock && stockResult.outOfStock.length > 0) {
+                    const items = stockResult.outOfStock.map(i => i.name).join(', ');
+                    alert(`Sorry these items are sold out: ${items}`);
+
+                    const newCart = cart.filter(item => !stockResult.outOfStock.some(out => out.id == item.id));
+                    localStorage.setItem('cart', JSON.stringify(newCart));
+                    displayCart(newCart);
+                    return;
+                }
+            } catch (error) {
+                console.log('Stock check error:', error);
+            }
+
+            if (token){  //if logged in, redirect to payment page
                 window.location.href = 'payment.html';
             }else { 
                 localStorage.setItem('redirectAfterLogin', 'payment.html'); //else, in localStorage save 'after logging in, go to payment.html'
@@ -86,8 +113,6 @@ function displayCart(cart) {
     }
 }
 
-
-
 function decreaseQty(id){
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
@@ -127,7 +152,6 @@ function increaseQty(id){
         window.updateCartCount();
     }
 }
-
 
 function removeFromCart(id) {  //takes item id for that specific item
     let cart = JSON.parse(localStorage.getItem('cart')|| '[]'); //get current cart from storage

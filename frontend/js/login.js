@@ -69,7 +69,12 @@ async function loginUser(email, password, role) {  //async function will await f
             localStorage.setItem('token', data.token);
             localStorage.setItem('userRole', role);
 
-            if(role === 'staff'){
+            const redirectTo = localStorage.getItem('redirectAfterLogin');
+
+            if (redirectTo){
+                localStorage.removeItem('redirectAfterLogin');
+                window.location.href = redirectTo;
+            } else if(role === 'staff'){
                 window.location.href = 'order-manage.html';
             } else{
                 window.location.href = 'index.html';

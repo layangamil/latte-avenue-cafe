@@ -8,7 +8,13 @@ if (saved) {
 }
 
 //3. Function to add item to cart
-function addToCart(itemId, itemName, itemPrice) {
+function addToCart(itemId, itemName, itemPrice, itemStock) {
+    //check if item is out of stock
+    if (itemStock <= 0){
+        alert('This item is sold out!')
+        return;
+    }
+    
     // Check if item already in cart
     let foundItem = null;
     for (let i = 0; i < cart.length; i++) {
@@ -47,9 +53,10 @@ function setAddToCartButtons() {
             let itemId = this.getAttribute('data-id');
             let itemName = this.getAttribute('data-name');
             let itemPrice = this.getAttribute('data-price');
+            let itemStock = parseInt(this.getAttribute('data-stock')) || 99;
 
             //Add to cart
-            addToCart(itemId, itemName, itemPrice);
+            addToCart(itemId, itemName, itemPrice, itemStock);
         });
     } 
 }

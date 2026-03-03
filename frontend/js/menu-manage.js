@@ -60,6 +60,8 @@ function displayItems(containerId, items, category) {
                     <textarea class="field-description" placeholder=" Description" rows="1">${item.ingredients || ''}</textarea>
 
                     <input type="text" class="field-image" value="${item.image_url || ''}" placeholder=" Image URL">
+
+                    <input type="number" class="field-stock" value="${item.stock || 99}" min="0" placeholder="stock">
                 </div>
                 
                 <div class="item-actions">
@@ -89,6 +91,8 @@ function getNewItemRow(category, index){
                 <textarea class="field-description" id="new-${category}-${index}-description" placeholder="Description" rows="1"></textarea>
 
                 <input type="text" class="field-image" id="new-${category}-${index}-image" placeholder="Image URL">
+
+                <input type="number" class="field-stock" id="new-${category}-${index}-stock"value="99" min="0" placeholder="stock">
             </div>
 
             <div class="item-actions">
@@ -120,6 +124,7 @@ async function saveNewItem(category, index){
     const price = parseFloat(document.getElementById(`new-${category}-${index}-price`).value);
     const description = document.getElementById(`new-${category}-${index}-description`).value;
     const imageUrl = document.getElementById(`new-${category}-${index}-image`).value;
+    const stock = parseInt(document.getElementById(`new-${category}-${index}.stock`).value) || 99; 
 
     if (!name || !price){
         alert('Name and price are required!');
@@ -132,6 +137,7 @@ async function saveNewItem(category, index){
         category: category === 'drinks' ? 'drink' : 'dessert',
         ingredients: description,
         image_url: imageUrl,
+        stock: stock,
         is_available: true
     };
     
@@ -165,13 +171,13 @@ async function saveNewItem(category, index){
 
 async function updateItem(id, buttonElement, silent=false){
     const token = localStorage.getItem('token');
-
     const row = buttonElement.closest('.menu-item-row');
 
     const name = row.querySelector('.field-name').value;
     const price = parseFloat(row.querySelector('.field-price').value);
     const description = row.querySelector('.field-description').value;
     const imageUrl = row.querySelector('.field-image').value;
+    const stock = parseInt(row.querySelector('.field-stock').value) || 99;
     const category = row.dataset.category;
 
     if (!name || !price) {
@@ -185,6 +191,7 @@ async function updateItem(id, buttonElement, silent=false){
         category: category,
         ingredients: description,
         image_url: imageUrl,
+        stock: stock,
         is_available: true
     };
 
