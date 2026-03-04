@@ -124,7 +124,7 @@ async function saveNewItem(category, index){
     const price = parseFloat(document.getElementById(`new-${category}-${index}-price`).value);
     const description = document.getElementById(`new-${category}-${index}-description`).value;
     const imageUrl = document.getElementById(`new-${category}-${index}-image`).value;
-    const stock = parseInt(document.getElementById(`new-${category}-${index}.stock`).value) || 30; 
+    const stock = parseInt(document.getElementById(`new-${category}-${index}-stock`).value) || 0; 
 
     if (!name || !price){
         alert('Name and price are required!');
