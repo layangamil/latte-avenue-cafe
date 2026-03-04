@@ -1,21 +1,21 @@
-//Create empty cart list  
+//Create empty cart list - will include all items customer adds 
 let cart = [];  
 
-// 1. save cart in localstorage and convert into Json string
+// 1. get cart from localstorage (browsers memory that remains even after page refresh)
 const saved = localStorage.getItem('cart');
 if (saved) {
-    cart = JSON.parse(saved);
+    cart = JSON.parse(saved);  //if there is cart saved, then convert JSON-string back to array
 }
 
-//3. Function to add item to cart
+//adds item to cart - requires 4 parameters
 function addToCart(itemId, itemName, itemPrice, itemStock) {
-    //check if item is out of stock
+    //1st controll: check if item is sold out, if yes, show alert to customer
     if (itemStock <= 0){
         alert('This item is sold out!')
         return;
     }
     
-    // Check if item already in cart
+    //2nd controll: loop through cart to check if item being added is ALREADY in cart
     let foundItem = null;
     for (let i = 0; i < cart.length; i++) {
         if (cart[i].id == itemId) {
@@ -24,11 +24,11 @@ function addToCart(itemId, itemName, itemPrice, itemStock) {
         }
     }
 
-    // If item exists, increase quantity
+    // If item exists: increase quantity
     if (foundItem) {
         foundItem.quantity += 1;
     } else {
-        // Else item not in cart, add it
+        // Else item not in cart: add it togther with its' attributes
         cart.push({   //custom properties
             id: itemId,
             name: itemName,
@@ -36,16 +36,20 @@ function addToCart(itemId, itemName, itemPrice, itemStock) {
             quantity: 1
         });
     }
-    // Calls first function to update display cart counter
+    // Now save the new and updated cart to browsers memory THEN call function to update cart count
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartCount();
 }
 
+//Function: makes the 'add' to cart btns to function like we said above
 function setAddToCartButtons() {
+    //find all btns that have class 'btn-add'
     let addButtons = document.querySelectorAll('.btn-add');
-    console.log('setting up', addButtons.length, 'add buttons');
+    console.log('Found', addButtons.length, 'add buttons to set up');
 
+    //loop through all the btns to add eventListener for each
     for (let i = 0; i < addButtons.length; i++){
+        //creating a clone of the btn to 
         let newButton = addButtons[i].cloneNode(true);
         addButtons[i].parentNode.replaceChild(newButton, addButtons[i]);
 
