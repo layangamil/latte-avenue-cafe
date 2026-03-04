@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function(){
     displayCart(cart);  //call fucntion that shows the 'cart' element we just got
 
     const checkoutBtn = document.getElementById('checkout-btn');
-    if(checkoutBtn) { //if button exists
+    if(checkoutBtn) { //if button with id exists
         checkoutBtn.addEventListener('click', async function(){
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             if (cart.length === 0) {
@@ -11,9 +11,11 @@ document.addEventListener('DOMContentLoaded', function(){
                 return;
             }
 
+            //we know now cart is not empty, now get customer token (if logged in)
             const token = localStorage.getItem('token');
 
-            try {
+            //want to check if stock is enough, avoids refunds
+            try { //sending fetch request to backend to check stock
                 const stockResponse = await fetch('/api/check-stock', {
                     method: 'POST',
                     headers: {
@@ -24,11 +26,13 @@ document.addEventListener('DOMContentLoaded', function(){
                 });
 
                 const stockResult = await stockResponse.json();
-
+                // if stock is empty AND more than 0 items are sold out:
                 if (stockResult.outOfStock && stockResult.outOfStock.length > 0) {
+                    //, create a list of the items that are sold out + infrom customer
                     const items = stockResult.outOfStock.map(i => i.name).join(', ');
                     alert(`Sorry these items are sold out: ${items}`);
 
+                    //now create  and save a new cart with only items in stock and display that cart instead
                     const newCart = cart.filter(item => !stockResult.outOfStock.some(out => out.id == item.id));
                     localStorage.setItem('cart', JSON.stringify(newCart));
                     displayCart(newCart);
@@ -38,11 +42,12 @@ document.addEventListener('DOMContentLoaded', function(){
                 console.log('Stock check error:', error);
             }
 
-            if (token){  //if logged in, redirect to payment page
+            //now if so far all is good, check if customer logged in, in order to continue to checkout page
+            if (token){  
                 window.location.href = 'payment.html';
-            }else { 
-                localStorage.setItem('redirectAfterLogin', 'payment.html'); //else, in localStorage save 'after logging in, go to payment.html'
-                window.location.href = 'login.html'; //first redirect to login page
+            }else {   //else, in browser memory save 'after logging in, go to payment.html'
+                localStorage.setItem('redirectAfterLogin', 'payment.html');
+                window.location.href = 'login.html'; //BUT FIRST redirect to login page
             }
         });
     } else {
@@ -50,19 +55,18 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 });
 
+//function: displays cart items
 function displayCart(cart) {
     const container = document.getElementById('cart-items-container');
     const totalEl = document.getElementById('cart-total');
-    //changes
-    console.log('Container found:', container);
-    console.log('Total element found:', totalEl);
 
-    // If container doesn't exist, stop execution
+    //if no container found, return
     if (!container) {
         console.error('Cart container not found! Make sure cart.html has id="cart-items-container"');
         return;
     }
 
+    //if cart is empty:
     if (cart.length === 0){
         container.innerHTML = 
         '<div class="empty-cart"><p>Your cart is empty!</p><a href="index.html#menu" class="btn">Browse Menu</a></div>';
