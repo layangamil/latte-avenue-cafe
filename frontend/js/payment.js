@@ -73,8 +73,13 @@ async function placeOrder(cart) {
 
         //if some of the items are not in stock, do the following
         if (stockResult.outOfStock && stockResult.outOfStock.length > 0) {
-            const items = stockResult.outOfStock.map(i => i.name).join(', '); //create a string of the item names that are not in stock
-            alert(`Sorry these items are sold out: ${items}`); //show them here in alert msg to user
+            const names = [];
+            for (const item of stockResult.outOfStock){
+                names.push(item.name);
+            }
+            const items = names.join(', ');
+            // REMOVE //const items = stockResult.outOfStock.map(i => i.name).join(', '); //create a string of the item names that are not in stock
+            alert(`Unfortunately, these items are now sold-out: ${items}`); //show them here in alert msg to user
 
             //create new cart without out of stock items, save that and take user back to cart page
             const newCart = [];

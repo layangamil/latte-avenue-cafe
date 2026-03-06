@@ -29,8 +29,13 @@ document.addEventListener('DOMContentLoaded', function(){
                 // if stock is empty AND more than 0 items are sold out:
                 if (stockResult.outOfStock && stockResult.outOfStock.length > 0) {
                     //, create a list of the items that are sold out + infrom customer
-                    const items = stockResult.outOfStock.map(i => i.name).join(', ');
-                    alert(`Sorry, these items are sold out: ${items}`);
+                    const names = [];
+                    for (const item of stockResult.outOfStock){
+                        names.push(item.name);
+                    }
+                    const items = names.join(', ');
+                    // REMOVE// const items = stockResult.outOfStock.map(i => i.name).join(', ');
+                    alert(`Unfortunately, these items are now sold-out: ${items}`);
 
                     //now create and save a new cart with only items in stock and display that cart instead
                     const newCart = [];
