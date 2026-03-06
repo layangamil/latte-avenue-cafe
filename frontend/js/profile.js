@@ -4,10 +4,10 @@ document.addEventListener('DOMContentLoaded', function(){
         window.location.href = 'login.html';
         return;
     }
+    console.log('User-ID: ', token?.id);
     loadUserProfile();
 
     document.getElementById('passwordForm').addEventListener('submit', async function(e){
-
             e.preventDefault();
 
             const currentPw = document.getElementById('currentPassword').value;
@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function(){
 async function loadUserProfile() {
     console.log('loadUserProfile function is running!');
     const token = localStorage.getItem('token');
+    console.log('User-ID: ', token?.id);
 
     try {
         const response = await fetch('/api/profile', {

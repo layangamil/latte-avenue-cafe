@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //when page refresh, show updated cart-count
     updateCartCount();
 
-    setTimeout(setAddToCartButtons, 100); //troubleshoot? yes
+    setTimeout(setAddToCartButtons, 110); //troubleshoot? yes
 });
 
 //troubleshoot? yes
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
 window.addEventListener('storage', function(e){
     //if menu is updated, agian set up btns
     if (e.key === 'menuUpdated') {
-        setTimeout(setAddToCartButtons, 200);
+        setTimeout(setAddToCartButtons, 210);
     }
 });
 

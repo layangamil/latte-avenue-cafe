@@ -3,12 +3,11 @@ document.addEventListener('DOMContentLoaded', function(){
     const role = localStorage.getItem('userRole');
 
     if (!token || role != 'staff'){
+        console.log('Role: ', role);
         window.location.href = 'login.html';
         return;
     }
-
     loadMenuItems();
-
 });
 
 let newRows = {

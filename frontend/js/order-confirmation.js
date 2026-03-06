@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
 async function loadOrderDetails(orderId){
     console.log('loadOrderDetails function is running! With: ', orderId);
     const token = localStorage.getItem('token');
+    console.log('User-ID: ', token?.id);
     try{
         const response = await fetch(`/api/orders/${orderId}`, {
             headers: {'Authorization': 'Bearer ' + token}
@@ -69,6 +70,7 @@ function startCountdown(secondsLeft, orderId){
 async function cancelOrder(orderId, timer, cancelSection, cancelMessage){
     console.log('cancelOrder function is running! With: ', orderId, timer, cancelSection, cancelMessage);
     const token = localStorage.getItem('token');
+    console.log('User-ID: ', token?.id);
 
     //stop the countdown
     clearInterval(timer);

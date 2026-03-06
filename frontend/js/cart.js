@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
             //now if so far all is good, check if customer logged in, in order to continue to checkout page
             if (token){  
+                console.log('User-ID: ', token?.id);
                 window.location.href = 'payment.html';
             }else {   //else, in browser memory save 'after logging in, go to payment.html'
                 localStorage.setItem('redirectAfterLogin', 'payment.html');

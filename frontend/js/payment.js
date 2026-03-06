@@ -56,6 +56,7 @@ async function placeOrder(cart) {
     console.log('placeOrder function is running! With: ', cart);
     const method = document.querySelector('input[name="paymentMethod"]:checked').value;  // checks which button that is 'checked' and gets its value '.value' (visa, applepay or klarna)
     const token = localStorage.getItem('token'); //checks if logged in
+    console.log('User-ID: ', token?.id);
 
     //check stock by sending fetch request to backend with items in cart
     try {
@@ -86,7 +87,7 @@ async function placeOrder(cart) {
                     for (const item of cart){
                         let inStock = true;
                         for (const product of stockResult.outOfStock) {
-                            if (out.id == item.id){
+                            if (product.id == item.id){
                                 inStock = false;
                                 break;
                             }
@@ -122,7 +123,7 @@ async function placeOrder(cart) {
         total += item.price * item.quantity;
     }
     // REMOVE //const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
+    console.log('Total price: ', total);
     const orderData = {  //gets all the info that will be sent to backend
         items: cart.map(item => ({  // map() creates an array where every item get reformated to macth backend
             menuItemId: item.id,
@@ -133,6 +134,7 @@ async function placeOrder(cart) {
         total: total,
         paymentMethod: method,
     };
+    console.log('Order data: ', orderData);
 
     try { //will try to run code inside this try and if smth wrong happens, catch will catch the error
         const btn = document.getElementById('place-order-btn');
@@ -140,6 +142,8 @@ async function placeOrder(cart) {
         btn.disabled = true; // make button unclickable so customer doesnt press multiple times
         
         const token = localStorage.getItem('token');
+        console.log('User-ID: ', token?.id);
+
         const response = await fetch('/api/orders', {
             method: 'POST',
             headers: { //tells backend: we're sending JSON-string and customer is logged in ('token')
@@ -150,6 +154,7 @@ async function placeOrder(cart) {
         });
         
         const data = await response.json();
+        console.log('Response: ', data);
 
         if (response.ok) { //if success
             localStorage.removeItem('cart');//cart element no longer in localStorage since order is placed
