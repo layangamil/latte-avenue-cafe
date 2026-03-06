@@ -1,23 +1,24 @@
+//Wait till html file loads (elements etc) before JS runs - avoids matching issues
 document.addEventListener('DOMContentLoaded', function(){ //w/o we might not find place order button
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    if (cart.length === 0) {
-        alert('Your cart is empty!');
-        window.location.href = 'cart.html';
+    if (cart.length === 0) {  // check if cart is empty
+        alert('Your cart is empty!'); //alert msg
+        window.location.href = 'cart.html'; //take back to cart page - cannot proceed
         return;
     }
-
+    // if cart NOT empty, show cart
     showOrder(cart);
 
-    document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => { //looking for button with type 'radio' and name 'paymentMethod'. for each button run the following:
-        radio.addEventListener('change', function() {
-            const cardForm = document.getElementById('card-details-container');
-            if (cardForm) {
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => { //looking for button with type 'radio' and name 'paymentMethod'. create a list w/ all elements that macth. For each button run the following:
+        radio.addEventListener('change', function() { //for every radio btn listen to a 'change' ie, changes payment option
+            const cardForm = document.getElementById('card-details-container'); //find card form
+            if (cardForm) { 
                 cardForm.style.display = this.value === 'visa' ? 'block' : 'none'; //if the method is visa, then show block (visa form) otherwise let display hide form
             }
         });
     });
 
-    document.getElementById('place-order-btn').addEventListener('click', function(){
+    document.getElementById('place-order-btn').addEventListener('click', function(){ //combined two in one (getting item & eventListener)
         placeOrder(cart);
     });
 });
@@ -26,10 +27,11 @@ function showOrder(cart){  //takes cart array as argument
     let subtotal = 0;  
     let itemsHtml = '';  //HTML for all items
 
-    for (let item of cart){  //like ' for item in' loop
+    for (let item of cart){  //loop through cart items, use each items atributes to get total and so on
         const itemTotal = item.price * item.quantity;
         subtotal += itemTotal;
 
+        //write html for layout of each cart item in order summary (will be styled in css)
         itemsHtml += `
             <div class = "payment-order-item">
                 <div class="payment-item-info">
@@ -40,8 +42,9 @@ function showOrder(cart){  //takes cart array as argument
             </div>
         `;
     }
-
+    //update the dom with the html code with wrote above
     document.getElementById('payment-order-items').innerHTML = itemsHtml;
+    //update the displayed subtotal, tx and total price
     document.getElementById('payment-subtotal').textContent = subtotal.toFixed(2) + ' SEK';
     document.getElementById('payment-tax').textContent = (subtotal * 0.06).toFixed(2) + ' SEK';
     document.getElementById('payment-total').textContent = subtotal.toFixed(2) + ' SEK'; 
@@ -50,9 +53,9 @@ function showOrder(cart){  //takes cart array as argument
 
 async function placeOrder(cart) {
     const method = document.querySelector('input[name="paymentMethod"]:checked').value;  // checks which button that is 'checked' and gets its value '.value' (visa, applepay or klarna)
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token'); //checks if logged in
 
-    //sheck stock
+    //check stock by sending fetch request to backend with items in cart
     try {
         const stockResponse = await fetch('/api/check-stock', {
             method: 'POST',
@@ -63,33 +66,37 @@ async function placeOrder(cart) {
             body: JSON.stringify({items: cart})
         });
 
+        //wait for response from backend then convert to JS object
         const stockResult = await stockResponse.json();
 
+        //if some of the items are not in stock, do the following
         if (stockResult.outOfStock && stockResult.outOfStock.length > 0) {
-            const items = stockResult.outOfStock.map(i => i.name).join(', ');
-            alert(`Sorry these items are sold out: ${items}`);
+            const items = stockResult.outOfStock.map(i => i.name).join(', '); //create a string of the item names that are not in stock
+            alert(`Sorry these items are sold out: ${items}`); //show them here in alert msg to user
 
+            //create new cart without out of stock items, save that and take user back to cart page
             const newCart = cart.filter(item => !stockResult.outOfStock.some(out => out.id == item.id));
             localStorage.setItem('cart', JSON.stringify(newCart));
             window.location.href = 'cart.html';
-            return;
+            return; // does not order
         }
     } catch (error) {
         console.log('Stock check error:', error);
     }
 
-    if (method === 'visa') {
+    if (method === 'visa') { //if chosen method is visa, get all the values put in input fields
         const cardNumber = document.getElementById('card-number')?.value;
         const cardExpiry = document.getElementById('card-expiry')?.value;
         const cardCvc = document.getElementById('card-cvc')?.value;
         const cardName = document.getElementById('card-name')?.value;
 
         if (!cardNumber || !cardExpiry || !cardCvc || !cardName) {
-            alert('Missing card details');
+            alert('Missing card details'); //all info required!
             return;
         }
     }
 
+    //get totl of all cart items
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
     const orderData = {  //gets all the info that will be sent to backend
@@ -118,27 +125,25 @@ async function placeOrder(cart) {
             body: JSON.stringify(orderData)
         });
         
-        const data = await response.json(); //changes
+        const data = await response.json();
 
         if (response.ok) { //if success
-            localStorage.removeItem('cart');//cart element no longer in localStorage since order placed
+            localStorage.removeItem('cart');//cart element no longer in localStorage since order is placed
             if (typeof updateCartCount == 'function') updateCartCount(); //looks for function updateCartCount() to change to 0
 
-            // ADD THIS LINE:
-            console.log('Order data from backend:', data);
-            window.location.href = `order-confirmation.html?id=${data.orderId}`; // finally takes to order-confirmation page
+            window.location.href = `order-confirmation.html?id=${data.orderId}`; // finally takes to order-confirmation page + sends orderID
         } else{
             alert ('Order failed: ' + (data.message || 'Unknown error'));
-            btn.textContent = 'Place Order';
+            btn.textContent = 'Place Order'; //btn goes back to original, is clickable
             btn.disabled = false;
-            window.location.href = 'cart.html';
+            window.location.href = 'cart.html'; //goes back to cart
         }
-    } catch (error) {
+    } catch (error) {  //network error
         console.log('Error:', error);
-        alert('Cannot connect to server');
+        alert('Cannot connect to server'); 
 
         const btn = document.getElementById('place-order-btn');
-        btn.textContent = 'Place Order';
+        btn.textContent = 'Place Order'; //btn goes back to original, is clickable
         btn.disabled = false;
     }
 }

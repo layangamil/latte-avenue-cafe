@@ -66,25 +66,26 @@ function displayCart(cart) {
         return;
     }
 
-    //if cart is empty:
+    //if cart is empty
     if (cart.length === 0){
         container.innerHTML = 
-        '<div class="empty-cart"><p>Your cart is empty!</p><a href="index.html#menu" class="btn">Browse Menu</a></div>';
+        '<div class="empty-cart"><p>No items in your cart!</p><a href="index.html#menu" class="btn">Browse Menu</a></div>';
         totalEl.textContent = '0.00';
         return;
     }
+    
+    let html = ''; //if cart is not -> write the html for each cat item
+    let total = 0; //total price
+    let totalItems = 0;  //total items for header counter
 
-    let html = '';
-    let total = 0;
-    let totalItems = 0;
-
-    for (let i = 0; i < cart.length; i++){
+    //loop through all the cart items to get item, subtotal and so on 
+    for (let i = 0; i < cart.length; i++){  
         const item = cart[i];
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
         totalItems += item.quantity;
 
-        // `` allows us to write HTML with variables inside ${}
+        // the `` allows us to write HTML with variables inside ${} - each cart item gets html below
         html +=`  
             <div class="cart-item" data-id="${item.id}">
                 <div class="cart-item-info">
@@ -118,42 +119,42 @@ function displayCart(cart) {
 }
 
 function decreaseQty(id){
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]'); //load cart from localStorage, if not exist, create empty array
 
-    for (let i = 0; i < cart.length; i++){
+    for (let i = 0; i < cart.length; i++){ //loop through cart to find item.id that matches one you want to decrease
         if (cart[i].id == id){
-            if (cart[i].quantity > 1){
-                cart[i].quantity -= 1;
+            if (cart[i].quantity > 1){ //check decrease only if qty > 1, to avoid negative nrs
+                cart[i].quantity -= 1; 
             } else{
-                removeFromCart(id);
+                removeFromCart(id); //if qty !> 1, then call function to remove item from cart
             }
             break;
         }
     }
 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    displayCart(cart);
+    localStorage.setItem('cart', JSON.stringify(cart)); // save updated cart to localStorage
+    displayCart(cart); // display the updated cart
 
     if(typeof window.updateCartCount === 'function'){
-        window.updateCartCount();
+        window.updateCartCount(); // update cart counter
     }
 }
 
 function increaseQty(id){
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');   //same as above
 
     for (let i = 0; i < cart.length; i++){
         if (cart[i].id == id){
-            cart[i].quantity += 1;
+            cart[i].quantity += 1; //unlimited adding, due to stock check AFTER
             break;
         }
     }
 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    displayCart(cart);
+    localStorage.setItem('cart', JSON.stringify(cart));  //save updated cart
+    displayCart(cart);  //display updated cart
 
     if(typeof window.updateCartCount === 'function'){
-        window.updateCartCount();
+        window.updateCartCount();  //update cart counter
     }
 }
 
