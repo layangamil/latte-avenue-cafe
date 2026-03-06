@@ -18,6 +18,7 @@ let newRows = {
 
 // 1. Get all the items
 async function loadMenuItems(){
+    console.log('LoadMenuItems function is running!');
     const token = localStorage.getItem('token');
     
     try{
@@ -28,8 +29,22 @@ async function loadMenuItems(){
         });
         const items = await response.json();
 
-        const drinks = items.filter(item => item.category?.toLowerCase().includes('drink'));
-        const desserts = items.filter(item => item.category?.toLowerCase().includes('dessert'));
+        const drinks = [];
+        for (const item of items){
+            if (item.category.toLowerCase().includes('drink')){
+                drinks.push(item);
+            }
+        }
+
+        const desserts = [];
+        for (const item of items){
+            if (item.category.toLowerCase().includes('dessert')){
+                desserts.push(item);
+            }
+        }
+
+        // REMOVE //const drinks = items.filter(item => item.category?.toLowerCase().includes('drink'));
+        // REMOVE //const desserts = items.filter(item => item.category?.toLowerCase().includes('dessert'));
 
         displayItems('drinks-list', drinks, 'drinks');
         displayItems('desserts-list', desserts, 'desserts');
@@ -40,6 +55,7 @@ async function loadMenuItems(){
 }
 
 function displayItems(containerId, items, category) {
+    console.log('displayItems function is running! With: ', containerId, items, category);
     const container = document.getElementById(containerId);  //'drinks-list' or 'desserts-list'
 
     if (items.length === 0 && (!newRows[category] || newRows[category].length === 0)){
@@ -81,6 +97,7 @@ function displayItems(containerId, items, category) {
 }
 
 function getNewItemRow(category, index){
+    console.log('getNewItemRow function is running! With: ', category, index);
     return `
         <div class="menu-item-row new-item-row" data-new-index="${index}" data-category="${category}">
             <div class="fields-row">
@@ -104,6 +121,7 @@ function getNewItemRow(category, index){
 }
 
 function addNewRow(category){
+    console.log('addNewRow function is running! With: ', category);
     //Lägg till ny tom rad till arrayen
     newRows[category].push({});
     //refrehs displayen
@@ -111,6 +129,7 @@ function addNewRow(category){
 }
 
 function cancelNewItem(category, index){
+    console.log('cancelNewItem function is running! With: ', category, index);
     //ta bort raden från araryen
     newRows[category].splice(index, 1);
     //refrehsa displayen
@@ -118,6 +137,7 @@ function cancelNewItem(category, index){
 }
 
 async function saveNewItem(category, index){
+    console.log('saveNewItem function is running! With: ', category, index);
     const token = localStorage.getItem('token');
     //get value från input fält
     const name = document.getElementById(`new-${category}-${index}-name`).value;
@@ -170,6 +190,7 @@ async function saveNewItem(category, index){
 }
 
 async function updateItem(id, buttonElement, silent=false){
+    console.log('uodateItem function is running! With: ', id, buttonElement);
     const token = localStorage.getItem('token');
     const row = buttonElement.closest('.menu-item-row');
 
@@ -222,6 +243,7 @@ async function updateItem(id, buttonElement, silent=false){
 }
 
 async function deleteItem(id) {
+    console.log('deleteItem function is running! With: ', id);
     if (!confirm('Delete this item?')) return;
 
     const token = localStorage.getItem('token');
@@ -248,24 +270,9 @@ async function deleteItem(id) {
 }
 
 function updatePublicMenu() {
+    console.log('updatePublicMenu function is running!');
     localStorage.setItem('menuUpdated', Date.now());
 }
-
-// function saveAllChanges(){
-//     alert('All changes saved!');
-//     loadMenuItems();
-// }
-
-// function cancelAllChanges(){
-//     if (confirm('Discard all unsaved new changes?')) {
-//         //clear alla  nya rader
-//         newRows = {
-//             drinks: [],
-//             desserts: []
-//         };
-//         loadMenuItems();
-//     }
-// }
 
 window.addNewRow = addNewRow;
 window.updateItem = updateItem;

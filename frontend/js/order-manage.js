@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 async function loadAllOrders() {
+    console.log('loadAllOrders function is running!');
     const token = localStorage.getItem('token');
 
     try {
@@ -26,69 +27,15 @@ async function loadAllOrders() {
     }
 }
 
-/*
 function displayOrders(orders) {
-    const container = document.getElementById('orders-list');
-    let html = '';
-
-    for (let i = 0; i < orders.length; i++){
-        const order = orders[i];
-
-        let itemsSummary = '';
-        for (let j = 0; j < order.items.length; j++) {
-            if (j > 0) itemsSummary += ', ';
-            itemsSummary += `${order.items[j].quantity}x ${order.items[j].name}`;
+    console.log('displayOrders function is running! With: ', orders);
+    const activeOrders = [];
+    for (const order of orders){
+        if (order.status !== 'cancelled' && order.status !== 'completed'){
+            activeOrders.push(order);
         }
-
-        const customerName = order.first_name + ' ' + order.last_name;
-        
-
-
-        html += `
-            <div class="order-card" data-id="${order.id}">
-                <div>
-                    <strong>Order #${order.id}</strong> - ${customerName}
-                    <br>Status: ${order.status}
-                    <br>Items: ${itemsSummary}
-                    <br>Total: ${order.total} SEK
-                </div>
-                <div>
-                    <!-- 2. GET /api/orders/:id -- show details-->
-                    <button onclick="viewOrder(${order.id})">View</button>
-                    <!-- 3. PUT/api/orders/:id/status -- update status-->
-                    <select onchange="updateStatus(${order.id}, this.value)">
-                        <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
-                        <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>Preparing</option>
-                        <option value="ready" ${order.status === 'ready' ? 'selected' : ''}>Ready</option>
-                        <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
-                        <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-                    </select>
-                </div>
-            </div>
-        `;
     }
-    container.innerHTML = html;
-}
-    */
-
-async function loadAllOrders() {
-    const token = localStorage.getItem('token');
-
-    try {
-        const response = await fetch('/api/orders', {
-            headers: {'Authorization': 'Bearer ' + token}
-        });
-
-        const orders = await response.json();
-        displayOrders(orders);
-
-    } catch (error) {
-        console.log('Error: ', error);
-    }
-}
-
-function displayOrders(orders) {
-    const activeOrders = orders.filter(order => order.status !== 'completed' && order.status !== 'cancelled');
+    // REMOVE //const activeOrders = orders.filter(order => order.status !== 'completed' && order.status !== 'cancelled');
     
     
     const container = document.getElementById('orders-list');
@@ -137,6 +84,7 @@ function displayOrders(orders) {
 }
 
 async function viewOrder(orderId) { 
+    console.log('viewOrder function is running! With: ', orderId);
     const token = localStorage.getItem('token');
 
     const response = await fetch(`/api/orders/${orderId}`, {
@@ -155,6 +103,7 @@ Can cancel: ${order.can_cancel}`);
 }
 
 function formatItems(items){
+    console.log('formatItems function is running! With: ', items);
     let result = '';
     for (let i = 0; i < items.length; i++){
         const item = items[i];
@@ -164,6 +113,7 @@ function formatItems(items){
 }
 
 async function updateStatus(orderId, newStatus) {
+    console.log('updateStatus function is running! With: ', orderId, newStatus);
     const token = localStorage.getItem('token');
 
     const response = await fetch(`/api/orders/${orderId}/status`, {

@@ -3,24 +3,32 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 async function loadPublicMenu(){
+    console.log('LoadPublicMenu function is running!');
     try {
         const response = await fetch('/api/items');
         const items = await response.json();
-        
-        console.log('All items:', items); // ADD THIS
 
-        const drinks = items.filter(item => {
-            console.log(`Item "${item.name}" category: "${item.category}"`); // ADD THIS
-            return item.category?.toLowerCase().includes('drink');
-        });
+        const drinks = [];
+        for (const item of items){
+            if (item.category.toLowerCase().includes('drink')){
+                drinks.push(item);
+            }
+        }
+
+        const desserts = [];
+        for (const item of items){
+            if (item.category.toLowerCase().includes('dessert')){
+                desserts.push(item);
+            }
+        }
+
+        // REMOVE // const drinks = items.filter(item => {
+        //     return item.category?.toLowerCase().includes('drink');
+        // });
         
-        const desserts = items.filter(item => {
-            console.log(`Item "${item.name}" category: "${item.category}"`); // ADD THIS
-            return item.category?.toLowerCase().includes('dessert');
-        });
-        
-        console.log('Drinks found:', drinks.length); // ADD THIS
-        console.log('Desserts found:', desserts.length); // ADD THIS
+        // REMOVE //const desserts = items.filter(item => {
+        //     return item.category?.toLowerCase().includes('dessert');
+        // });
 
         displayMenuItems('drinks-menu', drinks);
         displayMenuItems('desserts-menu', desserts);
@@ -31,6 +39,7 @@ async function loadPublicMenu(){
 }
 
 function displayMenuItems(containerId, items){
+    console.log('Displaying menu items: ', items);
     const container = document.getElementById(containerId);
     if (!container) return;
 

@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 async function loadOrderDetails(orderId){
+    console.log('loadOrderDetails function is running! With: ', orderId);
     const token = localStorage.getItem('token');
     try{
         const response = await fetch(`/api/orders/${orderId}`, {
@@ -35,6 +36,7 @@ async function loadOrderDetails(orderId){
 }
 
 function startCountdown(secondsLeft, orderId){
+    console.log('startCountdown function is running! With: ', secondsLeft, orderId);
     const timerElement = document.getElementById('countdown-timer');
     const cancelSection = document.getElementById('cancel-section');
     const cancelMessage = document.getElementById('cancel-message');
@@ -65,6 +67,7 @@ function startCountdown(secondsLeft, orderId){
 }
 
 async function cancelOrder(orderId, timer, cancelSection, cancelMessage){
+    console.log('cancelOrder function is running! With: ', orderId, timer, cancelSection, cancelMessage);
     const token = localStorage.getItem('token');
 
     //stop the countdown
