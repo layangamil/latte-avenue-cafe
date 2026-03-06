@@ -3,16 +3,18 @@ document.addEventListener('DOMContentLoaded', function(){
     const role = localStorage.getItem('userRole');
 
     if(!token || role !== 'staff'){  //means they're a customer or not logged in staff
+        console.log('Role: ', role);
         window.location.href = "login.html";
         return;
     }
-
+    console.log('User-ID: ', token?.id);
     loadAllOrders();
 });
 
 async function loadAllOrders() {
     console.log('loadAllOrders function is running!');
     const token = localStorage.getItem('token');
+    console.log('User-ID: ', token?.id);
 
     try {
         const response = await fetch('/api/orders', {
@@ -86,6 +88,7 @@ function displayOrders(orders) {
 async function updateStatus(orderId, newStatus) {
     console.log('updateStatus function is running! With: ', orderId, newStatus);
     const token = localStorage.getItem('token');
+    console.log('User-ID: ', token?.id);
 
     const response = await fetch(`/api/orders/${orderId}/status`, {
         method: 'PUT',
@@ -108,6 +111,7 @@ async function updateStatus(orderId, newStatus) {
 async function viewOrder(orderId) { 
     console.log('viewOrder function is running! With: ', orderId);
     const token = localStorage.getItem('token');
+    console.log('User-ID: ', token?.id);
 
     const response = await fetch(`/api/orders/${orderId}`, {
         headers: { 'Authorization': 'Bearer ' + token}

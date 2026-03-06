@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function(){
         window.location.href = 'login.html';
         return;
     }
+    console.log('User-ID: ', token?.id);
     loadOrders();
 });
 
@@ -16,6 +17,7 @@ function showError(message){
 async function loadOrders() {
     console.log('loadOrders function is running!');
     const token = localStorage.getItem('token');
+    console.log('User-ID: ', token?.id);
 
     try {
         const response = await fetch('/api/orders/myorders', {

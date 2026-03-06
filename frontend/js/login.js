@@ -81,7 +81,8 @@ async function registerUser(firstName, lastName, email, password) {
 }
 
 async function loginUser(email, password, role) {  //async function will await for promises, modern way to handle API calls
-    console.log('loginUser function is running! With: ', email, role);
+    console.log('loginUser function is running!');
+    console.log('Role: ', role);
     // first check if user already logged, if token exists
     const existingToken = localStorage.getItem('token');
     if (existingToken){
@@ -111,6 +112,7 @@ async function loginUser(email, password, role) {  //async function will await f
         if (data.token) { //if success, token exists
             localStorage.setItem('token', data.token);  //save token
             localStorage.setItem('userRole', role);     //save user role
+            console.log('User-ID: ', token?.id);
 
             //check localStorage if redirectAfterLogin exists (from cart page!)
             const redirectTo = localStorage.getItem('redirectAfterLogin');
