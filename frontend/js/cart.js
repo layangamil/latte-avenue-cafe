@@ -30,10 +30,23 @@ document.addEventListener('DOMContentLoaded', function(){
                 if (stockResult.outOfStock && stockResult.outOfStock.length > 0) {
                     //, create a list of the items that are sold out + infrom customer
                     const items = stockResult.outOfStock.map(i => i.name).join(', ');
-                    alert(`Sorry these items are sold out: ${items}`);
+                    alert(`Sorry, these items are sold out: ${items}`);
 
-                    //now create  and save a new cart with only items in stock and display that cart instead
-                    const newCart = cart.filter(item => !stockResult.outOfStock.some(out => out.id == item.id));
+                    //now create and save a new cart with only items in stock and display that cart instead
+                    const newCart = [];
+                    for (const item of cart){
+                        let inStock = true;
+                        for (const product of stockResult.outOfStock) {
+                            if (out.id == item.id){
+                                inStock = false;
+                                break;
+                            }
+                        }
+                        if (inStock){
+                            newCart.push(item);
+                        }
+                    }
+                    // REMOVE //const newCart = cart.filter(item => !stockResult.outOfStock.some(out => out.id == item.id));
                     localStorage.setItem('cart', JSON.stringify(newCart));
                     displayCart(newCart);
                     return;
@@ -57,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 //function: displays cart items
 function displayCart(cart) {
+    console.log('displayCart function is running! With: ', cart);
     const container = document.getElementById('cart-items-container');
     const totalEl = document.getElementById('cart-total');
 
@@ -119,6 +133,7 @@ function displayCart(cart) {
 }
 
 function decreaseQty(id){
+    console.log('decreaseQty function is running! With: ', id);
     let cart = JSON.parse(localStorage.getItem('cart') || '[]'); //load cart from localStorage, if not exist, create empty array
 
     for (let i = 0; i < cart.length; i++){ //loop through cart to find item.id that matches one you want to decrease
@@ -141,6 +156,7 @@ function decreaseQty(id){
 }
 
 function increaseQty(id){
+    console.log('increaseQty function is running! With: ', id);
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');   //same as above
 
     for (let i = 0; i < cart.length; i++){
@@ -159,8 +175,17 @@ function increaseQty(id){
 }
 
 function removeFromCart(id) {  //takes item id for that specific item
+    console.log('removeFromeCart function is running! With: ', id);
     let cart = JSON.parse(localStorage.getItem('cart')|| '[]'); //get current cart from storage
-    cart = cart.filter(item => item.id != id); // create new array with items whose id != one we're looking for
+    
+    const updatedCart = [];
+    for (const item of cart){
+        if(item.id != id){
+            updatedCart.push(item);
+        }
+    }
+    cart = updatedCart;
+    // REMOVE // cart = cart.filter(item => item.id != id); // create new array with items whose id != one we're looking for
     localStorage.setItem('cart', JSON.stringify(cart)); //save the new array to localStorage and convert o JSON format
     displayCart(cart); //display the new cart without removed items
 

@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 async function loginUser(email, password, role) {  //async function will await for promises, modern way to handle API calls
+    console.log('loginUser function is running! With: ', email, role);
     // first check if user already logged, if token exists
     const existingToken = localStorage.getItem('token');
     if (existingToken){
@@ -57,7 +58,6 @@ async function loginUser(email, password, role) {  //async function will await f
     }
     
     try { 
-
         const response = await fetch('/api/login', {  // API endpoint - fetch send HTTP request to backend
             method: 'POST',                                                //API method - POST processing data (login attempt)
             headers: {'Content-Type': 'application/json'},                 // Instruction for server - "im sending json"
@@ -96,6 +96,7 @@ async function loginUser(email, password, role) {  //async function will await f
 }
 
 async function registerUser(firstName, lastName, email, password) {
+    console.log('registerUser function is running! With: ', firstName, lastName, email);
     try {
         // Send registration data to backend with POST method + values from input field
         const response = await fetch('/api/register', {

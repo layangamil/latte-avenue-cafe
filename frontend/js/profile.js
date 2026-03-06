@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 async function loadUserProfile() {
+    console.log('loadUserProfile function is running!');
     const token = localStorage.getItem('token');
 
     try {

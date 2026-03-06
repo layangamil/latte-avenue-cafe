@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 async function loadOrders() {
+    console.log('loadOrders function is running!');
     const token = localStorage.getItem('token');
 
     try {
@@ -33,6 +34,7 @@ async function loadOrders() {
 
 //displaying orders function
 function displayOrders(orders){
+    console.log('displayOrders function is running! With: ', orders);
     let currentOrders = [];
     let history = [];
 
@@ -73,6 +75,7 @@ function displayOrders(orders){
 }
 
 function renderCurrentOrder(order){
+    console.log('renderCurrentOrder function is running! With: ', order);
     let itemsHtml = '';
     if (order.items && order.items.length > 0){
         for (let i = 0; i < order.items.length; i++){
@@ -102,6 +105,7 @@ function renderCurrentOrder(order){
 }
 
 function renderHistoryOrder(order){
+    console.log('renderHistoryOrder function is running! With: ', order);
     let summaryHtml = '';
     if (order.items && order.items.length > 0){
         for (let i = 0; i < order.items.length; i++){
@@ -130,6 +134,7 @@ function renderHistoryOrder(order){
 }
 
 function showError(message){
+    console.log('showError function is running! With: ', message);
     document.getElementById('current-order-box').innerHTML = `<p class="error-message">${message}</p>`;
     document.getElementById('order-history-box').innerHTML = '';
 }

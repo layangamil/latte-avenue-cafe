@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function(){ //w/o we might not fin
 });
 
 function showOrder(cart){  //takes cart array as argument
+    console.log('showOrder function is running! With: ', cart);
     let subtotal = 0;  
     let itemsHtml = '';  //HTML for all items
 
@@ -52,6 +53,7 @@ function showOrder(cart){  //takes cart array as argument
 }
 
 async function placeOrder(cart) {
+    console.log('placeOrder function is running! With: ', cart);
     const method = document.querySelector('input[name="paymentMethod"]:checked').value;  // checks which button that is 'checked' and gets its value '.value' (visa, applepay or klarna)
     const token = localStorage.getItem('token'); //checks if logged in
 
@@ -75,7 +77,20 @@ async function placeOrder(cart) {
             alert(`Sorry these items are sold out: ${items}`); //show them here in alert msg to user
 
             //create new cart without out of stock items, save that and take user back to cart page
-            const newCart = cart.filter(item => !stockResult.outOfStock.some(out => out.id == item.id));
+            const newCart = [];
+                    for (const item of cart){
+                        let inStock = true;
+                        for (const product of stockResult.outOfStock) {
+                            if (out.id == item.id){
+                                inStock = false;
+                                break;
+                            }
+                        }
+                        if (inStock){
+                            newCart.push(item);
+                        }
+                    }
+            // REMOVE //const newCart = cart.filter(item => !stockResult.outOfStock.some(out => out.id == item.id));
             localStorage.setItem('cart', JSON.stringify(newCart));
             window.location.href = 'cart.html';
             return; // does not order
@@ -97,7 +112,11 @@ async function placeOrder(cart) {
     }
 
     //get totl of all cart items
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    let total = 0;
+    for (const item of cart){
+        total += item.price * item.quantity;
+    }
+    // REMOVE //const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
     const orderData = {  //gets all the info that will be sent to backend
         items: cart.map(item => ({  // map() creates an array where every item get reformated to macth backend
