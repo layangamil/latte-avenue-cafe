@@ -160,25 +160,6 @@ function decreaseQty(id){
     }
 }
 
-function increaseQty(id){
-    console.log('increaseQty function is running! With: ', id);
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');   //same as above
-
-    for (let i = 0; i < cart.length; i++){
-        if (cart[i].id == id){
-            cart[i].quantity += 1; //unlimited adding, due to stock check AFTER
-            break;
-        }
-    }
-
-    localStorage.setItem('cart', JSON.stringify(cart));  //save updated cart
-    displayCart(cart);  //display updated cart
-
-    if(typeof window.updateCartCount === 'function'){
-        window.updateCartCount();  //update cart counter
-    }
-}
-
 function removeFromCart(id) {  //takes item id for that specific item
     console.log('removeFromeCart function is running! With: ', id);
     let cart = JSON.parse(localStorage.getItem('cart')|| '[]'); //get current cart from storage
@@ -198,6 +179,26 @@ function removeFromCart(id) {  //takes item id for that specific item
         window.updateCartCount();
     }
 }
+
+function increaseQty(id){
+    console.log('increaseQty function is running! With: ', id);
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');   //same as above
+
+    for (let i = 0; i < cart.length; i++){
+        if (cart[i].id == id){
+            cart[i].quantity += 1; //unlimited adding, due to stock check AFTER
+            break;
+        }
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));  //save updated cart
+    displayCart(cart);  //display updated cart
+
+    if(typeof window.updateCartCount === 'function'){
+        window.updateCartCount();  //update cart counter
+    }
+}
+
 window.decreaseQty = decreaseQty;
 window.increaseQty = increaseQty;
 window.removeFromCart = removeFromCart; //makes function globally available. Since it's called from onclick in HTML (dynamic). W/o function only in file

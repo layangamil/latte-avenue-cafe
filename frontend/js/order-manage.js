@@ -83,6 +83,28 @@ function displayOrders(orders) {
     }
 }
 
+async function updateStatus(orderId, newStatus) {
+    console.log('updateStatus function is running! With: ', orderId, newStatus);
+    const token = localStorage.getItem('token');
+
+    const response = await fetch(`/api/orders/${orderId}/status`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify({status: newStatus})
+    });
+
+    if (response.ok) {
+        alert('Status Updated!');
+        loadAllOrders();
+    } else {
+        const data = await response.json();
+        alert('Error: ' + data.error);
+    }
+}
+
 async function viewOrder(orderId) { 
     console.log('viewOrder function is running! With: ', orderId);
     const token = localStorage.getItem('token');
@@ -110,26 +132,4 @@ function formatItems(items){
         result += `${item.quantity}x ${item.name} - ${item.price_at_time}SEK\n`;
     }
     return result;
-}
-
-async function updateStatus(orderId, newStatus) {
-    console.log('updateStatus function is running! With: ', orderId, newStatus);
-    const token = localStorage.getItem('token');
-
-    const response = await fetch(`/api/orders/${orderId}/status`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token,
-        },
-        body: JSON.stringify({status: newStatus})
-    });
-
-    if (response.ok) {
-        alert('Status Updated!');
-        loadAllOrders();
-    } else {
-        const data = await response.json();
-        alert('Error: ' + data.error);
-    }
 }
