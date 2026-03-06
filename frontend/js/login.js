@@ -43,6 +43,43 @@ document.addEventListener('DOMContentLoaded', function(){
     } 
 });
 
+async function registerUser(firstName, lastName, email, password) {
+    console.log('registerUser function is running! With: ', firstName, lastName, email);
+    try {
+        // Send registration data to backend with POST method + values from input field
+        const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                first_name: firstName,  // Backend expects underscore
+                last_name: lastName,    // Backend expects underscore
+                email: email,
+                password: password
+            })
+        });
+        
+        // waits for response then convert to JS object
+        const data = await response.json();
+        
+        // Check if account was created
+        if (data.message && data.message.includes('created')) {
+            alert('Account created! You may login.'); //if yes, send user a message
+            // Clear the form fields so user can login
+            document.getElementById('customer-signup-firstname').value = '';
+            document.getElementById('customer-signup-lastname').value = '';
+            document.getElementById('customer-signup-email').value = '';
+            document.getElementById('customer-signup-password').value = '';
+        } else {
+            // If no, show error message from server
+            alert('Error: ' + (data.message));
+        }
+    } catch (error) {
+        // Network or connection error
+        console.log('Error:', error);
+        alert('Cannot connect to server');
+    }
+}
+
 async function loginUser(email, password, role) {  //async function will await for promises, modern way to handle API calls
     console.log('loginUser function is running! With: ', email, role);
     // first check if user already logged, if token exists
@@ -90,43 +127,6 @@ async function loginUser(email, password, role) {  //async function will await f
             alert('Login failed:' + (data.message));
         }
     } catch (error) { // lastly, catch network issue
-        console.log('Error:', error);
-        alert('Cannot connect to server');
-    }
-}
-
-async function registerUser(firstName, lastName, email, password) {
-    console.log('registerUser function is running! With: ', firstName, lastName, email);
-    try {
-        // Send registration data to backend with POST method + values from input field
-        const response = await fetch('/api/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                first_name: firstName,  // Backend expects underscore
-                last_name: lastName,    // Backend expects underscore
-                email: email,
-                password: password
-            })
-        });
-        
-        // waits for response then convert to JS object
-        const data = await response.json();
-        
-        // Check if account was created
-        if (data.message && data.message.includes('created')) {
-            alert('Account created! You may login.'); //if yes, send user a message
-            // Clear the form fields so user can login
-            document.getElementById('customer-signup-firstname').value = '';
-            document.getElementById('customer-signup-lastname').value = '';
-            document.getElementById('customer-signup-email').value = '';
-            document.getElementById('customer-signup-password').value = '';
-        } else {
-            // If no, show error message from server
-            alert('Error: ' + (data.message));
-        }
-    } catch (error) {
-        // Network or connection error
         console.log('Error:', error);
         alert('Cannot connect to server');
     }

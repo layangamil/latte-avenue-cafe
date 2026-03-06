@@ -6,6 +6,18 @@ document.addEventListener('DOMContentLoaded', function(){
     setupSignoutButtons();
 });
 
+function setupSignoutButtons(){
+    console.log('setupSignoutButtons function is running!');
+
+    const customerSignoutBtn = document.getElementById('customerSignoutBtn');
+    if(customerSignoutBtn){
+        customerSignoutBtn.addEventListener('click', function(event){
+            event.preventDefault(); //stops what the button standard behaviour, go to '#' and instead does below
+            signout();
+        });
+    }
+}
+
 function updateUIBasedOnLogin(){
     console.log('updateUIBasedOnLogin function is running!');
 
@@ -20,18 +32,6 @@ function updateUIBasedOnLogin(){
     } else {
         if (loginLink) loginLink.style.display = 'inline-block';
         if(accountDropdown) accountDropdown.style.display = 'none';
-    }
-}
-
-function setupSignoutButtons(){
-    console.log('setupSignoutButtons function is running!');
-
-    const customerSignoutBtn = document.getElementById('customerSignoutBtn');
-    if(customerSignoutBtn){
-        customerSignoutBtn.addEventListener('click', function(event){
-            event.preventDefault(); //stops what the button standard behaviour, go to '#' and instead does below
-            signout();
-        });
     }
 }
 

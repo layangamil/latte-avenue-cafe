@@ -7,6 +7,12 @@ document.addEventListener('DOMContentLoaded', function(){
     loadOrders();
 });
 
+function showError(message){
+    console.log('showError function is running! With: ', message);
+    document.getElementById('current-order-box').innerHTML = `<p class="error-message">${message}</p>`;
+    document.getElementById('order-history-box').innerHTML = '';
+}
+
 async function loadOrders() {
     console.log('loadOrders function is running!');
     const token = localStorage.getItem('token');
@@ -133,8 +139,3 @@ function renderHistoryOrder(order){
     `;
 }
 
-function showError(message){
-    console.log('showError function is running! With: ', message);
-    document.getElementById('current-order-box').innerHTML = `<p class="error-message">${message}</p>`;
-    document.getElementById('order-history-box').innerHTML = '';
-}

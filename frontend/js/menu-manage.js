@@ -16,7 +16,7 @@ let newRows = {
     desserts: []
 };
 
-// 1. Get all the items
+// Get all the items
 async function loadMenuItems(){
     console.log('LoadMenuItems function is running!');
     const token = localStorage.getItem('token');
@@ -128,14 +128,6 @@ function addNewRow(category){
     loadMenuItems();
 }
 
-function cancelNewItem(category, index){
-    console.log('cancelNewItem function is running! With: ', category, index);
-    //ta bort raden från araryen
-    newRows[category].splice(index, 1);
-    //refrehsa displayen
-    loadMenuItems();
-}
-
 async function saveNewItem(category, index){
     console.log('saveNewItem function is running! With: ', category, index);
     const token = localStorage.getItem('token');
@@ -179,6 +171,41 @@ async function saveNewItem(category, index){
             await loadMenuItems();
             // uppdatera också public meny på index.html
             updatePublicMenu();
+        } else {
+            const data = await response.json();
+            alert('Error: ' + data.error);
+        }
+    } catch(error){
+        console.log('Error:', error);
+        alert('Cannot connect to server');
+    }
+}
+
+function cancelNewItem(category, index){
+    console.log('cancelNewItem function is running! With: ', category, index);
+    //ta bort raden från araryen
+    newRows[category].splice(index, 1);
+    //refrehsa displayen
+    loadMenuItems();
+}
+
+async function deleteItem(id) {
+    console.log('deleteItem function is running! With: ', id);
+    if (!confirm('Delete this item?')) return;
+
+    const token = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`/api/items/${id}`, {
+            method: 'DELETE',
+            headers: {'Authorization': 'Bearer ' + token}
+        });
+
+        if (response.ok) {
+            alert('Item deleted!');
+            await loadMenuItems();
+            updatePublicMenu();
+
         } else {
             const data = await response.json();
             alert('Error: ' + data.error);
@@ -242,32 +269,6 @@ async function updateItem(id, buttonElement, silent=false){
     }
 }
 
-async function deleteItem(id) {
-    console.log('deleteItem function is running! With: ', id);
-    if (!confirm('Delete this item?')) return;
-
-    const token = localStorage.getItem('token');
-
-    try {
-        const response = await fetch(`/api/items/${id}`, {
-            method: 'DELETE',
-            headers: {'Authorization': 'Bearer ' + token}
-        });
-
-        if (response.ok) {
-            alert('Item deleted!');
-            await loadMenuItems();
-            updatePublicMenu();
-
-        } else {
-            const data = await response.json();
-            alert('Error: ' + data.error);
-        }
-    } catch(error){
-        console.log('Error:', error);
-        alert('Cannot connect to server');
-    }
-}
 
 function updatePublicMenu() {
     console.log('updatePublicMenu function is running!');
