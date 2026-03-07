@@ -119,12 +119,12 @@ async function viewOrder(orderId) {
 
     const order = await response.json();
 
-    alert(`Order #${order.orderId}
+    alert(`Order #${order.order_id}
 Customer: ${order.order.first_name} ${order.order.last_name} 
 Status: ${order.order.status} 
 Items: 
 ${(formatItems(order.items))}
-Total: ${order.orderTotal} SEK
+Total: ${order.order.total_amount} SEK
 Can cancel: ${order.can_cancel}`);
 }
 
