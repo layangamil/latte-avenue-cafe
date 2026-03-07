@@ -119,23 +119,12 @@ async function viewOrder(orderId) {
 
     const order = await response.json();
 
-    // LOGGA HELA SVARET FÖR ATT SE STRUKTUREN
-    console.log('Full order response:', order);
-    console.log('Order object:', order.order);
-    console.log('Items:', order.items);
-
-    // Testa olika sätt att komma åt total
-    console.log('order.order.total:', order?.order?.total);
-    console.log('order.total:', order?.total);
-    console.log('order.order.Total:', order?.order?.Total);
-    console.log('order.order.sum:', order?.order?.sum);
-
-    alert(`Order #${order.order.id}
+    alert(`Order #${order.orderId}
 Customer: ${order.order.first_name} ${order.order.last_name} 
 Status: ${order.order.status} 
 Items: 
 ${(formatItems(order.items))}
-Total: ${order.order.total} SEK
+Total: ${order.orderTotal} SEK
 Can cancel: ${order.can_cancel}`);
 }
 
