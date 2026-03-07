@@ -1206,6 +1206,7 @@ nav {
 
     .order-actions {
         gap: 0.3rem;
+        margin: 0 0.5rem;
     }
 
     .order-actions select{
