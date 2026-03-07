@@ -878,6 +878,11 @@ nav {
     display: inline-block;  /* makes dropdown is next to other links*/
 }
 
+.profile-btn {
+    background-color: none;
+    border: none;
+}
+
 .profile-btn:hover {
     transform: none;
 }
