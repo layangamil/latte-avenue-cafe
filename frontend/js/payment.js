@@ -60,7 +60,7 @@ async function placeOrder(cart) {
 
     //check stock by sending fetch request to backend with items in cart
     try {
-        const stockResponse = await fetch('/api/check-stock', {
+        const stockResponse = await fetch('/api/cart/check-stock', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
