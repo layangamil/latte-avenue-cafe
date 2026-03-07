@@ -68,6 +68,7 @@ body {
     font-family: 'Playfair Display', serif;
     font-size: 2.2rem;                 /* rem = scales with browser settings (accessible) , px = less flexible */
     font-weight: 900;
+    color: #5d4037;
     color: #8b6b61;
     text-decoration: none;
     margin:0;
