@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
             //want to check if stock is enough, avoids refunds
             try { //sending fetch request to backend to check stock
-                const stockResponse = await fetch('/api/check-stock', {
+                const stockResponse = await fetch('/api/cart/check-stock', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
