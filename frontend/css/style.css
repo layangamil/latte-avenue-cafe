@@ -545,9 +545,9 @@ nav {
     background-color: #e6bcc2;
     color:#fff;
     font-family: 'Playfair Display', serif;
+    border-color:#e6bcc2;
     font-size: 1rem;
     border-radius: 10px;
-    border-color:#e6bcc2;
     padding: 0.4rem;
 }
 
@@ -556,8 +556,6 @@ nav {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
     font-weight: 600;
-
-    margin-bottom: 2rem;
 }
 
 .input-container {
@@ -611,10 +609,10 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #faf7f2;
-    margin: 2rem auto;
     padding: 1rem 1rem;
     border-radius:5px;
+    background-color: #faf7f2;
+    margin: 2rem auto;
     box-shadow: 0 5px 15px rgba(139, 107, 97, 0.2);
 }
 
@@ -638,10 +636,10 @@ nav {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: white;
-    padding: 0.3rem 0.5rem;
     border-radius: 20px;
     border: 1px solid #e6bcc2;
+    background: white;
+    padding: 0.3rem 0.5rem;
 }
 
 .qty-btn{
@@ -698,8 +696,8 @@ nav {
 
 .cart-total h3{
     font-size: 1.5rem;
-    color: #5d4037;
     margin:0.5rem 0;
+    color: #5d4037;
     font-family: 'Playfair Display', serif;
 }
 
@@ -717,9 +715,9 @@ nav {
     background: #e6bcc2;
     color: white;
     font-family: 'Playfair Display', serif;
+    border: none;
     padding: 1rem 2rem;
     border-radius: 2px;
-    border: none;
 }
 
 .empty-cart{
@@ -779,11 +777,11 @@ nav {
 
 
 .payment-row {
+    color:#5d4037;
+    font-size: 1rem;
     display: flex;
     justify-content: space-between;
     gap: 2rem;
-    color:#5d4037;
-    font-size: 1rem;
     margin-bottom: 0.5rem;
 }
 
@@ -809,8 +807,8 @@ nav {
 }
 
 .card-details-box h3{
-    color:#5d4037;
     font-size: 1.5rem;
+    color:#5d4037;
     margin-bottom: 1rem;
 }
 
@@ -835,12 +833,12 @@ nav {
 .payment-action-btn {
     background-color:#8b6b61;
     color: white;
-    font-family: 'Playfair Display', serif;
-    font-size:1rem;
     padding: 1rem 1.5rem;
     border-radius: 2px;
     border: none;
     margin-top:1rem;
+    font-family: 'Playfair Display', serif;
+    font-size:1rem;
 }
 
 .payment-action-btn:hover{
@@ -888,9 +886,9 @@ nav {
 }
 
 .dropdown-content {
+    background-color: white;
     display: none;
     position: absolute;
-    background-color: white;
     min-width: 160px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     z-index: 1;
@@ -909,10 +907,10 @@ nav {
 
 .page-header h1{
     color:#8b6b61;
-    font-family: 'Playfair Display', serif;
     font-size: 2.3rem;
-    font-weight: 600;
     margin: 4rem 0rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
 }
 
 .section-header h2{
@@ -942,18 +940,18 @@ nav {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-right: auto;
     width: 100%;
     max-width: 400px;
-    margin-right: auto;
 }
 
 .password-section-container input{
-    width: 400px;
     height: 2rem;
+    width: 400px;
     padding: 0.6rem;
-    margin-bottom: 0.5rem;
     border:1px solid #8b6b61;
     border-radius: 0.7rem;
+    margin-bottom: 0.5rem;
 }
 
 .password-section-container input:focus{
@@ -982,10 +980,10 @@ nav {
     flex: 0 0 auto;
     max-width: 350px;
     width: 100%;
-    margin: 0 0 2rem 0;
-    padding-bottom: 1rem;
     border-bottom: 1px solid #c3949a;
     font-family: 'Cormorant Garamond', serif;
+    margin: 0 0 2rem 0;
+    padding-bottom: 1rem;
 }
 
 .order-header span:last-child em{
@@ -1020,12 +1018,12 @@ nav {
 #current-order-box, #order-history-box {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: minmax(160px, 280px);
+    grid-auto-columns: minmax(16px, 280px);
     gap: 1rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding: 1rem 0.5rem 1.5rem;
     -webkit-overflow-scrolling: touch;
+    padding: 1rem 0.5rem 1.5rem;
 }
 
 @media (max-width: 600px) {       /*mobile*/
@@ -1044,28 +1042,30 @@ nav {
         margin-bottom: 0.3rem;
     }
 
-    .order-card .order-body{
-        font-size:0.8rem;
-    }
-
     .order-card .order-total{
         font-size: 0.9rem;
         margin-top: 0.3rem;
     }
+
+    .order-card .order-body{
+        font-size:0.8rem;
+    }
+
 
     .order.header span:last-child em{
         font-size: 0.7rem;
         padding: 0.1rem 0.5rem;
     }
 
-    .order-body ul{
-        margin: 0.3rem 0 0.5rem 1rem;
-    }
-
     .order-body li{
         font-size: 0.75rem;
         line-height: 1.2;
     }
+
+    .order-body ul{
+        margin: 0.3rem 0 0.5rem 1rem;
+    }
+
 }
 
 @media (min-width: 601px) and (max-width: 1024px){  /*tablet*/
@@ -1073,12 +1073,12 @@ nav {
         grid-auto-columns: 220px;
     }
 
-    .order-card {
-        padding: 1.2rem;
-    }
-
     .order-card .order-header {
         font-size: 1.1rem;
+    }
+
+    .order-card {
+        padding: 1.2rem;
     }
 
     .order-card .order-body{
@@ -1102,9 +1102,9 @@ nav {
 .page-header p{
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.5rem;
+    color: #8b6b61;
     max-width: 600px;
     margin: 0 auto 2rem;
-    color: #8b6b61;
 }
 
 .items-list {
@@ -1160,10 +1160,10 @@ nav {
 .btn-secondary {
     background-color: white;
     color:#8b6b61;
-    font-weight: 600;
-    font-size: 1rem;
     border: none;
     cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
     transition: background 0.3s, transform 0.3s;
 }
 
@@ -1171,13 +1171,6 @@ nav {
     color:#593e35;
     transform: translateY(-2px); 
 }
-
-/* .bottom-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 2rem;
-} */
 
 /*===================================================================*/
                       /* ADMIN - ORDER MANAGE PAGE:*/
@@ -1196,13 +1189,13 @@ nav {
         grid-template-columns: 1fr;
     }
 
+    .order-card strong {
+        font-size: 1.1rem;
+    }
+
     .order-card {
         padding: 0.8rem;
         font-size: 0.9rem;
-    }
-
-    .order-card strong {
-        font-size: 1.1rem;
     }
 
     .order-header {
@@ -1214,16 +1207,16 @@ nav {
         gap: 0.3rem;
     }
 
-    .btn-tertiary {
-        padding: 0.3rem 0.6rem;
-        font-size: 0.8rem;
-        /* max-width: 90px; */
-    }
-
     .order-actions select{
         max-width: 90px;
         padding: 0.3rem;
         font-size:0.8rem;
+    }
+
+    .btn-tertiary {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+        /* max-width: 90px; */
     }
 }
 /*Tablet*/
@@ -1246,17 +1239,17 @@ nav {
         align-items: stretch;
     }
 
+    .order-actions select{
+        width:100%;
+        padding:0.3rem;
+        font-size: 0.8rem;
+    }
+
     .btn-tertiary {
         width: 100%;
         padding: 0.3rem 0.5rem;
         font-size: 0.8rem;
         text-align: center;
-    }
-
-    .order-actions select{
-        width:100%;
-        padding:0.3rem;
-        font-size: 0.8rem;
     }
 }
 
@@ -1266,13 +1259,13 @@ nav {
         gap: 1rem;
     }
 
+    .order-card strong{
+        font-size: 1.1rem;
+    }
+
     .order-card {
         padding: 1rem;
         font-size: 0.9rem;
-    }
-
-    .order-card strong{
-        font-size: 1.1rem;
     }
 
     .order-actions {
@@ -1282,16 +1275,16 @@ nav {
         flex-wrap: wrap;
     }
 
-    .btn-tertiary {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.8rem;
-        white-space: nowrap;
-    }
-
     .order-actions select{
         padding: 0.25rem;
         font-size: 0.8rem;
         max-width: 100px;
+    }
+
+    .btn-tertiary {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
     }
 }
 
@@ -1306,15 +1299,15 @@ nav {
 .order-header {
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid #e6bcc2;
     margin-bottom: 0.5rem;
     padding-bottom: 0.3rem;
-    border-bottom: 1px solid #e6bcc2;
 }
 
 .order-title {
     word-break: break-word;
-    font-weight: 500;
     color:#5d4037;
+    font-weight: 500;
 }
 
 .order-actions {
@@ -1333,12 +1326,12 @@ nav {
 }
 
 .btn-tertiary {
+    cursor: pointer;
     background-color:#8b6b61;
     color:#faf7f2;
     font-weight: 600;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
     transition: background 0.3s;
 }
 
@@ -1347,15 +1340,15 @@ nav {
 }
 
 .order-actions select {
+    color:#5d4037;
+    cursor: pointer;
     border: 1px solid #e6bcc2;
     border-radius: 4px;
     background-color: white;
-    color:#5d4037;
-    cursor: pointer;
 }
 
 .no-orders {
     text-align: center;
-    padding: 4rem;
     color: #8b6b61;
+    padding: 4rem;
 }
