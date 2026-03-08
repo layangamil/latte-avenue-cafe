@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', function(){
             const lastName = document.getElementById('customer-signup-lastname').value;
             const email = document.getElementById('customer-signup-email').value;
             const password = document.getElementById('customer-signup-password').value;
+            const confirmPass = document.getElementById('customer-confirm-password').value;
+            const msgMatch = document.getElementById('matchPasswordMsg').value;
         
             registerUser(firstName, lastName, email, password); //call sign up function with said values
         });
@@ -43,8 +45,28 @@ document.addEventListener('DOMContentLoaded', function(){
     } 
 });
 
+function passwordMatchCheck(){
+    console.log('passwordMatchCheck function is running!');
+    if (password.value !== confirmPass.value){
+        msgMatch.style.display = 'block';
+        return false;
+    } else {
+        msgMatch.style.display = 'none';
+        return true;
+    }
+}
+
+confirmPass.addEventListener('keyup', passwordMatchCheck);
+
+
 async function registerUser(firstName, lastName, email, password) {
     console.log('registerUser function is running! With: ', firstName, lastName, email);
+    
+    if (!passwordMatchCheck){
+        alert('Passwords do not match!');
+        return;
+    }
+    
     try {
         // Send registration data to backend with POST method + values from input field
         const response = await fetch('/api/register', {
@@ -132,4 +154,50 @@ async function loginUser(email, password, role) {  //async function will await f
         console.log('Error:', error);
         alert('Cannot connect to server');
     }
+}
+
+const linkForgot = document.getElementById('passForgotLink');
+const popup = document.getElementById('passForgotPopup');
+const btnClose = document.getElementById('popupCloseBtn');
+const btnSend = document.getElementById('resetLinkBtn');
+const emailReset = document.getElementById('emailReset');
+
+if(linkForgot){
+    linkForgot.addEventListener('click', function(){
+        popup.style.display = 'none';
+    });
+}
+
+if (btnSend){
+    btnSend.addEvenetlistener('click', async function(){
+        const email = emailReset.value;
+
+        if(!email){
+            alert('Provide your e-mail address');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/forgot-password', {
+                method: 'POST',
+                headers: {
+                    'Consent-Type': 'application/json'
+                },
+                body: JSON.stringify({email: email})
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert('Reset Link has been sent to you e-mail address')
+                popup.style.display = 'none';
+                emailReset.value = '';
+            } else {
+                alert('Somthing went wrong: ' + (data.message || 'Try again'));
+            }
+        } catch(error){
+            console.log('Error:', error);
+            alert('Could not connect to server');
+        }
+    });
 }

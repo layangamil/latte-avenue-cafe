@@ -39,6 +39,9 @@
                     <form>
                         <input type="email" id="customer-login-email" placeholder="E-mail Address" required>
                         <input type="password" id="customer-login-password" placeholder="Password">
+                        <div style="text-align: right; margin-top: 5px;">
+                            <a href="#" id="passForgotLink" style="color: #5d4037; text-decoration: none;">Forgot Password?</a>
+                        </div>
                     </form>
                 </div>
                 <button class="btn-login">Sign in</button>
@@ -51,6 +54,8 @@
                         <input type="text" id="customer-signup-lastname" placeholder="Last Name" required>
                         <input type="email" id="customer-signup-email" placeholder="E-mail Address" required>
                         <input type="password" id="customer-signup-password" placeholder="Password" required>
+                        <input type="password" id="customer-confirm-password" placeholder="Confirm Password" required>
+                        <span id="matchPasswordMsg" style="color: red; display: none;">Passwords do not match!</span>
                    </form>
                 </div>
                 <button class="btn-create">Create account</button>
@@ -68,6 +73,18 @@
             <button class="btn-login">Log in</button>
         </div>
     </section>
+
+    <div id="passForgotPopup" class="popup-overlag" style="display:none;">
+        <div class="popup-style"> 
+            <h3 class="popup-titel">Reset Password</h3>
+            <p>We will send a link to your e-mail</p>
+            <input type="email" id="emailReset" class="popup-input" placeholder="Your e-mail Address">
+            <div class="popup-btns">
+                <button id="resetLinkBtn" class="btn-tertiary">Send</button>
+                <button id="popupCloseBtn" class="btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
     
     <script src="js/header.js"></script>
     <script src="js/login.js"></script>
