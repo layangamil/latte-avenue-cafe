@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     for (const item of cart){
                         let inStock = true;
                         for (const product of stockResult.outOfStock) {
-                            if (product.id == item.id){
+                            if (product.id == item.menuItemId){
                                 inStock = false;
                                 break;
                             }
