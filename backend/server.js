@@ -646,10 +646,10 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
             });
         }
 
-        //If settring to ready, set estimated pick up time (30 mins from now)
+        //If settring to ready, set estimated pick up time (5 mins from now)
         let estimatedPickup = null;
         if (status === 'ready') {
-            estimatedPickup = new Date(Date.now() + 30 * 60000); // 30 mins
+            estimatedPickup = new Date(Date.now() + 5 * 60000); // 5 mins
         }
 
         //Update order status
@@ -718,7 +718,8 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
         await db.query(
             `UPDATE \`order\` 
              SET status = 'cancelled', 
-                 cancelled_at = CURRENT_TIMESTAMP 
+                 cancelled_at = CURRENT_TIMESTAMP, 
+                 estimated_pickup_time = NULL
              WHERE order_id = ?`,
             [orderId]
         );
@@ -795,10 +796,13 @@ app.post('/api/orders', auth, async (req, res) => {
             }
 
             //Create the order
+            const estimatedPickup = new Date(Date.now() + 5 * 60000) // 5 mins
+
+            //create order with pickup time
             const [orderResult] = await connection.query(
-                `INSERT INTO \`order\` (user_id, total_amount, status, payment_method) 
-                 VALUES (?, ?, ?, ?)`,
-                [userId, total, 'pending', paymentMethod]
+                `INSERT INTO \`order\` (user_id, total_amount, status, payment_method, estimated_pickup_time) 
+                 VALUES (?, ?, ?, ?, ?)`,
+                [userId, total, 'pending', paymentMethod, estimatedPickup]
             );
 
             const orderId = orderResult.insertId;
