@@ -49,19 +49,19 @@ document.addEventListener('DOMContentLoaded', function(){
 
                     //now create and save a new cart with only items in stock and display that cart instead
                     const newCart = [];
-                    for (const item of cart){
+                    for (const itemCart of cart){
                         let found = false;
-                        let availableQty = item.quantity;
+                        let availableQty = itemCart.quantity;
 
-                        for (const product of stockResult.outOfStock) {
-                            if (product.id == item.menuItemId){
+                        for (const soldProduct of stockResult.outOfStock) {
+                            if (soldProduct.id == itemCart.id){
                                 found = true;
-                                availableQty = product.available || 0;
+                                availableQty = soldProduct.available || 0;
                                 break;
                             }
                         }
                         if (!found || availableQty > 0){
-                            const updatedItem = {...item};
+                            const updatedItem = {...itemCart};
                             if(found){
                                 updatedItem.quantity = availableQty;
                             }
