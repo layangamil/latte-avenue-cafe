@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function(){
                         for (const product of stockResult.outOfStock) {
                             if (product.id == item.menuItemId){
                                 found = true;
-                                availableQty = item.available || 0;
+                                availableQty = product.available || 0;
                                 break;
                             }
                         }
