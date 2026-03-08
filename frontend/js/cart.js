@@ -27,7 +27,12 @@ document.addEventListener('DOMContentLoaded', function(){
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + token
                     },
-                    body: JSON.stringify({items: cart})
+                    body: JSON.stringify({
+                        items: cart.map(item => ({
+                            menuItemId: item.id,
+                            quantity: item.quantity
+                        }))
+                    })
                 });
 
                 const stockResult = await stockResponse.json();
