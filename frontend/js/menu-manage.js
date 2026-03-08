@@ -137,6 +137,8 @@ async function saveNewItem(category, index){
     const imageUrl = document.getElementById(`new-${category}-${index}-image`).value;
     const stock = parseInt(document.getElementById(`new-${category}-${index}-stock`).value) || 0; 
 
+    console.log('Image URL: ', imageUrl);
+
     if (!name || !price){
         alert('Name and price are required!');
         return;
@@ -152,6 +154,8 @@ async function saveNewItem(category, index){
         is_available: true
     };
     
+    console.log('Item data being sent:', itemData);
+
     try {
         const response = await fetch('/api/items', {
             method: 'POST',
@@ -216,7 +220,7 @@ async function deleteItem(id) {
 }
 
 async function updateItem(id, buttonElement, silent=false){
-    console.log('uodateItem function is running! With: ', id, buttonElement);
+    console.log('updateItem function is running! With: ', id, buttonElement);
     const token = localStorage.getItem('token');
     const row = buttonElement.closest('.menu-item-row');
 
@@ -226,6 +230,8 @@ async function updateItem(id, buttonElement, silent=false){
     const imageUrl = row.querySelector('.field-image').value;
     const stock = parseInt(row.querySelector('.field-stock').value) || 30;
     const category = row.dataset.category;
+
+    console.log('Image URL: ', imageUrl);
 
     if (!name || !price) {
         alert('Name and price are required!');
