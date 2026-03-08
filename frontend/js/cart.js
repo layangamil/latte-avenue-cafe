@@ -5,12 +5,17 @@ document.addEventListener('DOMContentLoaded', function(){
     const checkoutBtn = document.getElementById('checkout-btn');
     if(checkoutBtn) { //if button with id exists
         checkoutBtn.addEventListener('click', async function(){
+
+            checkoutBtn.disabled = true;
+            checkoutBtn.textContent = 'Processing...';
+
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             if (cart.length === 0) {
                 alert('Your cart is empty!');  //if cart is empty, show error msg and return
+                checkoutBtn.disabled = false;
+                checkoutBtn.textContent = 'Proceed to Checkout';
                 return;
             }
-
             //we know now cart is not empty, now get customer token (if logged in)
             const token = localStorage.getItem('token');
 
@@ -51,13 +56,20 @@ document.addEventListener('DOMContentLoaded', function(){
                             newCart.push(item);
                         }
                     }
+
+                    console.log('original cart: ', cart);
+                    console.log('nya cart:', newCart);
                     // REMOVE //const newCart = cart.filter(item => !stockResult.outOfStock.some(out => out.id == item.id));
                     localStorage.setItem('cart', JSON.stringify(newCart));
                     displayCart(newCart);
+                    checkoutBtn.disabled = false;
+                    checkoutBtn.textContent = 'Proceed to Checkout';
                     return;
                 }
             } catch (error) {
                 console.log('Stock check error:', error);
+                checkoutBtn.disabled = false;
+                checkoutBtn.textContent = 'Proceed to Checkout';
             }
 
             //now if so far all is good, check if customer logged in, in order to continue to checkout page
