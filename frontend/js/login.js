@@ -134,7 +134,6 @@ async function loginUser(email, password, role) {  //async function will await f
         if (data.token) { //if success, token exists
             localStorage.setItem('token', data.token);  //save token
             localStorage.setItem('userRole', role);     //save user role
-            console.log('User-ID: ', token?.id);
 
             //check localStorage if redirectAfterLogin exists (from cart page!)
             const redirectTo = localStorage.getItem('redirectAfterLogin');
