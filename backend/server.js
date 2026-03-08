@@ -117,17 +117,17 @@ app.get('/api/items', async (req, res) => {
 // Add new item (staff only)
 app.post('/api/items', auth, adminOnly, async (req, res) => {
     try {
-        const { name, price, category, ingredients, is_available, stock } = req.body;
+        const { name, price, category, ingredients, is_available, stock, image_url } = req.body;
 
         const sql = `
             INSERT INTO product (name, price, category, ingredients, is_available, stock)
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         `;
 
         //Use stock ir provided by staff else use 30 as default
         const stockValue = stock !== undefined ? stock : 30;
 
-        const [result] = await db.query(sql, [name, price, category, ingredients, is_available ?? true, stockValue]);
+        const [result] = await db.query(sql, [name, price, category, ingredients, is_available ?? true, stockValue, image_url]);
         res.json({ message: "Item added", id: result.insertId });
     } catch (err) {
         console.error('Error adding item:', err);
@@ -139,15 +139,15 @@ app.post('/api/items', auth, adminOnly, async (req, res) => {
 app.put('/api/items/:id', auth, adminOnly, async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, price, category, ingredients, is_available, stock } = req.body;
+        const { name, price, category, ingredients, is_available, stock, image_url } = req.body;
 
         const sql = `
             UPDATE product
-            SET name=?, price=?, category=?, ingredients=?, is_available=?, stock=?
+            SET name=?, price=?, category=?, ingredients=?, is_available=?, stock=?, image_url=?
             WHERE product_id=?
         `;
 
-        await db.query(sql, [name, price, category, ingredients, is_available, stock, id]);
+        await db.query(sql, [name, price, category, ingredients, is_available, stock, image_url, id]);
         res.json({ message: "Item updated" });
     } catch (err) {
         console.error('Error updating item:', err);
