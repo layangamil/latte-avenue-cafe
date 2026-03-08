@@ -66,7 +66,12 @@ async function placeOrder(cart) {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify({items: cart})
+            body: JSON.stringify({
+                items: cart.map(item => ({
+                    menuItemId: item.id,
+                    quantity: item.quantity
+                }))
+            })
         });
 
         //wait for response from backend then convert to JS object
@@ -84,18 +89,19 @@ async function placeOrder(cart) {
 
             //create new cart without out of stock items, save that and take user back to cart page
             const newCart = [];
-                    for (const item of cart){
-                        let inStock = true;
-                        for (const product of stockResult.outOfStock) {
-                            if (product.id == item.id){
-                                inStock = false;
-                                break;
-                            }
-                        }
-                        if (inStock){
-                            newCart.push(item);
-                        }
+            for (const itemCart of cart){
+                let inStock = true;
+
+                for (const soldProduct of stockResult.outOfStock) {
+                    if (soldProduct.id == itemCart.id){
+                        inStock = false;
+                        break;
                     }
+                }
+                if (inStock){
+                    newCart.push(itemCart);
+                }
+            }
             // REMOVE //const newCart = cart.filter(item => !stockResult.outOfStock.some(out => out.id == item.id));
             localStorage.setItem('cart', JSON.stringify(newCart));
             window.location.href = 'cart.html';
