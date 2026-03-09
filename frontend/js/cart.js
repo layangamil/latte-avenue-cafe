@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     }
                     const items = names.join(', ');
                     // REMOVE// const items = stockResult.outOfStock.map(i => i.name).join(', ');
-                    alert(`Unfortunately, these items are now sold-out: ${items}`);
+                    alert(`Insufficient Storage: ${items}`);
 
                     //now create and save a new cart with only items in stock and display that cart instead
                     const newCart = [];

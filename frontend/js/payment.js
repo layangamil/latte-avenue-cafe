@@ -46,7 +46,7 @@ function showOrder(cart){  //takes cart array as argument
     //update the dom with the html code with wrote above
     document.getElementById('payment-order-items').innerHTML = itemsHtml;
     //update the displayed subtotal, tx and total price
-    document.getElementById('payment-subtotal').textContent = subtotal.toFixed(2) + ' SEK';
+    document.getElementById('payment-subtotal').textContent = (subtotal.toFixed(2) - (subtotal * 0.06).toFixed(2)) + ' SEK';
     document.getElementById('payment-tax').textContent = (subtotal * 0.06).toFixed(2) + ' SEK';
     document.getElementById('payment-total').textContent = subtotal.toFixed(2) + ' SEK'; 
 
@@ -85,7 +85,7 @@ async function placeOrder(cart) {
             }
             const items = names.join(', ');
             // REMOVE //const items = stockResult.outOfStock.map(i => i.name).join(', '); //create a string of the item names that are not in stock
-            alert(`Unfortunately, these items are now sold-out: ${items}`); //show them here in alert msg to user
+            alert(`Insufficient Storage: ${items}`); //show them here in alert msg to user
 
             //create new cart without out of stock items, save that and take user back to cart page
             const newCart = [];
