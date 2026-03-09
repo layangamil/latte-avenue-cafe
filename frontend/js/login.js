@@ -98,36 +98,41 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 });
 
-function passwordMatchCheck(password, confirmPass, msgMatch){
-    console.log('passwordMatchCheck function is running!');
+// function passwordMatchCheck(password, confirmPass, msgMatch){
+//     console.log('passwordMatchCheck function is running!');
 
-    const isMatch = false;
-    password.addEventListener('keyup', function(){
-        if (password.value !== confirmPass.value){
-            msgMatch.style.display = 'block';
-        } else {
-            msgMatch.style.display = 'none';
-            isMatch = true;
-        }
-    });
+//     const isMatch = false;
+//     password.addEventListener('keyup', function(){
+//         if (password.value !== confirmPass.value){
+//             msgMatch.style.display = 'block';
+//         } else {
+//             msgMatch.style.display = 'none';
+//             isMatch = true;
+//         }
+//     });
 
-    confirmPass.addEventListener('keyup', function(){
-        if (password.value !== confirmPass.value){
-            msgMatch.style.display = 'block';
-        } else {
-            msgMatch.style.display = 'none';
-            isMatch = true;
-        }
-    });
-    return msgMatch;
-}
+//     confirmPass.addEventListener('keyup', function(){
+//         if (password.value !== confirmPass.value){
+//             msgMatch.style.display = 'block';
+//         } else {
+//             msgMatch.style.display = 'none';
+//             isMatch = true;
+//         }
+//     });
+//     return isMatch;
+// }
 
 async function registerUser(firstName, lastName, email, password, confirmPass, msgMatch) {
     console.log('registerUser function is running! With: ', firstName, lastName, email);
+    console.log('1. registerUser start', {firstName, lastName, email, password, confirmPass});
+    console.log('2. msgMatch element:', msgMatch);
     
-    if (!passwordMatchCheck(password, confirmPass, msgMatch)){
+    if (password !== confirmPass){
+        msgMatch.style.display = 'block';
         alert('Passwords do not match!');
         return;
+    }else {
+        msgMatch.style.display = 'none';
     }
     
     try {
