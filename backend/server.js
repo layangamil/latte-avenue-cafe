@@ -1069,6 +1069,60 @@ app.put('/api/profile/password', auth, async (req, res) => {
 });
 
 
+//====================DELETE ACCOUNT===================================
+// DELETE /api/profile - Delete user account and all data
+app.delete('/api/profile', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        //start a transaction to make sure everything is deleted properly
+        const connection = await db.getConnection();
+        await connection.beginTransaction();
+
+        try {
+            // Get user email for response message
+            const [users] = await connection.query(
+                'SELECT email FROM users WHERE user_id = ?',
+                [userId]
+            );
+
+            if (users.length === 0) {
+                await connection.rollback();
+                connection.release();
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            const userEmail = users[0].email;
+
+            //Delete the user 
+            await connection.query(
+                'DELETE FROM users WHERE user_id = ?',
+                [userId]
+            );
+
+            await connection.commit();
+            connection.release();
+
+            res.json({
+                success: true,
+                message: 'Account deleted successfully',
+                email: userEmail
+            });
+
+        } catch (err) {
+            await connection.rollback();
+            connection.release();
+            throw err;
+        }
+
+    } catch (err) {
+        console.error('Error deleteing account:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to delete account'
+        });
+    }
+});
 
 
 
