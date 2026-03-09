@@ -43,6 +43,11 @@ document.addEventListener('DOMContentLoaded', function(){
                 alert ('Cannot connect to server');
             }
     });
+
+    const deleteAccBtn = document.getElementById('delete-acc-btn');
+    if(deleteAccBtn){
+        deleteAccBtn.addEventListener('click', deleteAccount);
+    }
 });
 
 async function loadUserProfile() {
@@ -72,7 +77,6 @@ async function loadUserProfile() {
     }
 }
 
-
 async function deleteAccount(){
     const token = localStorage.getItem('token')
     const confirmDelete = confirm ('Are you sure you want to delete account?');
@@ -83,10 +87,10 @@ async function deleteAccount(){
     try {
         const response = await fetch('/api/profile', {
             method: 'DELETE',
-            content: 'application/json',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
-            },
+            }
         });
 
         if(response.ok){
