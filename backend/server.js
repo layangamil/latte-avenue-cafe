@@ -1,5 +1,9 @@
 // Load environment variables from .env file into process.env
 require('dotenv').config();
+
+console.log('EMAIL_USER loaded:', process.env.EMAIL_USER);
+console.log('EMAIL_PASS length:', process.env.EMAIL_PASS ? process.env.EMAIL_PASS.length : 'missing');
+console.log('EMAIL_PASS first 4 chars:', process.env.EMAIL_PASS ? process.env.EMAIL_PASS.substring(0, 4) + '****' : 'missing');
 // Import the Express framework for building web servers
 const express = require('express');
 // Import MySQL2 library for database operations (PROMISE version)
