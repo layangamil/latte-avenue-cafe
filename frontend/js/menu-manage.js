@@ -76,7 +76,7 @@ function displayItems(containerId, items, category) {
 
                     <input type="text" class="field-image" value="${item.image_url || ''}" placeholder=" Image URL">
 
-                    <input type="number" class="field-stock" value="${item.stock || 30}" min="0" placeholder="stock">
+                    <input type="number" class="field-stock" value="${item.stock}" min="0" placeholder="stock">
                 </div>
                 
                 <div class="item-actions">
@@ -228,7 +228,7 @@ async function updateItem(id, buttonElement, silent=false){
     const price = parseFloat(row.querySelector('.field-price').value);
     const description = row.querySelector('.field-description').value;
     const imageUrl = row.querySelector('.field-image').value;
-    const stock = parseInt(row.querySelector('.field-stock').value) || 30;
+    const stock = parseInt(row.querySelector('.field-stock').value) || 0;
     const category = row.dataset.category;
 
     console.log('Image URL: ', imageUrl);
@@ -245,7 +245,7 @@ async function updateItem(id, buttonElement, silent=false){
         ingredients: description,
         image_url: imageUrl,
         stock: stock,
-        is_available: true
+        is_available: stock > 0
     };
 
     try {

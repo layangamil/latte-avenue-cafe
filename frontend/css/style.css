@@ -12,7 +12,9 @@
 html, body{
     height: 100%;
     margin: 0;
+    scroll-behavior: smooth;
     overflow: visible;
+    scroll-padding-top: 100px;
 }
 
 body {
@@ -111,7 +113,7 @@ nav {
     background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://i.pinimg.com/736x/5b/e1/04/5be10426d1419a48d354a0944ffc9d58.jpg');
     background-position: center;
     color: white;
-    padding: 15rem 0;
+    padding: 15rem 0 10rem 0;
     text-align: center;
 }
 
@@ -151,8 +153,8 @@ nav {
 }
 .section-title {
     text-align: center;
-    margin: 3rem;
-    padding-bottom: 3rem;
+    margin: 2rem 0rem 3rem 0rem;
+    padding-bottom: 1rem;
 }
 
 .section-title h2 {
@@ -171,11 +173,12 @@ nav {
 /* ============== */
 /* ABOUT SECTION */
 .about-section {
-    padding: 0;
+    padding: 4rem 0;
     margin: 0;
 }
 
 .about-content {
+    gap: 2rem;
     display: flex;
     align-items: space-between;
 }
@@ -195,13 +198,13 @@ nav {
     font-style: italic;
     font-weight: 400;
     color: #8b6b61;
-    margin: 2rem;
+    margin: 1rem;
 }
 
 /* ============= */
 /* MENU SECTION */
 .menu-section {
-    padding: 5rem 0;
+    padding: 4rem 0;
     background: #ffffff; 
 }
 
@@ -412,9 +415,13 @@ nav {
 }
 /* =============== */
 /* CONTACT SECTION */
+.contact-section{
+    padding: 4rem 0 2rem 0;
+}
+
 .contact-content{
-    margin: 4rem;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
+    margin: 2rem;
     text-align: center;
 }
 
