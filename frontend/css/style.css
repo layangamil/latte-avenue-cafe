@@ -539,7 +539,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 5rem 5rem;
+    padding: 2rem 5rem;
 }
 
 .login-container button{
@@ -557,6 +557,7 @@ nav {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
     font-weight: 600;
+    margin-bottom: 1rem;
 }
 
 .input-container {
