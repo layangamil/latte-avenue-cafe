@@ -72,3 +72,36 @@ async function loadUserProfile() {
     }
 }
 
+
+async function deleteAccount(){
+    const token = localStorage.getItem('token')
+    const confirmDelete = confirm ('Are you sure you want to delete account?');
+    if (!confirmDelete){
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/profile', {
+            method: 'DELETE',
+            content: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+        });
+
+        if(response.ok){
+            localStorage.removeItem('token');
+            localStorage.removeItem('userRole');
+            alert('Account deleted');
+            window.location.href = 'index.html';
+        }else{
+            const data = await response.json();
+            console.log('Error' + data.message);
+            alert('Deleting account failed!');
+        }
+
+    } catch(error){
+        console.log('Error:', error);
+        alert('Could not connect to server');
+    }
+}
