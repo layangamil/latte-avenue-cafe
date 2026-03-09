@@ -24,10 +24,10 @@ document.addEventListener('DOMContentLoaded', function(){
             const lastName = document.getElementById('customer-signup-lastname').value;
             const email = document.getElementById('customer-signup-email').value;
             const password = document.getElementById('customer-signup-password').value;
-            // const confirmPass = document.getElementById('customer-confirm-password').value;
-            // const msgMatch = document.getElementById('matchPasswordMsg').value;
+            const confirmPass = document.getElementById('customer-confirm-password').value;
+            const msgMatch = document.getElementById('matchPasswordMsg');
         
-            registerUser(firstName, lastName, email, password); //call sign up function with said values
+            registerUser(firstName, lastName, email, password, confirmPass, msgMatch); //call sign up function with said values
         });
     }
     //Admin - login
@@ -43,29 +43,92 @@ document.addEventListener('DOMContentLoaded', function(){
             loginUser(email, password, 'staff'); //call login function with said values AND user role!
         });
     } 
+
+    const linkForgot = document.getElementById('passForgotLink');
+    const popup = document.getElementById('passForgotPopup');
+    const btnClose = document.getElementById('popupCloseBtn');
+    const btnSend = document.getElementById('resetLinkBtn');
+    const emailReset = document.getElementById('emailReset');
+
+
+    if(linkForgot){
+        linkForgot.addEventListener('click', function(){
+            popup.style.display = 'flex';
+        });
+    }
+
+    if(btnClose){
+        btnClose.addEventListener('click', function(){
+            popup.style.display= 'none';
+        });
+    }
+
+    if (btnSend){
+        btnSend.addEventListener('click', async function(){
+            const email = emailReset.value;
+
+            if(!email){
+                alert('Please enter your e-mail address');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/forgot-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({email: email})
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Reset Link has been sent to your e-mail address!')
+                    popup.style.display = 'none';
+                    emailReset.value = '';
+                } else {
+                    alert('Something went wrong: ' + (data.message || 'Try again'));
+                }
+            } catch(error){
+                console.log('Error:', error);
+                alert('Could not connect to server');
+            }
+        });
+    }
 });
 
-// function passwordMatchCheck(){
-//     console.log('passwordMatchCheck function is running!');
-//     if (password.value !== confirmPass.value){
-//         msgMatch.style.display = 'block';
-//         return false;
-//     } else {
-//         msgMatch.style.display = 'none';
-//         return true;
-//     }
-// }
+function passwordMatchCheck(password, confirmPass, msgMatch){
+    console.log('passwordMatchCheck function is running!');
 
-// confirmPass.addEventListener('keyup', passwordMatchCheck);
+    const isMatch = false;
+    password.addEventListener('keyup', function(){
+        if (password.value !== confirmPass.value){
+            msgMatch.style.display = 'block';
+        } else {
+            msgMatch.style.display = 'none';
+            isMatch = true;
+        }
+    });
 
+    confirmPass.addEventListener('keyup', function(){
+        if (password.value !== confirmPass.value){
+            msgMatch.style.display = 'block';
+        } else {
+            msgMatch.style.display = 'none';
+            isMatch = true;
+        }
+    });
+    return msgMatch;
+}
 
-async function registerUser(firstName, lastName, email, password) {
+async function registerUser(firstName, lastName, email, password, confirmPass, msgMatch) {
     console.log('registerUser function is running! With: ', firstName, lastName, email);
     
-    // if (!passwordMatchCheck()){
-    //     alert('Passwords do not match!');
-    //     return;
-    // }
+    if (!passwordMatchCheck(password, confirmPass, msgMatch)){
+        alert('Passwords do not match!');
+        return;
+    }
     
     try {
         // Send registration data to backend with POST method + values from input field
@@ -91,6 +154,8 @@ async function registerUser(firstName, lastName, email, password) {
             document.getElementById('customer-signup-lastname').value = '';
             document.getElementById('customer-signup-email').value = '';
             document.getElementById('customer-signup-password').value = '';
+            document.getElementById('customer-confirm-password').value = '';
+
         } else {
             // If no, show error message from server
             alert('Error: ' + (data.message));
@@ -108,7 +173,7 @@ async function loginUser(email, password, role) {  //async function will await f
     // first check if user already logged, if token exists
     const existingToken = localStorage.getItem('token');
     if (existingToken){
-        const confirmLogout = confirm ('You are already logged in. Do you want to logout first?');
+        const confirmLogout = confirm ('You are already signed in. Do you want to sign out first?');
         if (confirmLogout) {
             localStorage.removeItem('token'); //if yes, remove token
             localStorage.removeItem('userRole'); //alos remove userRole (now nobody is logged in and no info in localStorage)
@@ -154,49 +219,3 @@ async function loginUser(email, password, role) {  //async function will await f
         alert('Cannot connect to server');
     }
 }
-
-// const linkForgot = document.getElementById('passForgotLink');
-// const popup = document.getElementById('passForgotPopup');
-// const btnClose = document.getElementById('popupCloseBtn');
-// const btnSend = document.getElementById('resetLinkBtn');
-// const emailReset = document.getElementById('emailReset');
-
-// if(linkForgot){
-//     linkForgot.addEventListener('click', function(){
-//         popup.style.display = 'flex';
-//     });
-// }
-
-// if (btnSend){
-//     btnSend.addEvenetlistener('click', async function(){
-//         const email = emailReset.value;
-
-//         if(!email){
-//             alert('Provide your e-mail address');
-//             return;
-//         }
-
-//         try {
-//             const response = await fetch('/api/forgot-password', {
-//                 method: 'POST',
-//                 headers: {
-//                     'Consent-Type': 'application/json'
-//                 },
-//                 body: JSON.stringify({email: email})
-//             });
-
-//             const data = await response.json();
-
-//             if (response.ok) {
-//                 alert('Reset Link has been sent to you e-mail address')
-//                 popup.style.display = 'none';
-//                 emailReset.value = '';
-//             } else {
-//                 alert('Somthing went wrong: ' + (data.message || 'Try again'));
-//             }
-//         } catch(error){
-//             console.log('Error:', error);
-//             alert('Could not connect to server');
-//         }
-//     });
-// }
