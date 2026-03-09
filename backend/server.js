@@ -120,7 +120,7 @@ app.post('/api/items', auth, adminOnly, async (req, res) => {
         const { name, price, category, ingredients, is_available, stock, image_url } = req.body;
 
         const sql = `
-            INSERT INTO product (name, price, category, ingredients, is_available, stock)
+            INSERT INTO product (name, price, category, ingredients, is_available, stock, image_url)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         `;
 
