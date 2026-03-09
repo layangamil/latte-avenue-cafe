@@ -240,6 +240,126 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
+// ================ FORGOT PASSWORD =======================================================================
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+
+// POST /api/forgot-password - send reset link to email
+app.post('/api/forgot-password', async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ message: 'EMail is required' });
+        }
+
+        // check if user exists
+        const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+
+        if (users.length === 0) {
+            // return success anyway (it's a security best practice not to reveal if the email exists)
+            return res.json({ message: 'If your email exists, you will receive a reset link' });
+        }
+
+        // Generate secure token
+        const token = crypto.randomBytes(32).toString('hex');
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // in an hour from now
+
+        // Delete any existing tokens for this email
+        await db.query('DELETE FROM password_resets WHERE email = ?', [email]);
+
+        // Save new token
+        await db.query(
+            'INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)',
+            [email, token, expiresAt]
+        );
+
+        // Create reset link
+
+        const resetLink = `${process.env.FRONTEND_URL}/reset-password.html?token=${token}`;
+
+        // Configure email transporter
+        const transporter = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT,
+            secure: false, // true for 465 but false for other ports
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            }
+        });
+
+        // Send email
+
+        await transporter.sendMail({
+            from: process.env.EMAIL_FROM,
+            to: email,
+            subject: 'Latte Avenue - Password Reset Request',
+            html: `
+                <h2>Password Reset Request</h2>
+                <p>You requested to reset your password for Latte Avenue.</p>
+                <p>Click the link below to reset your password. This link expires in 1 hour.</p>
+                <a href="${resetLink}" style="display: inline-block; 
+                padding: 10px 20px; 
+                background-color: #8b6b61; 
+                color: white; 
+                text-decoration: none; 
+                border-radius: 5px;">Reset Password</a>
+                <p>If you didn't request this, please ignore this email.</p>
+                <p>Link: ${resetLink}</p>
+            `
+        });
+
+        res.json({ message: 'If your email exists, you will receive a reset link' });
+        
+    } catch (err) {
+        console.error('Forgot password error:', err);
+        res.status(500).json({ message: 'Failed to process request' });
+    }
+});
+
+
+// POST /api/reset-password - reset password using token
+app.post('/api/reset-password', async (req, res) => {
+    try {
+        const { token, newPassword } = req.body;
+
+        if (!token || !newPassword) {
+            return res.status(400).json({ message: 'Token and new password are required' });
+        }
+
+        // Find valid token
+        const [tokens] = await db.query(
+            'SELECT * FROM password_resets WHERE token = ? AND expires_at > NOW()',
+            [token]
+        );
+
+        if (tokens.length === 0){
+            return res.status(400).json({ message: 'Invalid or expired token' });
+        }
+
+        const resetRequest = tokens[0];
+
+        // Hash new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        //Update user's password
+        await db.query(
+            'UPDATE users SET password_hash = ? WHERE email = ?',
+            [hashedPassword, resetRequest.email]
+        );
+
+        //Mark token as used
+        await db.query('UPDATE password_resets SET used = TRUE WHERE token = ?', [token]);
+
+        res.json({ message: 'Password updated successfully' });
+
+    } catch (err) {
+        console.error('Request password error:', err);
+        res.status(500).json({ message: 'Failed to reset password' });
+    }
+});
+
 // ================= SHOPPING CART ENDPOINTS (CONVERTED TO ASYNC/AWAIT) ===========================
 
 // GET /api/cart - get user's cart
