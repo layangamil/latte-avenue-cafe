@@ -62,10 +62,10 @@ document.addEventListener('DOMContentLoaded', function(){
 async function registerUser(firstName, lastName, email, password) {
     console.log('registerUser function is running! With: ', firstName, lastName, email);
     
-    if (!passwordMatchCheck){
-        alert('Passwords do not match!');
-        return;
-    }
+    // if (!passwordMatchCheck()){
+    //     alert('Passwords do not match!');
+    //     return;
+    // }
     
     try {
         // Send registration data to backend with POST method + values from input field
@@ -163,7 +163,7 @@ async function loginUser(email, password, role) {  //async function will await f
 
 // if(linkForgot){
 //     linkForgot.addEventListener('click', function(){
-//         popup.style.display = 'none';
+//         popup.style.display = 'flex';
 //     });
 // }
 
