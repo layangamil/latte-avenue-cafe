@@ -8,3 +8,4 @@ backend/server_backup.js
 node_modules/
 .env
 .env
+.env
