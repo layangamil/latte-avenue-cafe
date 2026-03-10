@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function(){
                         names.push(item.name);
                     }
                     const items = names.join(', ');
-                    // REMOVE// const items = stockResult.outOfStock.map(i => i.name).join(', ');
                     alert(`Insufficient Storage: ${items}`);
 
                     //now create and save a new cart with only items in stock and display that cart instead
@@ -71,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
                     console.log('original cart: ', cart);
                     console.log('nya cart:', newCart);
-                    // REMOVE //const newCart = cart.filter(item => !stockResult.outOfStock.some(out => out.id == item.id));
+        
                     localStorage.setItem('cart', JSON.stringify(newCart));
                     displayCart(newCart);
                     checkoutBtn.disabled = false;
@@ -163,22 +162,22 @@ function displayCart(cart) {
 }
 
 function decreaseQty(id){
-    console.log('decreaseQty function is running! With: ', id);
+    console.log('decreaseQty function is running! With: Item ID', id);
     let cart = JSON.parse(localStorage.getItem('cart') || '[]'); //load cart from localStorage, if not exist, create empty array
 
     for (let i = 0; i < cart.length; i++){ //loop through cart to find item.id that matches one you want to decrease
         if (cart[i].id == id){
             if (cart[i].quantity > 1){ //check decrease only if qty > 1, to avoid negative nrs
                 cart[i].quantity -= 1; 
+                localStorage.setItem('cart', JSON.stringify(cart)); // save updated cart to localStorage
+                displayCart(cart); // display the updated cart
             } else{
-                removeFromCart(id); //if qty !> 1, then call function to remove item from cart
+                removeFromCart(id);
+                return; //if qty !> 1, then call function to remove item from cart
             }
             break;
         }
     }
-
-    localStorage.setItem('cart', JSON.stringify(cart)); // save updated cart to localStorage
-    displayCart(cart); // display the updated cart
 
     if(typeof window.updateCartCount === 'function'){
         window.updateCartCount(); // update cart counter
@@ -186,7 +185,7 @@ function decreaseQty(id){
 }
 
 function removeFromCart(id) {  //takes item id for that specific item
-    console.log('removeFromeCart function is running! With: ', id);
+    console.log('removeFromeCart function is running! With: Item ID', id);
     let cart = JSON.parse(localStorage.getItem('cart')|| '[]'); //get current cart from storage
     
     const updatedCart = [];
@@ -206,7 +205,7 @@ function removeFromCart(id) {  //takes item id for that specific item
 }
 
 function increaseQty(id){
-    console.log('increaseQty function is running! With: ', id);
+    console.log('increaseQty function is running! With: Item ID', id);
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');   //same as above
 
     for (let i = 0; i < cart.length; i++){

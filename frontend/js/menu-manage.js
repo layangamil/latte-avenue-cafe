@@ -285,5 +285,3 @@ window.updateItem = updateItem;
 window.deleteItem = deleteItem;
 window.saveNewItem = saveNewItem;
 window.cancelNewItem = cancelNewItem;
-// window.saveAllChanges = saveAllChanges;
-// window.cancelAllChanges = cancelAllChanges;
