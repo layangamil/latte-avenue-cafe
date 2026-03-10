@@ -602,7 +602,7 @@ nav {
     margin-bottom: 1rem;
 }
 
-.popup-overlag {
+.popup-container {
     position: fixed;
     left: 0;
     top: 0;
@@ -617,11 +617,69 @@ nav {
 
 .popup-style {
     background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    max-width: 400px;
+    padding: 25px 30px;
+    border-radius: 12px;
+    max-width: 450px;
     width: 90%;
+    box-shadow: 0 5px 7px rgba(0, 0 ,0, 0.1);
 }
+
+.popup-titel {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+    margin-bottom: 0.4rem;
+    color:#5d4037;
+    font-family: 'Playfair Display', serif;
+}
+
+.popup-style p{
+    display:flex;
+    justify-content: center;
+    color:#8b6b61;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.popup-style input{
+    font-family: 'Cormorant Garamond', serif;
+    padding:0.7rem 0.8rem;
+    border: 0.5px solid #8b6b61;
+    width: 100%; /*i want as big as popup contents like from the containe padding starts and endn horizonally like how btn tertiary is here*/
+    height: auto;
+    margin-bottom: 1.1rem;
+    box-sizing: border-box;
+    border-radius: 15px;
+}
+
+.popup-style input:focus {
+    border-color: #5d4037;
+    box-shadow: 0 0 0 2px rgba(92, 63, 55, 0.1);
+}
+
+.popup-btns { /*i want buttons under each other */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.popup-btns .btn-tertiary{
+    height:2rem;
+    padding-top: 0.5rem 1rem;
+    letter-spacing: 0.5px;
+    border-radius: 15px;
+}
+
+.popup-btns .btn-secondary {
+    font-weight:100;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+}
+
 /*===================================================================*/
                       /* CART PAGE:*/
 /*===================================================================*/
