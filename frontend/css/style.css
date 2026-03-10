@@ -101,6 +101,7 @@ nav {
 
 .nav-item:hover {
     color: #593e35;
+    text-decoration: underline;
     transform: translateY(-4px);
 }
 
@@ -600,6 +601,24 @@ nav {
     font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 1rem;
+}
+
+.forgot-pass-link{
+    text-align:left;
+    margin: 8px 0 15 px;
+}
+
+.forgot-pass-link a{
+    color: #8b6b61;
+    font-family: 'Cormorant Garamond', serif;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-style: italic;
+}
+
+.forgot-pass-link:hover{
+    color: #5d4037;
+    text-decoration: underline;
 }
 
 .popup-container {

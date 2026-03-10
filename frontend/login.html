@@ -40,8 +40,8 @@
                     <form>
                         <input type="email" id="customer-login-email" placeholder="E-mail Address" required>
                         <input type="password" id="customer-login-password" placeholder="Password">
-                        <div style="text-align: right; margin-top: 5px;">
-                            <a href="#" id="passForgotLink" style="color: #5d4037; text-decoration: none;">Forgot Password?</a>
+                        <div class="forgot-pass-link">
+                            <a href="#" id="passForgotLink">Forgot Password?</a>
                         </div>
                     </form>
                 </div>
@@ -78,7 +78,7 @@
     <div id="passForgotPopup" class="popup-container" style="display:none;">
         <div class="popup-style"> 
             <h3 class="popup-titel">Reset your password</h3>
-            <p>We will send a a secure link to your e-mail to reset the password to your account</p>
+            <p>We'll send you a secure link to your e-mail. </p>
             <input type="email" id="emailReset" class="popup-input" placeholder="E-mail Address">
             <div class="popup-btns">
                 <button id="resetLinkBtn" class="btn-tertiary">Send link</button>
