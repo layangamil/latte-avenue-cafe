@@ -1075,11 +1075,39 @@ nav {
     background-color: #e6bcc2;
     font-family: 'Playfair Display', serif;
     color:#fff;
-    font-size: 1rem;
+    font-size: 0.8rem;
     border-radius: 10px;
-    border-color:#e6bcc2;
+    border: none;
     padding: 0.4rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
+
+.password-section-container button:hover{
+    background-color:#c3949a;
+}
+
+.delete-acc-section{
+    margin: 2rem 0rem;
+}
+
+.delete-acc-section button{
+    background-color: #8b6b61;
+    font-family: 'Playfair Display', serif;
+    color:#fff;
+    font-size: 0.8rem;
+    border-radius: 10px;
+    border: none;
+    padding: 0.4rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.delete-acc-section button:hover{
+    background-color:#5d4037;
+}
+
 /*===================================================================*/
                       /* CUSTOMER - MY ORDERS PAGE:*/
 /*===================================================================*/
