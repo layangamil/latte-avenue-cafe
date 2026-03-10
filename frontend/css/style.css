@@ -961,6 +961,25 @@ nav {
     padding: 20px;
 }
 
+.fa-solid.fa-circle-check.fa-beat-fade{
+    font-size: 4rem;
+    width:81px;
+    height: 81px;
+    color: #e6bcc2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.6rem auto;
+    --fa-animation-iteration-count: 1; /*makes it beat only once */
+}
+.confirmation-section .section-header{
+    color:#5d4037;
+}
+
+.section-header span{
+    font-size: 2rem;
+}
+
 .cancel-section h3{
     color:#593e35;
     font-size: 1.2rem;
@@ -970,6 +989,7 @@ nav {
 #cancel-order-btn {
     margin-bottom: 3rem;
 }
+
 
 /*===================================================================*/
                       /* CUSTOMER - PROFILE PAGE:*/
