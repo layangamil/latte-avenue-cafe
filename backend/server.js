@@ -27,6 +27,11 @@ app.use(express.urlencoded({ extended: true }));
 // Middleware to enable CORS for all routes
 app.use(cors());
 
+// Helper function to generate coupon code
+function generateCouponCode() {
+    return 'LATTE-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+}
+
 //======================SERVE FRONTEND FILES========================
 //Serve static files from frontend folder
 app.use(express.static(path.join(__dirname, '../frontend')));
@@ -806,6 +811,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
         const userId = req.user.id;
         const orderId = req.params.id;
         const isStaff = req.user.role === 'staff';
+        const now = new Date();
 
         //Grt order details
         const [orderCheck] = await db.query('SELECT * FROM `order` WHERE order_id = ?', [orderId]);
@@ -821,24 +827,64 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             return res.status(403).json({ error: 'Access denied' });
         }
 
-        //Check if order can be cancelled
-        if (order.status !== 'pending') {
-            return res.status(400).json({ error: 'Only pending orders can be cancelled'});
-        }
+        //Check if order can be cancelled by customer
+        if(!isStaff) {
+            if (order.status !== 'pending') {
+                return res.status(400).json({ error: 'Only pending orders can be cancelled'});
+            }
 
-        //Check 1 min window (unless staff)
-        if (!isStaff) {
-            const now = new Date();
-            const orderTime = new Date(order.created_at);
-            const minutesSinceOrder = (now - orderTime) / (1000 * 60);
+        //Check 1 min window 
+        const orderTime = new Date(order.created_at);
+        const minutesSinceOrder = (now - orderTime) / (1000 * 60);
 
             if (minutesSinceOrder > 1) {
                 return res.status(400).json({
                     error: 'Order can only be cancelled within 1 minute of placing'
                 });
             }
+
+            //Generate coupon 
+            const couponCode = generateCouponCode();
+            
+            await db.query(
+                `UPDATE \`order\` 
+                 SET status = 'cancelled', 
+                     cancelled_at = CURRENT_TIMESTAMP, 
+                     estimated_pickup_time = NULL,
+                     coupon_code = ?,
+                 WHERE order_id = ?`,
+                [couponCode, orderId]
+            );
+            
+            return res.json({
+                success: true,
+                message: 'Order cancelled successfully. A coupon has been added to your profile.',
+                order_id: orderId,
+                coupon_generated: true
+            });
         }
 
+        // STaff cancellation
+        let couponCode = null;
+        let message = 'Order cancelled successfully';
+
+        //If order was paid (not pending when cancelled), generate coupon
+        if (order.status !== 'pending' && order.status !== 'cancelled'){
+            //Generate unique code
+            couponCode = generateCouponCode();
+
+            //Update order with coupon code
+            await db.query(
+                `UPDATE \`order\` 
+                 SET coupon_code = ? 
+                 WHERE order_id = ?`,
+                [couponCode, orderId]
+            );
+
+            message = 'Order cancelled and coupon generated';
+        }
+
+            //Update order status to cancledd
         await db.query(
             `UPDATE \`order\` 
              SET status = 'cancelled', 
@@ -849,8 +895,10 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
         );
 
         res.json({
-            message: 'Order cancelled successfully',
-            order_id: orderId
+            success: true,
+            message: message,
+            order_id: orderId,
+            coupon_generated: ! !couponCode
         });
 
     } catch (err) {
@@ -867,7 +915,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
 app.post('/api/orders', auth, async (req, res) => {
     try {
         const userId = req.user.id;
-        const { items, total, paymentMethod, status } = req.body;
+        const { items, total, paymentMethod, status, couponCode } = req.body;
 
         //Vaidate input
         if (!items || items.length === 0) {
@@ -889,6 +937,32 @@ app.post('/api/orders', auth, async (req, res) => {
         await connection.beginTransaction();
 
         try {
+            // coupon check
+            let finalTotal = total;
+            let appliedCoupon = null;
+
+            if (couponCode) {
+                // find unused coupon
+                const [coupons] = await connection.query(
+                    `SELECT * FROM \`order\`
+                     WHERE user_id = ? AND coupon_code = ? AND coupon_used = FALSE
+                     AND cancelled_at > DATE_SUB(NOW(), INTERVAL 30 DAY)`,
+                    [userId, couponCode]
+                );
+
+                if (coupons.length > 0) {
+                    const coupon = coupons[0];
+                    //Aply discount to total price
+                    finalTotal = Math.max(0, total - coupon.total_amount);
+                    appliedCoupon = coupon.coupon_code;
+
+                    // Mark  as used
+                    await connection.query(
+                        `UPDATE \`order\` SET coupon_used = TRUE WHERE order_id = ?`,
+                        [coupon.order_id]
+                    );
+                }
+            }
             //Stock check - get the current stock for all ordered items
             const productIds = items.map(item => item.menuItemId);
             const [stockRows] = await connection.query(
@@ -926,7 +1000,7 @@ app.post('/api/orders', auth, async (req, res) => {
             const [orderResult] = await connection.query(
                 `INSERT INTO \`order\` (user_id, total_amount, status, payment_method, estimated_pickup_time) 
                  VALUES (?, ?, ?, ?, ?)`,
-                [userId, total, 'pending', paymentMethod, estimatedPickup]
+                [userId, finalTotal, 'pending', paymentMethod, estimatedPickup]
             );
 
             const orderId = orderResult.insertId;
@@ -961,7 +1035,8 @@ app.post('/api/orders', auth, async (req, res) => {
             res.status(201).json({
                 success: true,
                 orderId: orderId.toString(),
-                message: 'Order confirmed'
+                message: 'Order confirmed',
+                coupon_applied: !!appliedCoupon
             });
 
         } catch (err) {
@@ -1128,7 +1203,30 @@ app.delete('/api/profile', auth, async (req, res) => {
     }
 });
 
+//====================Coupon==================================================
+// GET /api/profile/coupons - Get the user's unused coupons
+app.get('/api/profile/coupons', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
 
+        const [coupons] = await db.query(
+            `SELECT order_id, coupon_code as code, total_amount as value, 
+                    DATE_FORMAT(cancelled_at, '%Y-%m-%d') as date,
+                    DATEDIFF(DATE_ADD(cancelled_at, INTERVAL 30 DAY), NOW()) as days_left
+             FROM \`order\` 
+             WHERE user_id = ? AND coupon_code IS NOT NULL AND coupon_used = FALSE
+             AND cancelled_at > DATE_SUB(NOW(), INTERVAL 30 DAY)
+             ORDER BY cancelled_at DESC`,
+            [userId]
+        );
+
+        res.json(coupons);
+
+    } catch (err) {
+        console.error('Error fetching coupons:', err);
+        res.status(500).json({ error: 'Failed to fetch coupons' });
+    }
+});
 
 
 
