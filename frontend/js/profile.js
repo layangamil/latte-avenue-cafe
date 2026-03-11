@@ -79,7 +79,7 @@ async function loadUserProfile() {
 }
 
 async function loadDiscounts(){
-    const token = localStorage.getitem('token');
+    const token = localStorage.getItem('token');
 
     try {
         const response = await fetch('/api/profile/coupons', {
@@ -108,7 +108,7 @@ function displayDiscounts(discounts){
         const discount = discounts[j];
 
         html += `
-            <div class="discound-card">
+            <div class="discount-card">
                 <div class="discount-code">${discount.code}</div>
                 <div class="discount-value">Worth: ${discount.value} SEK</div>
                 <div class="discount-expiry">Expires in: ${discount.days_left} days</div>
@@ -116,7 +116,7 @@ function displayDiscounts(discounts){
             </div>
         `;
     }
-    conatiner.innerHTML= html;
+    container.innerHTML= html;
 }
 
 window.copyDiscount = function(code){
