@@ -851,7 +851,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
                  SET status = 'cancelled', 
                      cancelled_at = CURRENT_TIMESTAMP, 
                      estimated_pickup_time = NULL,
-                     coupon_code = ?,
+                     coupon_code = ?
                  WHERE order_id = ?`,
                 [couponCode, orderId]
             );
