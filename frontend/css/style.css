@@ -1107,6 +1107,33 @@ nav {
     background-color:#c3949a;
 }
 
+.discounts-section {
+    padding: 1.2rem;
+    margin-top: 2rem;
+    background: #f9f9f9;
+    border-radius: 9px;
+}
+
+.discount-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin: 0.8rem 0rem;
+    background: white;
+    border: 3px dashed #c3949a;
+    border-radius: 10px;
+    flex-wrap: wrap;
+}
+
+.discount-code{
+    font-family: ui-monospace;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    color: #8b6b61;
+}
+
 .delete-acc-section{
     margin: 2rem 0rem;
 }
@@ -1485,6 +1512,9 @@ nav {
     background-color:#8b6b61;
     color:#faf7f2;
     font-weight: 600;
+    cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 3px;
     border: none;
     border-radius: 4px;
     transition: background 0.3s;

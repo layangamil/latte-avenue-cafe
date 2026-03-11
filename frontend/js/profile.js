@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     console.log('User-ID: ', token?.id);
     loadUserProfile();
+    loadDiscounts();
 
     document.getElementById('passwordForm').addEventListener('submit', async function(e){
             e.preventDefault();
@@ -76,6 +77,53 @@ async function loadUserProfile() {
         console.log('Error loading profile');
     }
 }
+
+async function loadDiscounts(){
+    const token = localStorage.getitem('token');
+
+    try {
+        const response = await fetch('/api/profile/coupons', {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
+
+        const discounts = await response.json();
+        displayDiscounts(discounts);
+    } catch(error){
+        console.log('Error:', error);
+    }
+}
+
+function displayDiscounts(discounts){
+    const container = document.getElementById('discounts-container');
+
+    if(!discounts || discounts.length === 0){
+        container.innerHTML = '<p>You have no coupons</p>';
+        return;
+    }
+
+    let html = '';
+    for (let j = 0; j < discounts.length; j++){
+        const discount = discounts[j];
+
+        html += `
+            <div class="discound-card">
+                <div class="discount-code">${discount.code}</div>
+                <div class="discount-value">Worth: ${discount.value} SEK</div>
+                <div class="discount-expiry">Expires in: ${discount.days_left} days</div>
+                <button class="btn-tertiary" onclick="copyDiscount('${discount.code}')">Copy Code</button>
+            </div>
+        `;
+    }
+    conatiner.innerHTML= html;
+}
+
+window.copyDiscount = function(code){
+    navigator.clipboard.writeText(code);
+    alert('Copied coupon code to clipboard!');
+};
+
 
 async function deleteAccount(){
     const token = localStorage.getItem('token')
