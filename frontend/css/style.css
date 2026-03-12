@@ -214,8 +214,8 @@ nav {
     color: rgba(255,255,255,0.9);
 }
 
-.btn-primary {
-    display: inline-block;              /* Allows padding and behaves like button */
+/* .btn-primary {
+    display: inline-block;              
     background: #e6bcc2;
     color: white;
     cursor: pointer;
@@ -231,7 +231,7 @@ nav {
 .btn-primary:hover {
     background: #c3949a;
     transform: translateY(-2px); 
-}
+} */
 .section-title {
     text-align: center;
     margin: 2rem 0rem 3rem 0rem;
@@ -1631,7 +1631,7 @@ nav {
     background-color:#eddcc0;
 }
 
-.btn-secondary {
+/* .btn-secondary {
     background-color: white;
     color:#8b6b61;
     border: none;
@@ -1644,7 +1644,7 @@ nav {
 .btn-secondary:hover {
     color:#593e35;
     transform: translateY(-2px); 
-}
+} */
 
 /*===================================================================*/
                       /* ADMIN - ORDER MANAGE PAGE:*/
@@ -1800,7 +1800,7 @@ nav {
     margin: 0.2rem 0;
 }
 
-.btn-tertiary {
+/* .btn-tertiary {
     cursor: pointer;
     background-color:#8b6b61;
     color:#faf7f2;
@@ -1811,11 +1811,11 @@ nav {
     border: none;
     border-radius: 4px;
     transition: background 0.3s;
-}
+} */
 
-.btn-tertiary:hover {
+/* .btn-tertiary:hover {
     background-color:#5d4037;  
-}
+} */
 
 .order-actions select {
     color:#5d4037;
