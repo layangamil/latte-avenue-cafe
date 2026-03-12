@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function(){
-    const token = localStorage.getItem('token');
-    if(!token){
-        window.location.href = 'login.html';
-        return;
-    }
-    console.log('User-ID: ', token?.id);
-    loadUserProfile();
-    loadDiscounts();
+    // const token = localStorage.getItem('token');
+    // if(!token){
+    //     window.location.href = 'login.html';
+    //     return;
+    // }
+    // console.log('User-ID: ', token?.id);
+    // loadUserProfile();
+    // loadDiscounts();
 
 
     document.getElementById('emailForm').addEventListener('submit', async function(e){
