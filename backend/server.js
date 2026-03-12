@@ -70,56 +70,60 @@ function adminOnly(req, res, next) {
     next();
 }
 
-// ================= MENU & ITEMS ENDPOINTS (CONVERTED TO ASYNC/AWAIT) ============================
+//menu & item endpoints://
 
-// Get menu from database
+//get menu from db
 app.get('/api/menu', async (req, res) => {
     try {
         const [results] = await db.query('SELECT * FROM product');
         res.json(results);
+
     } catch (err) {
         console.error('Error fetching menu:', err);
         res.status(500).json({ error: 'Failed to fetch menu' });
     }
 });
 
-// Get all items
+//get all items
 app.get('/api/items', async (req, res) => {
     try {
         const [results] = await db.query('SELECT * FROM product');
         res.json(results);
+
     } catch (err) {
         console.error('Error fetching items:', err);
         res.status(500).json({ error: 'Failed to fetch items' });
     }
 });
 
-// Add new item (staff only)
+//add new item (staff only)
 app.post('/api/items', auth, adminOnly, async (req, res) => {
     try {
-        const { name, price, category, ingredients, is_available, stock, image_url } = req.body;
+        const {name, price, category, ingredients, is_available, stock, image_url} = req.body;
 
         const sql = `
             INSERT INTO product (name, price, category, ingredients, is_available, stock, image_url)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         `;
 
-        //Use stock ir provided by staff else use 30 as default
-        const stockValue = stock !== undefined ? stock : 30;
+        //use stock ir provided by staff else use 30 as default
+        const stockValue = stock || 30;
 
         const [result] = await db.query(sql, [name, price, category, ingredients, is_available ?? true, stockValue, image_url]);
-        res.json({ message: "Item added", id: result.insertId });
+        
+        res.json({message: "Item added", id: result.insertId});
+
     } catch (err) {
         console.error('Error adding item:', err);
-        res.status(400).json({ error: err.message });
+        res.status(400).json({error: err.message});
     }
 });
 
-// Update item (staff only)
+//update items (staff only)
 app.put('/api/items/:id', auth, adminOnly, async (req, res) => {
     try {
-        const { id } = req.params;
-        const { name, price, category, ingredients, is_available, stock, image_url } = req.body;
+        const {id} = req.params;
+        const {name, price, category, ingredients, is_available, stock, image_url } = req.body;
 
         const sql = `
             UPDATE product
@@ -128,29 +132,32 @@ app.put('/api/items/:id', auth, adminOnly, async (req, res) => {
         `;
 
         await db.query(sql, [name, price, category, ingredients, is_available, stock, image_url, id]);
-        res.json({ message: "Item updated" });
+        res.json({message: "Item updated"});
+
     } catch (err) {
         console.error('Error updating item:', err);
-        res.status(400).json({ error: err.message });
+        res.status(400).json({error: err.message});
     }
 });
 
-// Delete item (staff only)
+//delete item (staff only)
 app.delete('/api/items/:id', auth, adminOnly, async (req, res) => {
     try {
-        const { id } = req.params;
+        const {id} = req.params;
         await db.query('DELETE FROM product WHERE product_id=?', [id]);
-        res.json({ message: "Item deleted" });
+        res.json({message: "Item deleted"});
+
     } catch (err) {
         console.error('Error deleting item:', err);
-        res.status(400).json({ error: err.message });
+        res.status(400).json({error: err.message });
     }
 });
 
-// ================= REGISTER USER ===================================================================
+//register users://
+
 app.post('/api/register', async (req, res) => {
     try {
-        const { email, password, first_name, last_name } = req.body;
+        const {email, password, first_name, last_name} = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -159,122 +166,118 @@ app.post('/api/register', async (req, res) => {
             [email, hashedPassword, first_name, last_name, 'customer']
         );
 
-        res.json({ message: 'User created successfully' });
+        res.json({ message: 'User created successfully'});
 
     } catch (err) {
-        console.error('Registration error:', err);
-        res.status(500).json({ error: 'Registration failed' });
+        console.error('Registration error: WHYYYYYYYY :(', err);
     }
 });
 
-// ================= LOGIN ROUTE ===============================================================
+//login route://
 app.post('/api/login', async (req, res) => {
     try {
-        const { email, password, loginRole } = req.body;
+        const {email, password, loginRole} = req.body;
         console.log("Login attempt - email:", email, "as role:", loginRole);
 
-        // Query database for user with matching email
         const [results] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
 
-        // If no user found, send 400 Bad Request
+        //if no user is found...
         if (results.length === 0) {
             console.log("User not found in database");
-            return res.status(400).json({ message: "User not found" });
+            return res.status(400).json({message: "User not found"});
         }
 
         const user = results[0];
 
-        //Check if user is trying to log in with correct role
+        //check if user the is trying to log in with the right role
         if (loginRole === 'staff' && user.role !== 'staff') {
-            console.log("User tried to log in as staff but is not staff");
+            console.log("User is not staff, Log in as user");
             return res.status(403).json({ message: "Access denied: Not a staff account" });
         }
 
         if (loginRole === 'customer' && user.role !== 'customer') {
-            console.log("User tried to log in as a customer but is not a customer");
+            console.log("User is staff. Log in as staff please.");
             return res.status(403).json({ message: "Access denied: Not a customer account" });
         }
         
 
-        // Compare provided password with hashed password in database
+        //compare the password with hashed password in db
         const match = await bcrypt.compare(password, user.password_hash);
 
         if (!match) {
             console.log("Password mismatch");
-            return res.status(401).json({ message: "Wrong password" });
+            return res.status(401).json({message: "Wrong password"});
         }
 
-        // Create JWT token
+        //make a JWT token
         const token = jwt.sign(
-            { id: user.user_id, role: user.role },
+            {id: user.user_id, role: user.role},
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
+            {expiresIn: '1h'}
         );
 
         console.log("Login successful for:", email);
-        res.json({ token });
+        res.json({token});
 
     } catch (err) {
         console.error('Login error:', err);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({message: 'Server error'});
     }
 });
 
-// ================ FORGOT PASSWORD =======================================================================
-const nodemailer = require('nodemailer');
+//forgot password:// Suddenly worked! idk why, just don't touch it!!
+
+const nodemailer = require('nodemailer'); 
 const crypto = require('crypto');
 
-// POST /api/forgot-password - send reset link to email
+//POST /api/forgot-password, send reset link to email
 app.post('/api/forgot-password', async (req, res) => {
     try {
-        const { email } = req.body;
+        const {email} = req.body;
 
         if (!email) {
-            return res.status(400).json({ message: 'EMail is required' });
+            return res.status(400).json({message: 'EMail is required'});
         }
 
-        // check if user exists
+        //check if user exists
         const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
 
         if (users.length === 0) {
-            // return success anyway (it's a security best practice not to reveal if the email exists)
-            return res.json({ message: 'If your email exists, you will receive a reset link' });
+            return res.json({message: 'A reset lnk has been sent to your email'});
         }
 
-        // Generate secure token
+        //generate secure token
         const token = crypto.randomBytes(32).toString('hex');
-        const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // in an hour from now
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000); //one hour from now
 
-        // Delete any existing tokens for this email
+        //delete all the old tokens
         await db.query('DELETE FROM password_resets WHERE email = ?', [email]);
 
-        // Save new token
+        //save new token
         await db.query(
             'INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)',
             [email, token, expiresAt]
         );
 
-        // Create reset link
-
+        //create resset link
         const resetLink = `${process.env.FRONTEND_URL}/reset-password.html?token=${token}`;
 
-        // Configure email transporter
+        //email transporte
         const transporter = nodemailer.createTransport({
             host: process.env.EMAIL_HOST,
             port: process.env.EMAIL_PORT,
-            secure: false, // true for 465 but false for other ports
+            secure: false,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
             }
         });
 
-        // Send email
-
+        //send email
         await transporter.sendMail({
             from: process.env.EMAIL_FROM,
             to: email,
-            subject: 'Latte Avenue - Password Reset Request',
+            subject: 'Latte Avenue: Password Reset Request',
             html: `
                 <h2>Password Reset Request</h2>
                 <p>You requested to reset your password for Latte Avenue.</p>
@@ -294,45 +297,43 @@ app.post('/api/forgot-password', async (req, res) => {
         
     } catch (err) {
         console.error('Forgot password error:', err);
-        res.status(500).json({ message: 'Failed to process request' });
+        res.status(500).json({message: 'Failed to process request'}); //mm hm, you can go 'F' urself cuz it works!!!! lez go!
     }
 });
 
-
-// POST /api/reset-password - reset password using token
+//POST /api/reset-password
 app.post('/api/reset-password', async (req, res) => {
     try {
-        const { token, newPassword } = req.body;
+        const {token, newPassword} = req.body;
 
         if (!token || !newPassword) {
-            return res.status(400).json({ message: 'Token and new password are required' });
+            return res.status(400).json({message: 'Token and new password are required'});
         }
 
-        // Find valid token
+        //find valid token
         const [tokens] = await db.query(
             'SELECT * FROM password_resets WHERE token = ? AND expires_at > NOW()',
             [token]
         );
 
         if (tokens.length === 0){
-            return res.status(400).json({ message: 'Invalid or expired token' });
+            return res.status(400).json({message: 'Invalid or expired token'});
         }
 
         const resetRequest = tokens[0];
 
-        // Hash new password
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-        //Update user's password
+        //pdate user's password
         await db.query(
             'UPDATE users SET password_hash = ? WHERE email = ?',
             [hashedPassword, resetRequest.email]
         );
 
-        //Mark token as used
+        //mark token as used
         await db.query('UPDATE password_resets SET used = TRUE WHERE token = ?', [token]);
 
-        res.json({ message: 'Password updated successfully' });
+        res.json({message: 'Password updated successfully'});
 
     } catch (err) {
         console.error('Request password error:', err);
