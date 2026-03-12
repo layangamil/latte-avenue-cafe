@@ -547,8 +547,6 @@ app.get('/api/orders/myorders', auth, async (req, res) => {
 
     const userId = req.user.id;
 
-    console.log("Fetching orders fro user ID:", userId);
-
     //get the orders for this user
     const [orders] = await db.query(
         `SELECT order_id as id, 
@@ -576,7 +574,6 @@ app.get('/api/orders/myorders', auth, async (req, res) => {
         order.items = items;
     }
 
-    //Always return the array even if empty
     res.json(orders);
 
 });
@@ -586,66 +583,66 @@ app.get('/api/orders/myorders', auth, async (req, res) => {
 
 
 
-//GET /api/orders/:id -get order details
+//GET /api/orders/:id for order details
 
 app.get('/api/orders/:id', auth, async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const orderId = req.params.id;
-        const isStaff = req.user.role === 'staff';
+    const userId = req.user.id;
+    const orderId = req.params.id;
+    const isStaff = req.user.role === 'staff';
 
-        //Get order details
-        const [orderDetails] = await db.query(
-            `SELECT o.*, u.email, u.first_name, u.last_name 
-             FROM \`order\` o
-             JOIN users u ON o.user_id = u.user_id
-             WHERE o.order_id = ?`,
+    //get the order details
+    const [orderDetails] = await db.query(
+        `SELECT \`order\`.*, users.email, users.first_name, users.last_name 
+             FROM \`order\`
+             JOIN users ON \`order\`.user_id = users.user_id
+             WHERE \`order\`.order_id = ?`,
             [orderId]
-        );
+    );
 
-        if (orderDetails.length === 0) {
-            return res.status(404).json({ error: 'Order not found' });
+    if (orderDetails.length === 0) {
+        return res.status(404).json({error: 'Order not found'});
+    }
+
+    const order = orderDetails[0];
+
+    //nly STaff & order owner can view
+    if (!isStaff && order.user_id !== userId) {
+        return res.status(403).json({error: 'Access denied'});
+    }
+
+    //get the items in the order
+    const [orderItems] = await db.query(
+        `SELECT order_item.*, product.name, product.category 
+             FROM order_item
+             JOIN product ON order_item.product_id = product.product_id
+             WHERE order_item.order_id = ?`,
+            [orderId]
+    );
+
+    //1 minute cancelling
+    const currentTime = new Date();
+    const orderTime = new Date(order.created_at);
+    const minsSince = (currentTime - orderTime) / (1000 * 60);
+    const canCancel = order.status === 'pending' && minsSince < 1;
+    
+    let timeLeft = 0;
+        if (canCancel) {
+            const secsPassed = (currentTime - orderTime) / 1000;
+            timeLeft = Math.max(0, 60 - secsPassed);
         }
 
-        const order = orderDetails[0];
-
-        //Check persmissions. Only STaff & order owner can view
-        if (!isStaff && order.user_id !== userId) {
-            return res.status(403).json({ error: 'Access denied' });
-        }
-
-        //Get order items
-        const [orderItems] = await db.query(
-            `SELECT oi.*, p.name, p.category 
-             FROM order_item oi
-             JOIN product p ON oi.product_id = p.product_id
-             WHERE oi.order_id = ?`,
-            [orderId]
-        );
-
-        //Calculate if order can be cancelled (within 1 minute)
-        const now = new Date();
-        const orderTime = new Date(order.created_at);
-        const minutesSinceOrder = (now - orderTime) / (1000 * 60);
-        const canCancel = order.status === 'pending' && minutesSinceOrder < 1;
-        
         res.json({
             order: order,
             items: orderItems,
             can_cancel: canCancel,
-            time_remaining: canCancel ? Math.max(0, 60 - (now - orderTime) / 1000) : 0
+            time_left: timeLeft
         });
-        
-    } catch (err) {
-        console.error('Error fetching order:', err);
-        res.status(500).json({ error: 'Failed to fetch order' });
-    }
 });
 
-//GET /api/orders -get all orders for user (or staff)
+//GET /api/orders, get all the orders for thr users
 
 app.get('/api/orders', auth, async (req, res) => {
-    try {
+
         const userId = req.user.id;
         const isStaff = req.user.role === 'staff';
 
@@ -653,11 +650,11 @@ app.get('/api/orders', auth, async (req, res) => {
         let params = [];
 
         if (isStaff) {
-            //Can see all orders
-            query = `SELECT o.*, u.email, u.first_name, u.last_name 
-                     FROM \`order\` o
-                     JOIN users u ON o.user_id = u.user_id
-                     ORDER BY o.created_at DESC`;
+            //staff xan see all orders
+            query = `SELECT order.*, users.email, users.first_name, users.last_name 
+                     FROM \`order\` 
+                     JOIN users ON oorder.user_id = users.user_id
+                     ORDER BY order.created_at DESC`;
         } else {
             //Customers only see their own orders
             query = `SELECT * FROM \`order\` 
@@ -666,9 +663,9 @@ app.get('/api/orders', auth, async (req, res) => {
             params = [userId];
         }
 
-        const [orders] =await db.query(query, params);
+        const [orders] =await db.query(query, params)
 
-        //Get item count for each order
+        //get the item count for each order
         for (let order of orders) {
             const [items] = await db.query(
                 'SELECT COUNT(*) as count FROM order_item WHERE order_id = ?',
@@ -678,12 +675,7 @@ app.get('/api/orders', auth, async (req, res) => {
             order.item_count = items[0].count;
         }
 
-        res.json(orders);
-
-    } catch (err) {
-        console.error('Error fetching orders:', err);
-        res.status(500).json({ error: 'Failed to fetch orders' });
-    }
+        res.json(orders)
 });
 
 //PUT /api/orders/:id/status -staff updates status
