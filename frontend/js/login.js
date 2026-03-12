@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', function(){
     //Existing customer - login
     // find customer login btn with classes...
-    const customerLoginBtn = document.querySelector('.customer-exist .btn-login');
+    const customerLoginBtn = document.querySelector('.customer-exist .btn-primary');
     if (customerLoginBtn) { //if it exists listen to it being clicked and run this code:
         customerLoginBtn.addEventListener('click', function(){
 
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     //New customer - sign up
     // find customer sign up btn with classes...
-    const customerSignupBtn = document.querySelector('.customer-new .btn-create');
+    const customerSignupBtn = document.querySelector('.customer-new .btn-primary');
     if (customerSignupBtn) { //if it exists listen to it being clicked and run this code:
         customerSignupBtn.addEventListener('click', function(){
             
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     //Admin - login
     // find admin log in btn with ID and class...
-    const adminLoginBtn = document.querySelector('#admin-section .btn-login');
+    const adminLoginBtn = document.querySelector('#admin-section .btn-primary');
     if (adminLoginBtn) {  //if it exists listen to it being clicked and run this code:
         adminLoginBtn.addEventListener('click', function(){
 

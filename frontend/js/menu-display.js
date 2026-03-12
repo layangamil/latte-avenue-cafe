@@ -22,14 +22,6 @@ async function loadPublicMenu(){
             }
         }
 
-        // REMOVE // const drinks = items.filter(item => {
-        //     return item.category?.toLowerCase().includes('drink');
-        // });
-        
-        // REMOVE //const desserts = items.filter(item => {
-        //     return item.category?.toLowerCase().includes('dessert');
-        // });
-
         displayMenuItems('drinks-menu', drinks);
         displayMenuItems('desserts-menu', desserts);
 
@@ -63,7 +55,7 @@ function displayMenuItems(containerId, items){
                         <span class="price">${item.price} kr</span>
                         ${isSoldOut ?
                             `<span class="sold-out-label">SOLD OUT</span>`:
-                            `<button class="btn-add"
+                            `<button class="btn btn-primary btn-small"
                                     data-id="${item.product_id}"
                                     data-name="${item.name}"
                                     data-price="${item.price}"
