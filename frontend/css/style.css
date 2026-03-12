@@ -1353,7 +1353,7 @@ nav {
     font-size: 1.2rem;
     margin-top: 4rem;
 }
-
+/* 
 .cancel-section span{
     font-size: 1.2rem;
     font-weight: 550;
@@ -1361,14 +1361,41 @@ nav {
 
 #cancel-order-btn {
     margin-bottom: 3rem;
-}
+} */
 
 
 /*===================================================================*/
                       /* CUSTOMER - PROFILE PAGE:*/
 /*===================================================================*/
 .profile-page{
-    margin-bottom: 10rem;
+    background: linear-gradient(136deg, #fff9f7 0%, #ffffff 1100%);
+    margin-bottom: 6rem;
+    padding: 1.9rem 0;
+}
+
+
+.account-section{
+    border-radius: 19px;
+    padding: 1.9rem;
+    background: white;
+    margin-bottom: 2.1rem;
+    border: 1px solid #eddcc0;
+    box-shadow: 0 6px 19px rgba(138, 106, 96, 0.04);
+}
+
+.delete-account{
+    background: #f0e6d6;
+}
+
+#delete-acc-btn{
+    background:white;
+    color:#c44b4b;
+    margin-top: 1.1rem;
+}
+
+#delete-acc-btn:hover{
+    background:#c44b4b;
+    color: white;
 }
 
 .dropdown {
@@ -1414,48 +1441,70 @@ nav {
 }
 
 .section-header h2{
-    color:#8b6b61;
-    font-family:'Cormorant Garamond', serif;
+    color: #5d4037;
+    font-family: 'Playfair Display', serif;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    font-size: 1.7rem;
+}
+
+.section-header {
+    margin-bottom: 1.4rem;
 }
 
 .section-header p{
     color:#8b6b61;
     font-family:'Cormorant Garamond', serif;
     font-style: italic;
-    margin-bottom: 2rem;
+    margin-bottom: 1.2rem;
 }
 
 .profile-info{
     color:#5d4037;
-    margin-bottom: 4rem;
+    margin-bottom: 1.1rem;
+    background: #faf7f2;
+    border-radius: 16px;
 }
 
-.profile-info p, span{
-    margin-bottom: 1rem;
+.profile-info p{
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.profile-info span{
+    color:#5d4037;
+    flex: 1;
 }
 
 .password-section-container{
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin-right: auto;
-    width: 100%;
+    width: 100%; */
     max-width: 400px;
 }
 
 .password-section-container input{
-    height: 2rem;
-    width: 400px;
-    padding: 0.6rem;
+    height: 2.9rem;
+    padding: 0 1rem;
     border:1px solid #8b6b61;
-    border-radius: 0.7rem;
-    margin-bottom: 0.5rem;
+    border-radius: 13px;
+    font-size: 1rem;
+    font-family: 'Cormorant Garamond', serif;
+    background: white;
+}
+
+.password-container-form{
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
 }
 
 .password-section-container input:focus{
     outline-color: #5d4037; 
+    background: #faf7f2;
 }
 
 .password-section-container input::placeholder{
@@ -1465,39 +1514,44 @@ nav {
 }
 
 .password-section-container button{
-    background-color: #e6bcc2;
-    font-family: 'Playfair Display', serif;
-    color:#fff;
-    font-size: 0.8rem;
-    border-radius: 10px;
-    border: none;
-    padding: 0.4rem;
     margin-top: 0.5rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
 }
 
-.password-section-container button:hover{
+/* .password-section-container button:hover{
     background-color:#c3949a;
-}
+}  */
 
 .discounts-section {
-    padding: 1.2rem;
-    margin-top: 2rem;
-    background: #f9f9f9;
-    border-radius: 9px;
+    margin-top: 1.1rem;
 }
 
 .discount-card {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-    margin: 0.8rem 0rem;
+    flex-direction: column;
+    padding: 1.7rem 1.4rem;
     background: white;
-    border: 3px dashed #c3949a;
-    border-radius: 10px;
-    flex-wrap: wrap;
+    border: 2px dashed #e6bcc2;
+    border-radius: 21px;
+    transition: all 0.3s ease;
+    gap: 0.7rem;
+}
+
+.discount-card:hover{
+    box-shadow: 0 11px 24px rgba(229, 187, 193, 0.15);
+    transform: translateY(-4px);
+}
+
+.discount-card .btn{
+    margin-top: 0.6rem;
+    width: 100%;
+}
+
+#discounts-container{
+    display: grid;
+    gap: 1.1rem;
+    margin-top: 1.4rem;
+    grid-template-columns: repeat(auto-fill, minmax(299px, 1fr));
 }
 
 .discount-code{
@@ -1505,27 +1559,24 @@ nav {
     font-weight: 600;
     font-size: 1.1rem;
     letter-spacing: 3px;
+    background: #faf7f2;
+    padding: 0.7rem 1.6rem;
+    border-radius: 15px;
+    border: 1px solid #eddcc0;
+    color: #5d4037;
+}
+
+.discount-expiry{
+    margin-bottom: 0.4rem;
     color: #8b6b61;
+    font-size: 1rem;
 }
 
-.delete-acc-section{
-    margin: 2rem 0rem;
-}
 
-.delete-acc-section button{
-    background-color: #8b6b61;
-    font-family: 'Playfair Display', serif;
-    color:#fff;
-    font-size: 0.8rem;
-    border-radius: 10px;
-    border: none;
-    padding: 0.4rem;
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.delete-acc-section button:hover{
-    background-color:#5d4037;
+.discount-value{
+    color: #5d4037;
+    font-size: 1rem;
+    font-weight: 550;
 }
 
 /*===================================================================*/

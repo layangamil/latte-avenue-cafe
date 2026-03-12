@@ -112,7 +112,7 @@ function displayDiscounts(discounts){
                 <div class="discount-code">${discount.code}</div>
                 <div class="discount-value">Worth: ${discount.value} SEK</div>
                 <div class="discount-expiry">Expires in: ${discount.days_left} days</div>
-                <button class="btn-tertiary" onclick="copyDiscount('${discount.code}')">Copy Code</button>
+                <button class="btn btn-secondary btn-small" onclick="copyDiscount('${discount.code}')">Copy Code</button>
             </div>
         `;
     }
