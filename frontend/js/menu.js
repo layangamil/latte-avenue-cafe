@@ -45,8 +45,8 @@ function addToCart(itemId, itemName, itemPrice, itemStock) {
 //Function: makes the 'add' to cart btns to function like we said above
 function setAddToCartButtons() {
     console.log('setAddToCartButtons function is running!');
-    //find all btns that have class 'btn-add'
-    let addButtons = document.querySelectorAll('.btn-add');
+    //find all btns that have class 
+    let addButtons = document.querySelectorAll('.btn-primary.btn-small');
     console.log('Found', addButtons.length, 'add buttons to set up');
 
     //loop through all the btns to add eventListener for each
