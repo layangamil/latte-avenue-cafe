@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const passReset = document.getElementById('passReset');
     const confirmPassReset = document.getElementById('confirmPassReset');
     const msgMatch = document.getElementById('matchPasswordMsg');
+    const msgMissingInfo = document.getElementById('missingInfoMsg');
 
     if(resetBtn){
         resetBtn.addEventListener('click', async function(e){
@@ -27,13 +28,14 @@ document.addEventListener('DOMContentLoaded', function(){
 
             if(!confirmNewPass || !newPass){
                 console.log('Missing input infromation');
-                alert('Please fill in both feilds.');
+                msgMissingInfo.style.display = 'block';
                 return;
+            } else{
+                msgMissingInfo.style.display = 'none';
             }
 
             if (newPass !== confirmNewPass){
                 msgMatch.style.display = 'block';
-                alert('Passwords do not match!');
                 return;
             }else {
                 msgMatch.style.display = 'none';
