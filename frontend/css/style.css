@@ -603,15 +603,15 @@ nav {
     color:#593e35;
     font-size: 1.4rem;
     letter-spacing: 6px;
-    margin-bottom:1.5rem;
+    margin-bottom:1.9rem;
 }
 
 .socials a{
     color:#e6bcc2;
-    margin: 0rem 5rem;
-    letter-spacing:0.1rem;
+    font-size:2rem;
+    margin: 0rem 6rem;
     font-style: italic;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.1rem;
 }
 
 .footer-section p{
@@ -1006,15 +1006,16 @@ nav {
 /*== cart summary == */
 
 .cart-summary {
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     padding: 2.1rem;
     background: white;
-    margin: 2rem 0rem 1rem 0;
+    margin: 2rem 0rem 1rem auto;
     border-radius: 21px;
     border: 1px solid #e6bcc2;
-    box-shadow:rgba(138, 106, 96, 0.04);
+    box-shadow:0 4px 19px rgba(138, 106, 96, 0.04);
 }
 
 .cart-total {
@@ -1024,7 +1025,6 @@ nav {
     border-bottom: 2px dashed #e6bcc2;
     padding-bottom: 1.4rem;
 }
-
 
 .cart-total h3{
     font-size: 1.2rem;
@@ -1062,15 +1062,21 @@ nav {
     align-items: center;
     padding: 4rem 1.9rem;
     margin: 4.9rem 1rem;
-    background:white;
+    background:transparent;
     border-radius: 29px;
 }
 
 .empty-cart p{
-    color:#5d4037;
-    font-family: 'Playfair Display', serif;
+    color: #a1887f;
+    font-weight: 500;
     font-size: 1.4rem;
     margin-bottom: 1.9rem;
+}
+
+.empty-cart i{
+    color: #b6afad;
+    font-size: 3rem;
+    padding-bottom: 1.5rem;
 }
 
 /* .empty-cart a{
@@ -1319,21 +1325,34 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.6rem auto;
-    --fa-animation-iteration-count: 1; /*makes it beat only once */
+    margin: 3rem auto 1.6rem auto;
+    --fa-animation-iteration-count: 2; /*makes it beat only once */
 }
 .confirmation-section .section-header{
     color:#5d4037;
+}
+
+.order-id-section {
+    padding-bottom: 1rem;
 }
 
 .section-header span{
     font-size: 1.8rem;
 }
 
+.cancel-section{
+    border-top: 2px solid #e6bcc2;
+}
+
 .cancel-section h3{
     color:#593e35;
     font-size: 1.2rem;
     margin-top: 4rem;
+}
+
+.cancel-section span{
+    font-size: 1.2rem;
+    font-weight: 550;
 }
 
 #cancel-order-btn {

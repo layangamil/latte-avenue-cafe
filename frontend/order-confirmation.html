@@ -26,7 +26,7 @@
                     <a href="index.html#menu" class="nav-item">Menu</a>
                     <a href="index.html#contact" class="nav-item">Contact</a>
                     <a href="cart.html" class="nav-item">
-                        <i class="fas fa-shopping-bag"></i>
+                        <i class="fa-solid fa-cart-arrow-down"></i>
                         <span id="cart-count" class="cart-count">0</span> <!-- span, bc it doesnt break line (inline -element) JS needs a unique id to find and update cart nr. class cart-count is for styling, ID for JS -->
                     </a>
                     <a href="login.html" id="loginLink" class="nav-item">
@@ -58,12 +58,14 @@
                     </div>
                     
                     <div id="confirmation-content" class="section-header">
-                        <h2>Your Order ID: #<span id="order-id-display" class="order-id-display"></span></h3>
+                        <div class="order-id-section">
+                            <h2>Your Order ID: <span id="order-id-display" class="order-id-display"></span></h3>
+                        </div>
                     
                         <div id="cancel-section" class="cancel-section">
-                            <h3>Wish to cancel order?</h2>
+                            <h3>Wish to cancel order?</h3>
                             <p>You may cancel order within: <span id="countdown-timer">60</span> seconds</p>
-                            <button id="cancel-order-btn" class="btn-primary">Cancel</button>
+                            <button id="cancel-order-btn" class="btn btn-secondary">Cancel</button>
                         </div>
         
                         <div class="cancel-message" id="cancel-message" style="display:none;">
@@ -80,9 +82,9 @@
         <div class="container">
             <h4>Follow us on our socials</h4>
             <div class="socials">
-                <a href="https://www.instagram.com/latte_avenue_sthlm/" target="_blank">Instagram</a>
-                <a href="https://www.tiktok.com/@latte_avenue_sthlm?lang=en-GB" target="_blank">TikTok</a>
-                <a href="https://www.facebook.com/profile.php?id=61588507070670" target="_blank">Facebook</a>
+                <a href="https://www.instagram.com/latte_avenue_sthlm/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@latte_avenue_sthlm?lang=en-GB" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61588507070670" target="_blank"><i class="fa-brands fa-square-facebook"></i></a>
             </div>
             <p>© 2026 Latte Avenue Café. All rights reserved.</p>
         </div>

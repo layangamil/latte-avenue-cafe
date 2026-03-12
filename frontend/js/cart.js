@@ -112,7 +112,7 @@ function displayCart(cart) {
     //if cart is empty
     if (cart.length === 0){
         container.innerHTML = 
-        '<div class="empty-cart"><p>No items in your cart!</p><a href="index.html#menu" class="btn btn-primary">Browse Menu</a></div>';
+        '<div class="empty-cart"><i class="fa-solid fa-cart-arrow-down"></i><p>No items in your cart!</p><a href="index.html#menu" class="btn btn-primary">Browse Menu</a></div>';
         totalEl.textContent = '0.00';
         return;
     }
