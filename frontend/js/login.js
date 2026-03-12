@@ -105,7 +105,6 @@ async function registerUser(firstName, lastName, email, password, confirmPass, m
 
     if (password !== confirmPass){
         msgMatch.style.display = 'block';
-        alert('Passwords do not match!');
         return;
     }else {
         msgMatch.style.display = 'none';

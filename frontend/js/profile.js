@@ -8,16 +8,71 @@ document.addEventListener('DOMContentLoaded', function(){
     loadUserProfile();
     loadDiscounts();
 
+
+    document.getElementById('emailForm').addEventListener('submit', async function(e){
+        e.preventDefault();
+
+        const msgFillAll = document.getElementById('msgNotFilled');
+        const email = document.getElementById('email').value;
+        if (!email){
+            msgFillAll.style.display = 'block';
+            return;
+        } else{
+            msgFillAll.style.display = 'none';
+        }
+
+        await updateProfile({email: email});
+    });
+
+    document.getElementById('nameForm').addEventListener('submit', async function(e){
+        e.preventDefault();
+
+        const msgFillAll = document.getElementById('msgFillAll');
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        if (!firstName || !lastName){
+            msgFillAll.style.display = 'block';
+            return;
+        } else{
+            msgFillAll.style.display = 'none';
+        }
+
+        await updateProfile({
+            first_name: firstName,
+            last_name: lastName
+        });
+    });
+
+
     document.getElementById('passwordForm').addEventListener('submit', async function(e){
             e.preventDefault();
 
             const currentPw = document.getElementById('currentPassword').value;
             const newPw = document.getElementById('newPassword').value;
             const confirmPw = document.getElementById('confirmPassword').value;
+            const msgMatch = document.getElementById('msgMatch');
+            const msgShort = document.getElementById('msgShort');
+            const msgFillAll = document.getElementById('msgMissing');
+
+            if(!newPw || !confirmPw){
+                msgFillAll.style.display = 'block';
+                return;
+            } else {
+                msgFillAll.style.display = 'none';
+            }
 
             if(newPw !== confirmPw) {
-                alert('New Password does not match');
+                msgMatch.style.display = 'block';
                 return;
+            } else{
+                msgMatch.style.display = 'none';
+            }
+
+            if(newPw.length < 6){
+                msgShort.style.display = 'block';
+                return;
+            }else {
+               msgShort.style.display = 'none';
             }
 
             try {
@@ -65,16 +120,42 @@ async function loadUserProfile() {
 
         const user = await response.json(); 
 
-        document.getElementById('display-firstname-header').textContent = user.first_name;
-        document.getElementById('display-firstname').textContent = user.first_name;
-        document.getElementById('display-lastname').textContent = user.last_name;
-        document.getElementById('display-email').textContent = user.email;
+        document.getElementById('display-firstname-header').textContent = user.first_name || '';
+        document.getElementById('firstName').value = user.first_name || '';
+        document.getElementById('lastName').value = user.last_name || '';
+        document.getElementById('email').value = user.email || '';
 
         if (typeof window.updateCartCount === 'function') {
             window.updateCartCount();
         }
     } catch(error) {
         console.log('Error loading profile');
+    }
+}
+
+async function updateProfile(data){
+    const token = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('/api/profile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok){
+            alert('Personal infromation updated!');
+            loadUserProfile();
+        } else{
+            const error = await response.json();
+            alert('Could not update: ' + (error.message || 'Unkown error'));
+        }
+    } catch(error){
+        console.log('Error:', error);
+        alert('Could not connect to server');
     }
 }
 
@@ -99,7 +180,7 @@ function displayDiscounts(discounts){
     const container = document.getElementById('discounts-container');
 
     if(!discounts || discounts.length === 0){
-        container.innerHTML = '<p>You have no coupons</p>';
+        container.innerHTML = '<p class="no-coupons">You have no coupons</p>';
         return;
     }
 

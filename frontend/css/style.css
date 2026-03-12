@@ -627,7 +627,7 @@ nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 3rem;
+    gap: 4rem;
     padding: 2rem 1.9rem;
 }
 
@@ -1367,12 +1367,19 @@ nav {
 /*===================================================================*/
                       /* CUSTOMER - PROFILE PAGE:*/
 /*===================================================================*/
+.msgFillAll, .msgShort, .msgMatch{
+    color:#c44b4b;
+    display: none;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 0.6rem;
+}
+
 .profile-page{
     background: linear-gradient(136deg, #fff9f7 0%, #ffffff 1100%);
     margin-bottom: 6rem;
     padding: 1.9rem 0;
 }
-
 
 .account-section{
     border-radius: 19px;
@@ -1381,6 +1388,31 @@ nav {
     margin-bottom: 2.1rem;
     border: 1px solid #eddcc0;
     box-shadow: 0 6px 19px rgba(138, 106, 96, 0.04);
+}
+
+.form-container {
+    max-width: 499px;
+}
+
+.form-container form{
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+}
+
+.form-container input{
+    height: 3rem;
+    border-radius: 16px;
+    padding: 0 1.3rem;
+    border: 1px solid #eddcc0;
+    font-size: 1rem;
+    background: #faf7f2;
+    font-family:'Cormorant Garamond', serif;
+}
+
+.form-container button{
+    align-self: flex-start;
+    margin-top: 0.6rem;
 }
 
 .delete-account{
@@ -1459,7 +1491,7 @@ nav {
     margin-bottom: 1.2rem;
 }
 
-.profile-info{
+/* .profile-info{
     color:#5d4037;
     margin-bottom: 1.1rem;
     background: #faf7f2;
@@ -1475,14 +1507,14 @@ nav {
 .profile-info span{
     color:#5d4037;
     flex: 1;
-}
+} */
 
-.password-section-container{
-    /* display: flex;
+/* .password-section-container{
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin-right: auto;
-    width: 100%; */
+    width: 100%; 
     max-width: 400px;
 }
 
@@ -1515,7 +1547,7 @@ nav {
 
 .password-section-container button{
     margin-top: 0.5rem;
-}
+}  */
 
 /* .password-section-container button:hover{
     background-color:#c3949a;

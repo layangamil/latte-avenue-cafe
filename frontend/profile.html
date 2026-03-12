@@ -53,19 +53,60 @@
             </div>
             
             <div class="account-section">
-                <div class="profile-section-header">
-                    <div class="section-header">
-                        <h2>My Information</h3>
-                        <p>You may view your personal information</p>
-                    </div>
+                <div class="section-header">
+                    <h2>Change name</h2>
+                    <p>Update first or last name</p>
                 </div>
-                <div id="profile-info" class="profile-info">
+
+                <div class="form-container">
+                    <form id="nameForm">
+                        <input type="text" id="firstName" placeholder="Enter first name" required>
+                        <input type="text" id="lastName" placeholder="Enter last name" required>
+                        <button type="submit" class="btn btn-primary">Save name</button>
+                        <span id="msgFillAll" class="msgFillAll">Please, fill in all fields.</span>
+                    </form>
+                </div>
+            </div>
+
+            <div class="account-section">
+                <div class="section-header">
+                    <h2>Change e-mail</h2>
+                    <p>Update your e-mail address</p>
+                </div>
+
+                <div class="form-container">
+                    <form id="emailForm">
+                        <input type="email" id="email" placeholder="Enter e-mail address" required>
+                        <button type="submit" class="btn btn-primary">Save e-mail</button>
+                        <span id="msgNotFilled" class="msgFillAll">Please, fill in all fields.</span>
+                    </form>
+                </div>
+            </div>
+        
+            <div class="account-section">
+                <div class="section-header">
+                    <h2>Change password</h2>
+                    <p>Update your password</p>
+                </div>
+                <div class="form-container">
+                    <form id="passwordForm">
+                        <input type="password" id="currentPassword" placeholder="Enter Current Password" required>
+                        <input type="password" id="newPassword" placeholder="Enter New Password" required>
+                        <input type="password" id="confirmPassword" placeholder="Confirm New Password" required>
+                        <button type="submit" class="btn btn-primary">Save password</button>
+                        <span id="msgMissing" class="msgFillAll">Please, fill in all fields.</span>
+                        <span id="msgMatch" class="msgMatch">Passwords do not match!</span>
+                        <span id="msgShort" class="msgShort">Password must be minimum 6 characters.</span>
+                    </form>
+                </div>
+            </div>
+                <!-- <div id="profile-info" class="profile-info">
                     <p><strong>First Name:  </strong> <span id="display-firstname"></span></p>
                     <p><strong>Last Name:  </strong> <span id="display-lastname"></span></p>
                     <p><strong>E-mail:  </strong> <span id="display-email"></span></p>
                 </div>
             </div>
-                <!-- where chnages will happen (only password)-->
+               
             <div class="account-section">
                 <div class="section-header">
                     <h2>Change Password</h3>
@@ -79,11 +120,15 @@
                         <button type="submit" class="btn btn-primary">Update Password</button>
                     </form>
                 </div>
-            </div>
+            </div> -->
 
             <!--Discount section  -->
             <div class="account-section">
-                <h2>Your active coupons</h2>
+                <div class="section-header">
+                    <h2>Your coupons</h2>
+                    <p>Active coupons for future orders</p>
+                </div>
+    
                 <div id="discounts-container">
                     <p>Loading your coupons...</p>
                 </div>
@@ -96,7 +141,7 @@
                     <h2>Delete Account</h2>
                     <p>Your account information will be permanently removed</p>
                 </div>
-                <button id="delete-acc-btn" class="btn btn-tertiary">Delete</button>
+                <button id="delete-acc-btn" class="btn btn-tertiary">Delete Account</button>
             </div>
 
         </div>
