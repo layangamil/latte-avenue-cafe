@@ -341,18 +341,19 @@ app.post('/api/reset-password', async (req, res) => {
     }
 });
 
-// ================= SHOPPING CART ENDPOINTS (CONVERTED TO ASYNC/AWAIT) ===========================
+//shopping cart endpoints://
 
-// GET /api/cart - get user's cart
+//GET /api/cart, get user's cart
 app.get('/api/cart', auth, async (req, res) => {
     try {
         const userId = req.user.id;
 
         const sql = `
-            SELECT sc.cart_id, sc.product_id, sc.quantity, p.name, p.price, p.category, p.ingredients
-            FROM shopping_cart sc
-            JOIN product p ON sc.product_id = p.product_id
-            WHERE sc.user_id = ?
+            SELECT *
+            FROM shopping_cart
+            JOIN product 
+            ON shopping_cart.product_id = product.product_id
+            WHERE shopping_cart.user_id = ?
         `;
 
         const [results] = await db.query(sql, [userId]);
@@ -366,145 +367,150 @@ app.get('/api/cart', auth, async (req, res) => {
             items: results,
             total: total
         });
+
     } catch (err) {
         console.error('Error fetching cart:', err);
         res.status(500).json({ error: 'Failed to fetch cart' });
     }
 });
 
-// POST /api/cart - add items to cart
+//POST /api/cart, add items to cart
 app.post('/api/cart', auth, async (req, res) => {
     try {
         const userId = req.user.id;
-        const { product_id, quantity } = req.body;
+        const {product_id, quantity} = req.body;
 
         if (!product_id) {
-            return res.status(400).json({ error: 'Product ID is required' });
+            return res.status(400).json({error: 'Product ID is required'});
         }
 
-        // Check if product exists & is available
-        const [productResults] = await db.query(
+        //check if product exists & is available
+        const [productAvailable] = await db.query(
             'SELECT * FROM product WHERE product_id = ? AND is_available = TRUE',
             [product_id]
         );
 
-        if (productResults.length === 0) {
-            return res.status(404).json({ error: 'Product not found or unavailable' });
+        if (productAvailable.length === 0) {
+            return res.status(404).json({error: 'Product not found or unavailable'});
         }
 
-        // Check stock
-        const product = productResults[0];
-        if (product.stock <= 0) {
-            return res.status(400).json({ error: 'Item is out of stock' });
+        //check stock
+        const product = productAvailable[0];
+        if (product.stock == 0) {
+            return res.status(400).json({error: 'Item is out of stock' });
         }
 
-        // Check if item already in cart
-        const [cartResults] = await db.query(
+        //check if item is already in cart
+        const [inCart] = await db.query(
             'SELECT * FROM shopping_cart WHERE user_id = ? AND product_id = ?',
             [userId, product_id]
         );
 
-        if (cartResults.length > 0) {
-            // Item exists - update the quantity
-            const newQuantity = cartResults[0].quantity + (quantity || 1);
+        if (inCart.length > 0) {
+            //item exists so update the quantity
+            const newQuantity = inCart[0].quantity + (quantity || 1);
             await db.query(
                 'UPDATE shopping_cart SET quantity = ? WHERE cart_id = ?',
-                [newQuantity, cartResults[0].cart_id]
+                [newQuantity, inCart[0].cart_id]
             );
-            res.json({ message: 'Cart updated successfully' });
+            res.json({message: 'Cart updated successfully'});
         } else {
-            // Item doesn't exist - insert new
+            //item doesnt' exist, add it now
             const [result] = await db.query(
                 'INSERT INTO shopping_cart (user_id, product_id, quantity) VALUES (?, ?, ?)',
                 [userId, product_id, quantity || 1]
             );
+
             res.json({
                 message: 'Item added to cart',
                 cart_id: result.insertId
             });
         }
+
     } catch (err) {
         console.error('Error adding to cart:', err);
-        res.status(500).json({ error: 'Failed to add to cart' });
+        res.status(500).json({error: 'Failed to add to cart'});
     }
 });
 
-// PUT /api/cart/:product_id - Update quantity
+//PUT /api/cart/:product_id, Update quantity
 app.put('/api/cart/:product_id', auth, async (req, res) => {
     try {
         const userId = req.user.id;
         const productId = req.params.product_id;
-        const { quantity } = req.body;
+        const {quantity} = req.body;
 
-        // Validate quantity
+        //validate quantity
         if (!quantity || quantity < 1) {
-            return res.status(400).json({ error: 'Quantity must be at least 1' });
+            return res.status(400).json({error: 'Quantity must be at least 1'});
         }
 
-        // Update quantity for a specific cart item
+        //mow update quantity for a specific cart item
         const [result] = await db.query(
             'UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?',
             [quantity, userId, productId]
         );
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Item not found in cart' });
+            return res.status(404).json({error: 'Item not found in cart'});
         }
 
-        res.json({ message: 'Quantity updated successfully' });
+        res.json({message: 'Quantity updated successfully'});
+    
     } catch (err) {
         console.error('Error updating quantity:', err);
-        res.status(500).json({ error: 'Failed to update quantity' });
+        res.status(500).json({error: 'Failed to update quantity'});
     }
 });
 
-// DELETE /api/cart/:product_id - remove item
+//DELETE /api/cart/:product_id
 app.delete('/api/cart/:product_id', auth, async (req, res) => {
     try {
         const userId = req.user.id;
         const productId = req.params.product_id;
 
-        const [result] = await db.query(
+        const [removeItem] = await db.query(
             'DELETE FROM shopping_cart WHERE user_id = ? AND product_id = ?',
             [userId, productId]
         );
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Item not found in cart' });
+        if (removeItem.affectedRows === 0) {
+            return res.status(404).json({ error: 'Item not found' });
         }
 
-        res.json({ message: 'Item removed from cart' });
+        res.json({message: 'Item removed from cart'});
+    
     } catch (err) {
         console.error('Error removing item:', err);
-        res.status(500).json({ error: 'Failed to remove item' });
+        res.status(500).json({ error: 'couldn"t remove item' });
     }
 });
 
-// DELETE /api/cart - clear entire cart
+//DELETE /api/cart, clear entire cart
 app.delete('/api/cart', auth, async (req, res) => {
     try {
         const userId = req.user.id;
 
-        await db.query('DELETE FROM shopping_cart WHERE user_id = ?', [userId]);
+        await db.query(
+            'DELETE FROM shopping_cart WHERE user_id = ?', 
+            [userId]
+        );
 
-        res.json({ message: 'Cart cleared successfully' });
+        res.json({message: 'Cart cleared successfully'});
+    
     } catch (err) {
         console.error('Error clearing cart:', err);
-        res.status(500).json({ error: 'Failed to clear cart' });
+        res.status(500).json({error: 'Failed to clear cart' });
     }
 });
 
 
-// POST /api/cart/check-stock - verify stock for items
+// POST /api/cart/check-stock,  verify stock for items
 app.post('/api/cart/check-stock', auth, async (req, res) => {
     try {
-        const { items } = req.body;
+        const {items} = req.body;
 
-        if (!items || !Array.isArray(items)) {
-            return res.status(400).json({ error: 'Invalid items array' });
-        }
-
-        //array of product id's to check
+        //list of product id's to check
         const productIds = items.map(item => item.menuItemId);
         if (productIds.length === 0) {
             return res.json({ ok: true, outOfStock: [] })
@@ -515,38 +521,35 @@ app.post('/api/cart/check-stock', auth, async (req, res) => {
             [productIds]
         );
 
-        const stockMap = {};
-        rows.forEach(row => {
-            stockMap[row.product_id] = row;
-        });
-
         const outOfStock = [];
+
         for (let item of items) {
-            const product = stockMap[item.menuItemId];
+            const product = rows.find(product => product.product_id === item.menuItemId); //find the item in the db
+
             if (!product) {
-                outOfStock.push({ id: item.menuItemId, name: 'Unknown', reason: 'not_found' });
-            
+                outOfStock.push({id: item.menuItemId,name: 'Unkonw', reason: 'not found'
+                });
+
             } else if (product.stock < item.quantity) {
                 outOfStock.push({
                     id: item.menuItemId,
                     name: product.name,
                     requested: item.quantity,
                     available: product.stock,
-                    reason: 'insufficient'
-                });
+                    reason: 'Not enough left'
+
+                }); 
+            
             }
         }
 
         if (outOfStock.length > 0) {
-            return res.json({ ok: false, outOfStock });
+            return res.json({ok: false, outOfStock});
         
         } else {
-            return res.json({ ok: true, outOfStock: [] });
+            return res.json({ok: true, outOfStock: [] });
         }
-    } catch (err) {
-        console.error('Error checking stock:', err);
-        res.status(500).json({ error: 'Failed to check stock' });
-    }
+    } 
 });
 
 // ================= ORDER ENDPOINTS ==================================
