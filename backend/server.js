@@ -345,28 +345,28 @@ app.post('/api/reset-password', async (req, res) => {
 
 //GET /api/cart, get user's cart
 app.get('/api/cart', auth, async (req, res) => {
-    try {
-        const userId = req.user.id;
 
-        const sql = `
-            SELECT *
-            FROM shopping_cart
-            JOIN product 
-            ON shopping_cart.product_id = product.product_id
+    const userId = req.user.id;
+
+    const sql = `
+        SELECT *
+        FROM shopping_cart
+        JOIN product 
+        ON shopping_cart.product_id = product.product_id
             WHERE shopping_cart.user_id = ?
-        `;
+    `;
 
-        const [results] = await db.query(sql, [userId]);
+    const [results] = await db.query(sql, [userId]);
 
-        let total = 0;
-        results.forEach(item => {
-            total += parseFloat(item.price) * item.quantity;
-        });
+    let total = 0;
+    results.forEach(item => {
+        total += parseFloat(item.price) * item.quantity;
+    });
 
-        res.json({
-            items: results,
-            total: total
-        });
+    res.json({
+        items: results,
+        total: total
+    });
 
 });
 
@@ -542,47 +542,43 @@ app.post('/api/cart/check-stock', auth, async (req, res) => {
 
 
 
-//GET /api/orders/myorders -Get current user's orders with items
+//GET /api/orders/myorders, Get current user's orders with items
 app.get('/api/orders/myorders', auth, async (req, res) => {
-    try {
-        const userId = req.user.id;
-        console.log("Fetching orders fro user ID:", userId);
 
-        //Get all orders for this user
-        const [orders] = await db.query(
-            `SELECT order_id as id, 
-                    status, 
-                    total_amount as total,
-                    DATE_FORMAT(order_date, '%Y-%m-%d') as date,
-                    DATE_FORMAT(estimated_pickup_time, '%H:%i') as pickupTime
+    const userId = req.user.id;
+
+    console.log("Fetching orders fro user ID:", userId);
+
+    //get the orders for this user
+    const [orders] = await db.query(
+        `SELECT order_id as id, 
+                status, 
+                total_amount as total,
+                DATE_FORMAT(order_date, '%Y-%m-%d') as date,
+                DATE_FORMAT(estimated_pickup_time, '%H:%i') as pickupTime
              FROM \`order\` 
              WHERE user_id = ? 
              ORDER BY order_date DESC`,
             [userId]
         );
 
-        console.log("Found orders:", orders.length);
 
-        //For each order, get its items
-        for (let order of orders) {
-            const [items] = await db.query(
-                `SELECT p.name, oi.quantity, oi.price_at_time as price
-                 FROM order_item oi
-                 JOIN product p ON oi.product_id = p.product_id
-                 WHERE oi.order_id = ?`,
+    //get the utems in each order
+    for (let order of orders) {
+        const [items] = await db.query(
+            `SELECT product.name, order_item.quantity, order_item.price_at_time as price
+                 FROM order_item
+                 JOIN product ON order_item.product_id = product.product_id
+                 WHERE order_item.order_id = ?`,
                 [order.id]
             );
 
-            order.items = items;
-        }
-
-        //Always return the array even if empty
-        res.json(orders);
-
-    } catch (err) {
-        console.error('Error fetching user orders:', err);
-        res.status(500).json({ message: 'Failed to fetch orders' });
+        order.items = items;
     }
+
+    //Always return the array even if empty
+    res.json(orders);
+
 });
 
 
