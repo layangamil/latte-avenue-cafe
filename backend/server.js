@@ -1,101 +1,72 @@
-// Load environment variables from .env file into process.env
 require('dotenv').config();
-
-console.log('EMAIL_USER loaded:', process.env.EMAIL_USER);
-console.log('EMAIL_PASS length:', process.env.EMAIL_PASS ? process.env.EMAIL_PASS.length : 'missing');
-console.log('EMAIL_PASS first 4 chars:', process.env.EMAIL_PASS ? process.env.EMAIL_PASS.substring(0, 4) + '****' : 'missing');
-// Import the Express framework for building web servers
-const express = require('express');
-// Import MySQL2 library for database operations (PROMISE version)
+const express = require('express'); //our framework(builds server/api's)
 const mysql = require('mysql2/promise');
-// Import bcrypt library for password hashing and comparison
 const bcrypt = require('bcrypt');
-// Import jsonwebtoken library for creating/verifying JWT tokens
 const jwt = require('jsonwebtoken');
-// Import CORS middleware to enable Cross-Origin Resource Sharing
 const cors = require('cors');
-// Import path module for working with file paths
-const path = require('path');
-// Create an Express application instance
+const path = require('path'); //made frontend & backend connect
 const app = express();
-// Define the port number the server will listen on
 const PORT = 5000;
-// Middleware to parse JSON request bodies
 app.use(express.json());
-// Middleware to parse URL-encoded request bodies (extended: true allows rich objects/arrays)
 app.use(express.urlencoded({ extended: true }));
-// Middleware to enable CORS for all routes
-app.use(cors());
+app.use(cors()); //also made backend & fronten connect
 
-// Helper function to generate coupon code
+//make a random coupon
 function generateCouponCode() {
     return 'LATTE-' + Math.random().toString(36).substring(2, 10).toUpperCase();
 }
 
-//======================SERVE FRONTEND FILES========================
-//Serve static files from frontend folder
+//for frontend files
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// ================= AUTH MIDDLEWARE ===================================================================
-// Define authentication middleware function
-function auth(req, res, next) {
-    // Get Authorization header from request
-    const header = req.headers['authorization'];
-    // If no header exists, send 403 Forbidden status
-    if (!header) return res.sendStatus(403); // No token = forbidden
+//AUTH MIDDLEWARE://
 
-    // Split "Bearer TOKEN" and get the token part (index 1)
+function auth(req, res, next) {
+    const header = req.headers.authorization;
+    if (!header) {
+        res.sendStatus(403); //accsess denied
+        return;
+    }
+
     const token = header.split(' ')[1];
 
-    // Verify the JWT token using the secret from environment variables
+    //check if token is valid
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        // If verification fails, send 401 Unauthorized
-        if (err) return res.sendStatus(401); // Bad token
-        // Attach decoded user data to request object
-        req.user = decoded; // Save user info
-        // Call next() to continue to the next middleware/route handler
-        next(); // Continue to route
+        if (err) {
+            res.sendStatus(401); //unauthorised
+            return;
+        }
+        req.user = decoded; //attaches user inf to req(so it can be accessde by later routes)
+        next(); 
     });
 }
 
-// Create MySQL database connection POOL using environment variables
+//MySQL db connection pool using env
 const db = mysql.createPool({
-    host: process.env.DB_HOST,     // Database host from .env
-    user: process.env.DB_USER,     // Database username from .env
-    password: process.env.DB_PASS, // Database password from .env
-    database: process.env.DB_NAME,  // Database name from .env
-    waitForConnections: true,      // Fixed: was waitForConnection (missing 's')
+    host: process.env.DB_HOST,     
+    user: process.env.DB_USER,     
+    password: process.env.DB_PASS, 
+    database: process.env.DB_NAME,  
+    waitForConnections: true,     
     connectionLimit: 10,
     queueLimit: 0
 });
 
-// Test the connection (fixed: getConnection not getconnection)
-db.getConnection((err, connection) => {
-    if (err) {
-        // Log error if connection fails
-        console.error('Database connection failed:', err);
-        return;
-    }
-    // Log success message when connected
-    console.log('Connected to MySQL database!');
-    connection.release(); // Release the connection back to the pool
-});
 
-// Test endpoint - responds to GET requests at root URL
+//test endpoint 
 app.get('/', (req, res) => {
-    // Send simple text response
     res.send('Latte Avenue backend is running');
 });
 
-// ================= AUTH ADMIN ====================================================================
-// Define admin-only middleware function
+//AUTH ADMIN://
 function adminOnly(req, res, next) {
-    // Check if user role is not 'staff' (admin)
-    if (req.user.role !== 'staff') {
-        // If not admin, send 403 Forbidden with message
-        return res.status(403).json({ message: "Admins only" });
+    const role = req.user.role
+    if (role !== 'staff') {
+        res.status(403).json({ 
+            message: "Staff only" 
+        });
+        return;
     }
-    // If admin, continue to next middleware/route handler
     next();
 }
 
