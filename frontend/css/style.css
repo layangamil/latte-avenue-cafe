@@ -779,6 +779,7 @@ nav {
     background: linear-gradient(134deg, #ffffff, #fff9f7);
 }
 
+/*popup*/
 .popup-container {
     position: fixed;
     left: 0;
@@ -860,22 +861,35 @@ nav {
 /*===================================================================*/
                       /* RESET PASSWORD PAGE:*/
 /*===================================================================*/
+.main-header .logo img {
+    margin-left: 2rem;
+}
+
 .reset-password-page{
     margin: 0;
     display: flex;
     align-items: center;
-    background: linear-gradient(135deg, #f5f0ed 0%, #ffffff 99%);
+    justify-content: center;
+    background: white;
+    backdrop-filter: (3px);
     min-height: calc(100vh - 201px);
     padding: 2.1rem;
 }
 
 .reset-password-page .popup-container {
     display: flex;
+    position: relative !important;
     justify-content: center;
     align-items: center;
     background: transparent;
     width: 100%;
-    position: relative;
+    max-width: 500px;
+}
+
+.reset-password-page .container{
+    display:flex;
+    justify-content: center;
+    width: 100%;
 }
 
 #matchPasswordMsg, .missingInfoMsg{
@@ -883,7 +897,6 @@ nav {
     text-align: center;
     margin-bottom: 0.9rem;
 }
-
 /*===================================================================*/
                       /* CART PAGE:*/
 /*===================================================================*/
@@ -1323,7 +1336,7 @@ nav {
     align-items: center;
     justify-content: center;
     margin: 1rem auto 1.2rem auto;
-    --fa-animation-iteration-count: 2; /*makes it beat only twice */
+    --fa-animation-iteration-count: 3; /*makes it beat only twice */
 }
 
 .confirmation-section .section-header{
