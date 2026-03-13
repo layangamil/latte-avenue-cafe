@@ -1753,7 +1753,7 @@ nav {
 
 .menu-item-row {
     background-color: #faf7f2;
-    padding: 1.1rem;
+    padding: 0.75rem;
     margin-bottom: 1rem;
     border: 1px solid #eddcc0;
     border-radius: 15px;
@@ -1762,18 +1762,17 @@ nav {
 /* första row w all input fält (4st)*/
 .fields-row {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.35rem;
     margin-bottom: 0.5rem;
     width: 100%;
 }
 
-/*  field bredd */
 .field-name {
     width: 149px;
 }
 
 .field-price {
-    width: 80px;
+    width: 90px;
 }
 
 .field-description {
@@ -1781,16 +1780,16 @@ nav {
 }
 
 .field-image {
-    width: 200px;
+    width: 150px;
 }
 
 .field-stock {
-    width: 80px;
+    width: 70px;
 }
 
 .fields-row textarea, .fields-row input{
     border: 1.5px solid #eddcc0;
-    padding: 0.5rem 0.9rem;
+    padding: 0.5rem 0.8rem;
     border-radius: 10px;
     font-size: 1rem;
     font-family: 'Cormorant Garamond', serif;
@@ -1808,13 +1807,17 @@ nav {
 .item-actions {
     display: flex;
     justify-content: flex-end;
-    margin-top: 0.7rem;
+    margin-top: 0.35rem;
     gap: 0.7rem;
 }
 
 .new-item-row{
     background: #fff9f7;
     border-left: 3px solid #e6bcc2;
+}
+.items-actions .btn {
+    font-size: 0.75rem !important;
+    padding: 0.3rem 0.75rem !important;
 }
 
 .items-actions .btn.update-btn {
