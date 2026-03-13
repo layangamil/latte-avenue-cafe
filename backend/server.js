@@ -582,7 +582,7 @@ app.get('/api/orders/myorders', auth, async (req, res) => {
                 status, 
                 total_amount as total,
                 DATE_FORMAT(order_date, '%Y-%m-%d') as date,
-                DATE_FORMAT(estimated_pickup_time, '%H:%i') as pickupTime
+                DATE_FORMAT(CONVERT_TZ(estimated_pickup_time, '+00:00', '+01:00'), '%H:%i') as pickupTime
              FROM \`order\` 
              WHERE user_id = ? 
              ORDER BY order_date DESC`,
@@ -621,7 +621,8 @@ app.get('/api/orders/:id', auth, async (req, res) => {
 
     //get the order details
     const [orderDetails] = await db.query(
-        `SELECT \`order\`.*, users.email, users.first_name, users.last_name 
+        `SELECT \`order\`.*, users.email, users.first_name, users.last_name, 
+            DATE_FORMAT(CONVERT_TZ(estimated_pickup_time, '+00:00', '+01:00'), '%H:%i') as formatted_pickup
              FROM \`order\`
              JOIN users ON \`order\`.user_id = users.user_id
              WHERE \`order\`.order_id = ?`,
@@ -659,8 +660,22 @@ app.get('/api/orders/:id', auth, async (req, res) => {
             timeLeft = Math.max(0, 60 - Math.floor(secondsSince));
         }
 
+        const orderToSend = {
+            order_id: order.order_id,
+            user_id: order.user_id,
+            total_amount: order.total_amount,
+            status: order.status,
+            created_at: order.created_at,
+            estimated_pickup_time: order.formatted_pickup,
+            payment_method: order.payment_method,
+            cancelled_at: order.cancelled_at,
+            updated_at: order.updated_at,
+            coupon_code: order.coupon_code,
+            coupon_used: order.coupon_used
+        }
+
         res.json({
-            order: order,
+            order: orderToSend,
             items: orderItems,
             can_cancel: canCancel,
             time_left: timeLeft,
@@ -744,6 +759,15 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
             estimatedPickup = new Date(orderedAt.getTime() + 5 * 60000); //5 mins
         }
 
+    if (status === 'ready' && estimatedPickup){
+
+        const [rightTime] = await db.query(
+            `SELECT DATE_FORMAT(CONVERT_TZ(?, '+00:00', '+01:00'), '%H:%i') as formatted_time`,
+            [estimatedPickup]
+        );
+
+        const pickupTime = rightTime[0].formatted_time;
+
         const [userInfo] = await db.query(
             'SELECT email, first_name FROM users WHERE user_id = ?',
             [order.user_id]
@@ -751,11 +775,6 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
 
         const customerEmail = userInfo[0].email;
         const customerName = userInfo[0].first_name;
-
-        const pickupTime = estimatedPickup.toLocaleTimeString('sv-SE', {
-            hour: '2-digit',
-            minute: '2-digit'
-        }); 
 
         const emailHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -779,6 +798,7 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
         'Your Latte Avenue order is ready for pickup!',
         emailHtml
     );
+}
 
         //update order status
         await db.query(
