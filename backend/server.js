@@ -653,7 +653,7 @@ app.get('/api/orders', auth, async (req, res) => {
             //staff xan see all orders
             query = `SELECT order.*, users.email, users.first_name, users.last_name 
                      FROM \`order\` 
-                     JOIN users ON oorder.user_id = users.user_id
+                     JOIN users ON order.user_id = users.user_id
                      ORDER BY order.created_at DESC`;
         } else {
             //customers only see their own orders
@@ -702,7 +702,9 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
             return res.status(400).json({ error: 'no order not found' });
         }
 
-        const currentStatus = orderCheck[0].status;
+
+        const order = orderCheck[0];
+        const currentStatuses = order.status;
 
 
         if (!validTransitions.includes(status)) {
@@ -861,6 +863,8 @@ app.post('/api/orders', auth, async (req, res) => {
 
     //start transaction
     const connection = await db.getConnection();
+    
+    try {
     await connection.beginTransaction();
 
         
@@ -964,7 +968,17 @@ app.post('/api/orders', auth, async (req, res) => {
                 message: 'Order confirmed',
                 coupon_applied: !!appliedCoupon
             });
-    
+        } catch (err) {
+            await connection.rollback();
+            console.error('Order error:', err);
+            res.status(400).json({
+            success: false,
+            message: err.message
+        });
+        
+    } finally {
+        connection.release();
+    }
 });
 
 
@@ -1048,28 +1062,30 @@ app.delete('/api/profile', auth, async (req, res) => {
     const userId = req.user.id;
 
     const connection = await db.getConnection();
-    await connection.beginTransaction();
+    
+    try {
+        await connection.beginTransaction();
 
         
-    //users email for response message
-    const [users] = await connection.query(
+        //users email for response message
+        const [users] = await connection.query(
                 'SELECT email FROM users WHERE user_id = ?',
                 [userId]
             );
 
-    if (users.length === 0) {
-        await connection.rollback();
-        connection.release();
-            return res.status(404).json({message: 'User not found'});
-        }
+        if (users.length === 0) {
+            await connection.rollback();
+            connection.release();
+                return res.status(404).json({message: 'User not found'});
+            }
 
-        const userEmail = users[0].email;
+            const userEmail = users[0].email;
 
-         
-        await connection.query(
-            'DELETE FROM users WHERE user_id = ?',
-            [userId]
-        );
+
+            await connection.query(
+                'DELETE FROM users WHERE user_id = ?',
+                [userId]
+            );
 
         await connection.commit();
         connection.release();
@@ -1079,6 +1095,16 @@ app.delete('/api/profile', auth, async (req, res) => {
             message: 'Account deleted successfully',
             email: userEmail
         });
+    } catch (err) {
+        await connection.rollback();
+        console.error('error deleting account:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to delete account''
+        });
+    } finally {
+        connection.release();
+    }
 });
 
 //coupon discount:://
