@@ -80,8 +80,8 @@ function displayItems(containerId, items, category) {
                 </div>
                 
                 <div class="item-actions">
-                    <button class="btn-tertiary update-btn"  onclick="updateItem(${item.product_id}, this)">Update</button>
-                    <button class="btn-tertiary" onclick="deleteItem(${item.product_id})">Delete</button>
+                    <button class="btn btn-secondary btn-small update-btn"  onclick="updateItem(${item.product_id}, this)">Update</button>
+                    <button class="btn btn-tertiary btn-small" onclick="deleteItem(${item.product_id})">Delete</button>
                 </div>
             </div>
         `;
@@ -112,8 +112,8 @@ function getNewItemRow(category, index){
             </div>
 
             <div class="item-actions">
-                <button class="btn-tertiary update-btn" onclick="saveNewItem('${category}', ${index})">Save</button>
-                <button class="btn-tertiary" onclick="cancelNewItem('${category}', ${index})">Cancel</button>
+                <button class="btn btn-primary btn-small" onclick="saveNewItem('${category}', ${index})">Save</button>
+                <button class="btn btn-tertiary btn-small" onclick="cancelNewItem('${category}', ${index})">Cancel</button>
             </div>
         </div>
     `;

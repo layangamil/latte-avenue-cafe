@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //when page refresh, show updated cart-count
     updateCartCount();
 
-    setTimeout(setAddToCartButtons, 110); //troubleshoot? yes
+    // setTimeout(setAddToCartButtons, 110); //troubleshoot? yes
 });
 
 //troubleshoot? yes

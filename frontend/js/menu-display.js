@@ -69,6 +69,10 @@ function displayMenuItems(containerId, items){
         `;
     }
     container.innerHTML = html;
+
+    if (typeof setAddToCartButtons === 'function'){
+        setAddToCartButtons();
+    }
 }
 
 window.addEventListener('storage', function(e){
