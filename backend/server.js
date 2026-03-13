@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 async function sendEmail(to, subject, htmlContent) {
 
     try {
-        const transporter = nodeemailer.createTransport({
+        const transporter = nodemailer.createTransport({
             host: process.env.EMAIL_HOST,
             port: process.env.EMAIL_PORT,
             secure: false,
@@ -739,6 +739,42 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
             const orderedAt = new Date(order.created_at)
             estimatedPickup = new Date(orderedAt.getTime() + 5 * 60000); //5 mins
         }
+
+        const [userInfo] = await db.query(
+            'SELECT email, first_name FROM users WHERE user_id = ?',
+            [order.user_id]
+        );
+
+        const customerEmail = userInfo[0].email;
+        const customerName = userInfo[0].first_name;
+
+        const pickupTime = estimatedPickup.toLocaleTimeString('sv-SE', {
+            hour: '2-digit',
+            minute: '2-digit'
+        }); 
+
+        const emailHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background-color: #4CAF50; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
+        <h1>Your Order is Ready for Pickup!</h1>
+        </div>
+        <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px;">
+        <p>Hello ${customerName},</p>
+        <p>The wait os over! Your order #${orderId} is now ready for pickup.</p>
+        <div style="background-color: #e8e1d6; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;">
+        <h2 style="color: #8b6b61;">Ready at: ${pickupTime}</h2>
+        </div>
+        <p>Please stop by our cafe to get your order.</p>
+        <p style="margin-top: 30px;">Thank you for choosing Latte Avenue!<br>See you soon</p>
+        </div>
+        </div>
+    `;
+
+    await sendEmail(
+        customerEmail,
+        'Your Latte Avenue order is ready for pickup!',
+        emailHtml
+    );
 
         //update order status
         await db.query(
