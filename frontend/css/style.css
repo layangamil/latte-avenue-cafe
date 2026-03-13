@@ -445,6 +445,15 @@ nav {
     border-top: 1px solid #f0e6d6;   /* line above footer */
 }
 
+.btn-add-to-cart{
+    background:#8b6b61;
+}
+
+.btn-add-to-cart:hover{
+    background:#5d4037;
+}
+
+
 .price {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1rem;

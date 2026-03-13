@@ -55,7 +55,7 @@ function displayMenuItems(containerId, items){
                         <span class="price">${item.price} kr</span>
                         ${isSoldOut ?
                             `<span class="sold-out-label">SOLD OUT</span>`:
-                            `<button class="btn btn-primary btn-small"
+                            `<button class="btn btn-primary btn-small btn-add-to-cart"
                                     data-id="${item.product_id}"
                                     data-name="${item.name}"
                                     data-price="${item.price}"
