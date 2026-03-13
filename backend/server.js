@@ -651,20 +651,20 @@ app.get('/api/orders/:id', auth, async (req, res) => {
     //1 minute cancelling
     const currentTime = new Date();
     const orderTime = new Date(order.created_at);
-    const minsSince = (currentTime - orderTime) / (1000 * 60);
-    const canCancel = order.status === 'pending' && minsSince < 1;
+    const secondsSince = (currentTime - orderTime) / 1000;
+    const canCancel = order.status === 'pending' && secondsSince < 60;
     
     let timeLeft = 0;
         if (canCancel) {
-            const secsPassed = (currentTime - orderTime) / 1000;
-            timeLeft = Math.max(0, 60 - secsPassed);
+            timeLeft = Math.max(0, 60 - Math.floor(secondsSince));
         }
 
         res.json({
             order: order,
             items: orderItems,
             can_cancel: canCancel,
-            time_left: timeLeft
+            time_left: timeLeft,
+            seconds_since: Math.floor(secondsSince)
         });
 });
 
