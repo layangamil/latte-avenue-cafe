@@ -182,7 +182,6 @@ nav {
 
 .nav-item:hover {
     color: #593e35;
-    text-decoration: underline;
     transform: translateY(-4px);
 }
 
@@ -597,25 +596,20 @@ nav {
     text-align: left;
 }
 
-.footer-sub-header p{
-    border-bottom: 4px solid #e6bcc2;
-    margin-bottom: 2rem;
-    width: 2rem;
-    border-radius: 50px;
-}
-
 .footer-section h3{
     color:#593e35;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-family: 'Playfair Display', serif;
     letter-spacing: 5px;
     margin-bottom:1.3rem;
+    margin-left: 1rem;
 }
 
 .socials-section .socials {
     display: flex;
     margin-top: 0.6rem;
-    gap: 1.6rem;
+    gap: 5rem;
+    margin-left: 1rem;
 }
 
 .socials-section .socials a{
@@ -628,10 +622,16 @@ nav {
     transform: scale(1.4);
 }
 
+.contact-us {
+    margin-left: 6rem;
+}
+
 .footer-section i{
     font-size: 1.5rem;
     width: 35px;
     color: #e6bcc2;
+    margin-right: 0;
+    padding-left: 0;
 }
 
 .footer-section p{
@@ -1297,6 +1297,12 @@ nav {
     gap: 0.4rem;
 }
 
+.discount-row button{
+    padding: 0.5rem 0.7rem!important;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
 .discount-row input{
     font-family: 'Cormorant Garamond', serif;
     flex: 1;
@@ -1609,6 +1615,13 @@ nav {
     font-weight: 550;
 }
 
+.no-coupons{
+    color:#999;
+    font-family:'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+}
+
 /*===================================================================*/
                       /* CUSTOMER - MY ORDERS PAGE:*/
 /*===================================================================*/
@@ -1784,7 +1797,7 @@ nav {
 }
 
 .field-stock {
-    width: 70px;
+    width: 60px;
 }
 
 .fields-row textarea, .fields-row input{
@@ -1793,13 +1806,12 @@ nav {
     border-radius: 10px;
     font-size: 1rem;
     font-family: 'Cormorant Garamond', serif;
-    background: #faf7f2;
+    background: white;
     transition: all 0.3s ease;
 }
 
 .fields-row textarea:focus, .fields-row input:focus{
     border-color: #8b6b61;
-    background: white;
     outline: none;
     box-shadow: 0 0 0 4px rgba(229, 187, 193, 0.15);
 }
@@ -1821,11 +1833,15 @@ nav {
 }
 
 .items-actions .btn.update-btn {
-    color: #5d4037 !important;
+    color: #eddcc0 !important;
     background-color: #5d4037 !important;
     border: 1.5px solid #eddcc0 !important;
 }
 .items-actions .btn.update-btn:hover {
+    background-color: #eddcc0 !important;
+    color: #5d4037;
+}
+.items-actions .btn.delete-btn:hover {
     background-color: #eddcc0 !important;
 }
 
