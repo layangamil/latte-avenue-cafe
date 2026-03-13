@@ -575,46 +575,85 @@ nav {
     border-radius: 50%;
     background-color: #f0e6d6;
 }
-
+/* 
 .cart-count.bump {
     animation: bump 0.3s ease;
 }
 
-@keyframes bump {                       /* creates an animation, starts from normal, grows a little then back to normal*/
+@keyframes bump {                       
     0% { transform: scale(1); }
     50% { transform: scale(1.1); }
     100% { transform: scale(1); }
-}
+} */
 
 /* ============ */
 /* FOOTER SECTION*/
 .footer-section{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
     background-color:#a1887f;
-    margin-bottom: 0;
     padding: 2rem 0rem;
-    flex-shrink: 0;
 }
 
-.footer-section h4{
+.footer-section .container{
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.footer-section .contact-us, .footer-section .visit-us, .footer-section .socials-section{
+    flex: 1 1 201px;
+    text-align: left;
+}
+
+.footer-sub-header p{
+    border-bottom: 4px solid #e6bcc2;
+    margin-bottom: 2rem;
+    width: 2rem;
+    border-radius: 50px;
+}
+
+.footer-section h3{
     color:#593e35;
-    font-size: 1.4rem;
-    letter-spacing: 6px;
-    margin-bottom:1.9rem;
+    font-size: 1rem;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 5px;
+    margin-bottom:1.3rem;
 }
 
-.socials a{
+.socials-section .socials {
+    display: flex;
+    margin-top: 0.6rem;
+    gap: 1.6rem;
+}
+
+.socials-section .socials a{
     color:#e6bcc2;
-    font-size:2rem;
-    margin: 0rem 6rem;
-    font-style: italic;
-    margin-bottom: 2.1rem;
+    font-size:1.5rem;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+.socials-section .socials a:hover{
+    transform: scale(1.4);
+}
+
+.footer-section i{
+    font-size: 1.5rem;
+    width: 35px;
+    color: #e6bcc2;
 }
 
 .footer-section p{
+    margin: 1.2rem;
+    color:#faf7f2;
+    display:flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.footer-section .copyrights{
+    color: #f5f0ed opacity(70%);
+    justify-content: center;
+    text-align: center;
     margin-top: 1rem;
 }
 /*===================================================================*/
@@ -683,7 +722,6 @@ nav {
 .cutsomer-new, .customer-exist{
     margin-bottom: 1.9rem;
 }
-
 
 .input-container {
     display: flex;

@@ -28,6 +28,50 @@
     .nav-item {
         font-size: 0.7rem;
     }
+
+    /*footer section*/
+    .footer-section {
+        padding: 1.5rem 0;
+    }
+    
+    .footer-section .container {
+        flex-direction: column;
+        gap: 1.9rem;
+        padding: 0 1rem;
+        align-items: center;
+    }
+    
+    .footer-section .contact-us, .footer-section .socials-section, .footer-section .visit-us{
+        flex: 1 1 auto;
+        width: 100%;
+        text-align: center;
+        max-width: 280px;
+    }
+    
+    .footer-sub-header p {
+        margin-right: auto;
+        margin-left: auto;
+    }
+    
+    .footer-section p {
+        justify-content: center;
+        margin: 0.8rem 0;
+    }
+
+    .footer-section h3 {
+        text-align: center;
+    }
+    
+    .socials-section .socials {
+        justify-content: center;
+        gap: 1.45rem;
+    }
+    
+    .footer-section .copyrights {
+        font-size: 0.7rem;
+        margin-top: 1.45rem;
+    }
+
     /*=============================================================*/
     /*========================== LOGIN PAGE =======================*/
     .login-container {
@@ -757,14 +801,23 @@
         gap: 1.5rem;
     }
     
-    /* CONTACT SECTION*/
-    .contact-content h3 {
-        font-size: 1.1rem;
+    /* FOOTER SECTION*/
+    .footer-section .container {
+        padding: 0 1rem;
+        gap: 1.5rem;
     }
     
-    /* FOOTER SECTION*/
-    .socials a {
-        margin: 0 1.8rem;
+    .footer-section .contact-us, .footer-section .socials-section, .footer-section .visit-us {
+        flex: 1 1 180px;
+    }
+    
+    .footer-section p {
+        margin: 0.75rem 0;
+        font-size: 0.85rem;
+    }
+    
+    .socials-section .socials {
+        gap: 1.15rem;
     }
     /*=============================================================*/
     /*========================== LOGIN PAGE =======================*/
@@ -1133,13 +1186,63 @@
     }
 
     /* FOOTER SECTION */
-    .footer-section h4 {
-        font-size: 1.6rem;
+    .footer-section {
+        padding-top: 2.9rem;
+        padding-bottom: 1.9rem;
     }
     
-    .socials a {
-        font-size: 2.4rem;
-        margin: 0 3rem;
+    .footer-section .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        gap: 2.9rem;
+    }
+    
+    .footer-section .contact-us, .footer-section .socials-section, .footer-section .visit-us {
+        flex: 1 1 250px;
+    }
+    
+    .footer-section h3 {
+        font-size: 1.3rem;
+        letter-spacing: 5px;
+        margin-bottom: 1.6rem;
+    }
+    
+    .footer-sub-header p {
+        width: 2.45rem;
+        margin-bottom: 2.4rem;
+        border-bottom: 4.5px solid #e6bcc2;
+    }
+
+    .footer-section i {
+        width: 40px;
+        font-size: 1.7rem;
+    }
+    
+    .footer-section p {
+        font-size: 1rem;
+        gap: 0.75rem;
+        margin: 1rem 0;
+    }
+    
+    .socials-section .socials {
+        margin-top: 0.85rem;
+        gap: 2rem;
+    }
+
+    .socials-section .socials a:hover {
+        transform: scale(1.6);
+    }
+    
+    .socials-section .socials a {
+        font-size: 2.1rem;
+    }
+
+    
+    .footer-section .copyrights {
+        font-size: 0.9rem;
+        border-top-width: 2.2px;
+        padding-top: 1.6rem;
+        margin-top: 2.9rem;
     }
     
     /*=============================================================*/
