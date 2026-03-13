@@ -137,8 +137,10 @@ body {
 }
 
 .logo {
-    width: 180px;
-    height: 100px;
+    width: 150px;
+    height: 70px;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .logo a{

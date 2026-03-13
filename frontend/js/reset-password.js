@@ -1,24 +1,14 @@
 document.addEventListener('DOMContentLoaded', function(){
     const urlParam = new URLSearchParams(window.location.search);
-    const email = urlParam.get('email');
+    // const email = urlParam.get('email');
     const token = urlParam.get('token');
 
-    // LÄGG TILL DESSA RADER
-    console.log('=== RESET PASSWORD DEBUG ===');
-    console.log('Full URL:', window.location.href);
-    console.log('Email from URL:', email);
-    console.log('Token from URL:', token);
-    console.log('All URL params:', Object.fromEntries(urlParam.entries()));
-    
-    // Testa att skapa en dummy-länk för att se formatet
-    console.log('Länken borde se ut som: reset-password.html?email=anvandare@email.com&token=123abc');
-
-    if (!email || !token){
+    if (!token){
         alert('Unauthorized login attempt. Please create new link.');
         return;
     }
 
-    localStorage.setItem('resetEmail', email);
+    // localStorage.setItem('resetEmail', email);
     localStorage.setItem('resetToken', token);
 
     const resetBtn = document.getElementById('resetBtn');
@@ -65,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const cancelReset = document.getElementById('cancelReset');
     if(cancelReset){
         cancelReset.addEventListener('click', function(){
-            localStorage.removeItem('resetEmail');
+            // localStorage.removeItem('resetEmail');
             localStorage.removeItem('resetToken');
             window.location.href = 'login.html';
             return;
@@ -92,7 +82,7 @@ async function resetPassword(newPass, token){
         if(response.ok){
             console.log('Successfully changed user password!');
             alert('New password is set! You will be re-directed to login page.');
-            localStorage.removeItem('resetEmail');
+            // localStorage.removeItem('resetEmail');
             localStorage.removeItem('resetToken');
             window.location.href = 'login.html';
         } else{
