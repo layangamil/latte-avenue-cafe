@@ -19,6 +19,34 @@ function generateCouponCode() {
 //for frontend files
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+//for emails
+async function sendEmail(to, subject, htmlContent) {
+
+    try {
+        const transporter = nodeemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT,
+            secure: false,
+            auth: {
+                user:process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            }
+        });
+
+        await transporter.sendMail({
+            from: process.env.EMAIL_FROM,
+            to: to,
+            subject: subject,
+            html: htmlContent
+        });
+
+        console.log(`Email sent to ${to}: ${subject}`);
+        return true;
+    } catch (err) {
+        console.error('Failed to send email:', err);
+        return false;
+    }
+}
 //AUTH MIDDLEWARE://
 
 function auth(req, res, next) {
@@ -778,6 +806,39 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
 
      
             const couponCode = generateCouponCode();
+
+            const [userInfo] =await db.query(
+                'SELECT email, first_name FROM users WHERE user_id = ?',
+                [userId]
+            );
+
+            const customerEmail = userInfo[0].email
+            const customerName = userInfor[0].first_name;
+
+            const emailHtml = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background-color:#8b6b61; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
+            <h1>Order Cancelled</h1>
+            </div>
+            <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px">
+            <p>PHello ${customerName}, </p>
+            <p>Your order #${orderId} has been cancelled as requested.</p>
+            <p>Here is a disount code with the same price as your cancelled order to use the next time you have a sweet tooth or fancy a drink:</p>
+            <div style="background-color: #e8e1d6; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;">
+            <h2 style="font-family: monospace; font-size: 24px; letter-spacing: 2px; color: #8b6b61;">${couponCode}</h2>
+            <p style="font-size: 14px;">Worth: ${order.total_amount} SEK</p>
+            </div>
+            <p>Use this code at checkout on your next order. Valid for 30 days.</p>
+            <p style="margin-top: 30px;">See you soon!<br>Best wishes,<br>Latte Avenue</p>
+            </div>
+            </div>
+            `;
+
+            await sendEmail(
+                customerEmail,
+                'Your Latte avenue order has been cancelled',
+                emailHtml
+            );
             
             await db.query(
                 `UPDATE \`order\` 
@@ -786,12 +847,12 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
                      estimated_pickup_time = NULL,
                      coupon_code = ?
                  WHERE order_id = ?`,
-                [couponCode, orderId]
+                 [couponCode, orderId]
             );
             
             return res.json({
                 success: true,
-                message: 'Order cancelled successfully. A coupon has been added to your profile.',
+                message: 'Order cancelled successfully. A coupon has been emailed to you and added yo your profile page.',
                 order_id: orderId,
                 coupon_generated: true
             });
