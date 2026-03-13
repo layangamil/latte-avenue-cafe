@@ -656,7 +656,7 @@ app.get('/api/orders', auth, async (req, res) => {
                      JOIN users ON oorder.user_id = users.user_id
                      ORDER BY order.created_at DESC`;
         } else {
-            //Customers only see their own orders
+            //customers only see their own orders
             query = `SELECT * FROM \`order\` 
                      WHERE user_id = ? 
                      ORDER BY created_at DESC`;
@@ -678,57 +678,46 @@ app.get('/api/orders', auth, async (req, res) => {
         res.json(orders)
 });
 
-//PUT /api/orders/:id/status -staff updates status
+//PUT /api/orders/:id/status for stafff
 
 app.put('/api/orders/:id/status', auth, async (req, res) => {
-    try {
-        //Only staff can update status
+        //only staff can update status
         if (req.user.role !== 'staff') {
-            return res.status(403).json({ error: 'Staff only' });
+            return res.status(403).json({error: 'Onlybstaff allowed'});
         }
 
         const orderId = req.params.id;
-        const { status } = req.body;
+        const {status} = req.body;
         const staffId = req.user.id;
-
-        //Validate status
         const validStatuses = ['pending', 'preparing', 'ready', 'completed', 'cancelled'];
 
-        if (!validStatuses.includes(status)) {
-            return res.status(400).json({ error: 'Invalid status' });
-        }
+        /*if (!validStatuses.includes(status)) {
+            return res.status(400).json({error: 'Invalid status'});
+        }*/ 
 
-        //Check if order exists
+        //does ordwe exist?
         const [orderCheck] = await db.query('SELECT * FROM `order` WHERE order_id = ?', [orderId]);
 
         if (orderCheck.length === 0) {
-            return res.status(400).json({ error: 'Order not found' });
+            return res.status(400).json({ error: 'no order not found' });
         }
 
         const currentStatus = orderCheck[0].status;
 
-        //Define valid status transition
-        const validTransitions = {
-            'pending': ['preparing', 'cancelled'],
-            'preparing': ['ready', 'cancelled'], //Hmm, only staff can cancel here? Not customer
-            'ready': ['completed'],
-            'completed': [],
-            'cancelled': []
-        };
 
-        if (!validTransitions[currentStatus].includes(status)) {
+        if (!validTransitions.includes(status)) {
             return res.status(400).json({
-                error: `Cannot change status from ${currentStatus} to ${status}`
+                error: 'Not a valid status'
             });
         }
 
-        //If settring to ready, set estimated pick up time (5 mins from now)
         let estimatedPickup = null;
         if (status === 'ready') {
-            estimatedPickup = new Date(Date.now() + 5 * 60000); // 5 mins
+            const orderedAt = new Date(order.created_at)
+            estimatedPickup = new Date(orderedAt.getTime() + 5 * 60000); // 5 mins
         }
 
-        //Update order status
+        //update order status
         await db.query(
             `UPDATE \`order\` 
              SET status = ?, 
@@ -744,45 +733,39 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
             status: status,
             estimated_pickup: estimatedPickup
         });
-
-    } catch (err) {
-        console.error('Error updating order status:', err);
-        res.status(500).json({ error: 'Failed to update order status' });
-    }
 });
 
-//DELETE /api/orders/:id/cancel -cancel order within time limit
+//DELETE /api/orders/:id/cancel order within time limit
 
 app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
-    try {
         const userId = req.user.id;
         const orderId = req.params.id;
         const isStaff = req.user.role === 'staff';
-        const now = new Date();
+        const timeNow = new Date();
 
-        //Grt order details
+        
         const [orderCheck] = await db.query('SELECT * FROM `order` WHERE order_id = ?', [orderId]);
 
         if (orderCheck.length === 0) {
-            return res.status(404).json({ error: 'Order not found' });
+            return res.status(404).json({error: 'Order not found'});
         }
 
         const order = orderCheck[0];
 
-        //Check permissions
+       
         if (!isStaff && order.user_id !== userId) {
-            return res.status(403).json({ error: 'Access denied' });
+            return res.status(403).json({error: 'Access denied'});
         }
 
-        //Check if order can be cancelled by customer
+        //check if order can be cancelled by customer
         if(!isStaff) {
             if (order.status !== 'pending') {
-                return res.status(400).json({ error: 'Only pending orders can be cancelled'});
+                return res.status(400).json({error: 'Only pending orders can be cancelled'});
             }
 
-        //Check 1 min window 
-        const orderTime = new Date(order.created_at);
-        const minutesSinceOrder = (now - orderTime) / (1000 * 60);
+        //check 1 min window 
+        const orderedAt = new Date(order.created_at);
+        const minutesSinceOrder = (timeNow - orderedAt) / (1000 * 60);
 
             if (minutesSinceOrder > 1) {
                 return res.status(400).json({
@@ -790,7 +773,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
                 });
             }
 
-            //Generate coupon 
+     
             const couponCode = generateCouponCode();
             
             await db.query(
@@ -811,16 +794,16 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             });
         }
 
-        // STaff cancellation
+        //STaff cancellation
         let couponCode = null;
         let message = 'Order cancelled successfully';
 
-        //If order was paid (not pending when cancelled), generate coupon
+        //if order was paid (not pending when cancelled), generate coupon
         if (order.status !== 'pending' && order.status !== 'cancelled'){
-            //Generate unique code
+            //generate unique code
             couponCode = generateCouponCode();
 
-            //Update order with coupon code
+            //update order with coupon code
             await db.query(
                 `UPDATE \`order\` 
                  SET coupon_code = ? 
@@ -831,7 +814,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             message = 'Order cancelled and coupon generated';
         }
 
-            //Update order status to cancledd
+            //update order status to cancledd
         await db.query(
             `UPDATE \`order\` 
              SET status = 'cancelled', 
@@ -848,91 +831,87 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             coupon_generated: ! !couponCode
         });
 
-    } catch (err) {
-        console.error('Error cancelling order', err);
-        res.status(500).json({ error: 'Failed to cancel order' });
-    }
 });
 
 
 
-// ================= PAYMENT ORDER ENDPOINT ===========================
-//POST /api/orders -Place order directly from payment page
+
+//payment order endpoint://
+//POST /api/orders place order from the payment page
 
 app.post('/api/orders', auth, async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const { items, total, paymentMethod, status, couponCode } = req.body;
+    
+    const userId = req.user.id;
+    const {items, total, paymentMethod, status, couponCode} = req.body;
 
-        //Vaidate input
-        if (!items || items.length === 0) {
-            return res.status(400).json({
-                success: false,
-                message: 'No items in order'
-            });
+    //confirm user input
+    if (!items || items.length === 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'There are no items in order'
+        });
         }
 
-        if (!paymentMethod) {
-            return res.status(400).json({
-                success: false,
-                message: 'Payment method required'
-            });
-        }
+    if (!paymentMethod) {
+        return res.status(400).json({
+            success: false,
+            message: 'Payment method required'
+        });
+    }
 
-        //Start transaction
-        const connection = await db.getConnection();
-        await connection.beginTransaction();
+    //start transaction
+    const connection = await db.getConnection();
+    await connection.beginTransaction();
 
-        try {
-            // coupon check
-            let finalTotal = total;
-            let appliedCoupon = null;
+        
+        //coupon check
+        let finalTotal = total;
+        let appliedCoupon = null;
 
-            if (couponCode) {
-                // find unused coupon
-                const [coupons] = await connection.query(
-                    `SELECT * FROM \`order\`
-                     WHERE user_id = ? AND coupon_code = ? AND coupon_used = FALSE
-                     AND cancelled_at > DATE_SUB(NOW(), INTERVAL 30 DAY)`,
-                    [userId, couponCode]
-                );
-
-                if (coupons.length > 0) {
-                    const coupon = coupons[0];
-                    //Aply discount to total price
-                    finalTotal = Math.max(0, total - coupon.total_amount);
-                    appliedCoupon = coupon.coupon_code;
-
-                    // Mark  as used
-                    await connection.query(
-                        `UPDATE \`order\` SET coupon_used = TRUE WHERE order_id = ?`,
-                        [coupon.order_id]
-                    );
-                }
-            }
-            //Stock check - get the current stock for all ordered items
-            const productIds = items.map(item => item.menuItemId);
-            const [stockRows] = await connection.query(
-                `SELECT product_id, name, stock FROM product WHERE product_id IN (?) FOR UPDATE`,
-                [productIds]
+        if (couponCode) {
+            const [coupons] = await connection.query(
+                `SELECT * FROM \`order\`
+                    WHERE user_id = ? AND coupon_code = ? AND coupon_used = FALSE
+                    AND cancelled_at > DATE_SUB(NOW(), INTERVAL 30 DAY)`,
+                [userId, couponCode]
             );
-            const stockMap = {};
-            stockRows.forEach(row => {
-                stockMap[row.product_id] = row;
-            });
 
-            //Verify there's enough stock for each item
-            for (let item of items) {
-                const product = stockMap[item.menuItemId];
-                if (!product) {
-                    throw new Error(`Product ${item.menuItemId} not found`);
-                }
-                if (product.stock < item.quantity) {
-                    throw new Error(`Insufficient stock for ${product.name}. Available: ${product.stock}, requested: ${item.quantity}`);
-                }
+            if (coupons.length > 0) {
+                const coupon = coupons[0];
+                
+                finalTotal = Math.max(0, total - coupon.total_amount);
+                appliedCoupon = coupon.coupon_code;
+
+                
+                await connection.query(
+                    `UPDATE \`order\` SET coupon_used = TRUE WHERE order_id = ?`,
+                    [coupon.order_id]
+                );
             }
+        }
+        //check stock for the ordered ittem
+        const productIds = items.map(item => item.menuItemId);
+        const [stockRows] = await connection.query(
+            `SELECT product_id, name, stock FROM product WHERE product_id IN (?) FOR UPDATE`,
+            [productIds]
+        );
+        const stockMap = {};
+        stockRows.forEach(row => {
+            stockMap[row.product_id] = row;
+        });
 
-            //Deduct stock quantity
+        //is there enough left for each item
+        for (let item of items) {
+            const product = stockMap[item.menuItemId];
+            if (!product) {
+                throw new Error(`Product ${item.menuItemId} not found`);
+            }
+            if (product.stock < item.quantity) {
+                throw new Error(`Insufficient stock for ${product.name}. Available: ${product.stock}, requested: ${item.quantity}`);
+            }
+        }
+
+            //update stock left
             for (let item of items) {
                 await connection.query(
                     `UPDATE product SET stock = stock - ? WHERE product_id = ?`,
@@ -940,10 +919,10 @@ app.post('/api/orders', auth, async (req, res) => {
                 );
             }
 
-            //Create the order
+            
             const estimatedPickup = new Date(Date.now() + 5 * 60000) // 5 mins
 
-            //create order with pickup time
+            //create order
             const [orderResult] = await connection.query(
                 `INSERT INTO \`order\` (user_id, total_amount, status, payment_method, estimated_pickup_time) 
                  VALUES (?, ?, ?, ?, ?)`,
@@ -954,7 +933,7 @@ app.post('/api/orders', auth, async (req, res) => {
 
             //Add items to order_item table
             for (const item of items) {
-               /* //Verify product exists
+               /* //check product exists
                 const [productCheck] = await connection.query(
                     'SELECT price FROM product WHERE product_id = ?',
                     [item.menuItemId]
@@ -971,38 +950,21 @@ app.post('/api/orders', auth, async (req, res) => {
                 );
             }
 
-            //Clear the shopping cart
+            //now cear the shopping cart
             await connection.query('DELETE FROM shopping_cart WHERE user_id = ?', [userId]);
 
-            //Commit transaction
+            //save transaction
             await connection.commit();
             connection.release();
 
-            //Send success response
+
             res.status(201).json({
                 success: true,
                 orderId: orderId.toString(),
                 message: 'Order confirmed',
                 coupon_applied: !!appliedCoupon
             });
-
-        } catch (err) {
-            await connection.rollback();
-            connection.release();
-            //throw err;
-            res.status(400).json({
-                success: false,
-                message: err.message
-            });
-        }
-
-    } catch (err) {
-        console.error('Error creating order from payment:', err);
-        res.status(500).json({
-            success: false,
-            message: 'Failed to create order'
-        });
-    }
+    
 });
 
 
@@ -1014,147 +976,116 @@ app.post('/api/orders', auth, async (req, res) => {
 // ================= PROFILE (PROTECTED) ============================================================
 //GET /api/profile -Get user profile info
 app.get('/api/profile', auth, async (req, res) => {
-    try {
-        const userId = req.user.id;
 
-        const [users] = await db.query(
-            'SELECT first_name, last_name, email FROM users WHERE user_id = ?',
-            [userId]
-        );
+    const userId = req.user.id;
 
-        if (users.length === 0) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+    const [users] = await db.query(
+        'SELECT first_name, last_name, email FROM users WHERE user_id = ?',
+        [userId]
+    );
 
-        const user = users[0];
-        res.json({
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email
-        });
-
-    } catch (err) {
-        console.error('Error fetching profile:', err);
-        res.status(500).json({ message: 'Server error' });
+    if (users.length === 0) {
+        return res.status(404).json({message: 'User not found'});
     }
+
+    const user = users[0];
+    res.json({
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email
+    });
 });
 
-//PUT /api/profile/password -Update user password
+//PUT /api/profile/password chane password
 app.put('/api/profile/password', auth, async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const { currentPassword, newPassword } = req.body;
+    const userId = req.user.id;
+    const {currentPassword, newPassword} = req.body;
 
-        //Validate input
-        if (!currentPassword || !newPassword) {
-            return res.status(400).json({
-                message: 'Current password and new password are required'
-            });
-        }
-
-        //Get user's current password hash
-        const [users] = await db.query(
-            'SELECT password_hash FROM users WHERE user_id = ?',
-            [userId] 
-        );
-
-        if (users.length === 0) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        const user = users[0];
-
-        //Verify current password
-        const match = await bcrypt.compare(currentPassword, user.password_hash);
-
-        if(!match) {
-            return res.status(401).json({
-                message: 'Current password is incorrect'
-            });
-        }
-
-        //Hash new password 
-        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
-        //Update password in database
-        await db.query(
-            'UPDATE users SET password_hash = ? WHERE user_id = ?',
-            [hashedNewPassword, userId]
-        );
-
-        res.json({
-            message: 'Password updated successfully'
-        });
-
-    } catch (err) {
-        console.error('Error updating password:', err);
-        res.status(500).json({
-            message: 'Failed to update password'
+    
+    if (!currentPassword || !newPassword) {
+        return res.status(400).json({
+            message: 'Current and new password are needed'
         });
     }
+
+    //user's current password hash
+    const [users] = await db.query(
+        'SELECT password_hash FROM users WHERE user_id = ?',
+        [userId] 
+    );
+
+    if (users.length === 0) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    const user = users[0];
+
+    const match = await bcrypt.compare(currentPassword, user.password_hash);
+
+    if(!match) {
+        return res.status(401).json({
+            message: 'Password is incorrect'
+        });
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    await db.query(
+        'UPDATE users SET password_hash = ? WHERE user_id = ?',
+        [hashedNewPassword, userId]
+    );
+
+    res.json({
+        message: 'Password updated successfully'
+    });
 });
 
 
-//====================DELETE ACCOUNT===================================
-// DELETE /api/profile - Delete user account and all data
+//delete account://
+//DELETE /api/profile 
 app.delete('/api/profile', auth, async (req, res) => {
-    try {
-        const userId = req.user.id;
+    
+    const userId = req.user.id;
 
-        //start a transaction to make sure everything is deleted properly
-        const connection = await db.getConnection();
-        await connection.beginTransaction();
+    const connection = await db.getConnection();
+    await connection.beginTransaction();
 
-        try {
-            // Get user email for response message
-            const [users] = await connection.query(
+        
+    //users email for response message
+    const [users] = await connection.query(
                 'SELECT email FROM users WHERE user_id = ?',
                 [userId]
             );
 
-            if (users.length === 0) {
-                await connection.rollback();
-                connection.release();
-                return res.status(404).json({ message: 'User not found' });
-            }
-
-            const userEmail = users[0].email;
-
-            //Delete the user 
-            await connection.query(
-                'DELETE FROM users WHERE user_id = ?',
-                [userId]
-            );
-
-            await connection.commit();
-            connection.release();
-
-            res.json({
-                success: true,
-                message: 'Account deleted successfully',
-                email: userEmail
-            });
-
-        } catch (err) {
-            await connection.rollback();
-            connection.release();
-            throw err;
+    if (users.length === 0) {
+        await connection.rollback();
+        connection.release();
+            return res.status(404).json({message: 'User not found'});
         }
 
-    } catch (err) {
-        console.error('Error deleteing account:', err);
-        res.status(500).json({
-            success: false,
-            message: 'Failed to delete account'
+        const userEmail = users[0].email;
+
+         
+        await connection.query(
+            'DELETE FROM users WHERE user_id = ?',
+            [userId]
+        );
+
+        await connection.commit();
+        connection.release();
+
+        res.json({
+            success: true,
+            message: 'Account deleted successfully',
+            email: userEmail
         });
-    }
 });
 
-//====================Coupon==================================================
-// GET /api/profile/coupons - Get the user's unused coupons
+//coupon discount:://
+//GET /api/profile/coupons 
 app.get('/api/profile/coupons', auth, async (req, res) => {
-    try {
-        const userId = req.user.id;
+        
+const userId = req.user.id;
 
         const [coupons] = await db.query(
             `SELECT order_id, coupon_code as code, total_amount as value, 
@@ -1168,11 +1099,6 @@ app.get('/api/profile/coupons', auth, async (req, res) => {
         );
 
         res.json(coupons);
-
-    } catch (err) {
-        console.error('Error fetching coupons:', err);
-        res.status(500).json({ error: 'Failed to fetch coupons' });
-    }
 });
 
 
