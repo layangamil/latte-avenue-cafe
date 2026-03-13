@@ -970,12 +970,12 @@ app.post('/api/orders', auth, async (req, res) => {
             });
         } catch (err) {
             await connection.rollback();
-            console.error('Order error:', err);
+            console.error('error in order:', err);
             res.status(400).json({
             success: false,
             message: err.message
         });
-        
+
     } finally {
         connection.release();
     }
@@ -1097,10 +1097,10 @@ app.delete('/api/profile', auth, async (req, res) => {
         });
     } catch (err) {
         await connection.rollback();
-        console.error('error deleting account:', err);
+        console.error('Erro deleting account:', err);
         res.status(500).json({
             success: false,
-            message: 'Failed to delete account''
+            message: 'Failed to delete account'
         });
     } finally {
         connection.release();
