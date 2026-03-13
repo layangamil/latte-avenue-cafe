@@ -1,5 +1,5 @@
 /*MOBIL*/
-@media (min-width: 320px) and (max-width:480){
+@media (min-width: 320px) and (max-width:480px){
     .hero {
         padding: 6.9rem 0 3.9rem 0;
     }
@@ -412,10 +412,106 @@
     .cancel-message i {
         font-size: 1.7rem;
     }
+
+
+    /*=============================================================*/
+    /*======================== PROFILE PAGE =======================*/
+    .profile-page {
+        padding: 1rem 0;
+        margin-bottom: 2.9rem;
+    }
+    
+    .page-header h1 {
+        font-size: 1.7rem;
+        margin: 2rem 0;
+    }
+    
+    .account-section {
+        padding: 1.1rem;
+        margin-bottom: 1.4rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.3rem;
+        margin-bottom: 0.35rem;
+    }
+    
+    .section-header p {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+    
+    .form-container {
+        max-width: 100%;
+    }
+    
+    .form-container form {
+        gap: 0.8rem;
+    }
+    
+    .form-container input {
+        height: 2.7rem;
+        border-radius: 15px;
+        padding: 0 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .form-container button {
+        width: 100%;
+        font-size: 0.85rem !important;
+        margin-top: 0.5rem;
+        padding: 0.75rem !important;
+    }
+    
+    .msgFillAll, .msgShort, .msgMatch {
+        font-size: 0.85rem;
+        margin-top: 0.4rem;
+    }
+    
+    .discount-card {
+        padding: 1.1rem;
+    }
+
+    #discounts-container {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+    
+    .discount-code {
+        font-size: 1rem;
+        padding: 0.55rem 1rem;
+        letter-spacing: 2px;
+    }
+    
+    .discount-expiry {
+        font-size: 0.85rem;
+    }
+
+    .discount-value {
+        font-size: 0.85rem;
+    }
+    
+    .discount-card .btn {
+        padding: 0.6rem !important;
+        font-size: 0.85rem !important;
+    }
+
+    #delete-acc-btn {
+        width: 100%;
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .delete-account {
+        padding: 1.15rem;
+    }
+    /*===============================================================*/
+    /*========================= MY ORDERS PAGE ======================*/
+    
 }
 
 /*TBALET*/
-@media (min-width: 481px) and (max-width:1024){
+@media (min-width: 481px) and (max-width:1024px){  
     /*HEADER SECTION*/
     .header-content {
         flex-direction: column;
@@ -580,6 +676,47 @@
     #cancel-order-btn {
         min-width: 200px;
     }
+
+    /*=============================================================*/
+    /*========================= PROFILE PAGE ======================*/
+    .page-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .profile-page {
+        padding: 1.4rem 0;
+    }
+    
+    .account-section {
+        padding: 1.4rem;
+    }
+    
+    .form-container {
+        max-width: 450px;
+    }
+
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .form-container button {
+        min-width: 150px;
+        align-self: flex-start;
+    }
+    
+    .delete-account {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #discounts-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /*===============================================================*/
+    /*========================= MY ORDERS PAGE ======================*/
+
 }
 /*---------------------------------------------------------------------------------*/
 
@@ -655,8 +792,12 @@
         font-size: 1rem;
     }
     
-    .price, .footer-section, .item-content h4 {
+    .price, .item-content h4 {
         font-size: 1.2rem;
+    }
+
+    .footer-section {
+        font-size: 1.3rem;
     }
     
     .btn-add {
@@ -1074,5 +1215,127 @@
     .cancel-message p {
         font-size: 1.4rem;
     }
+
+    /*=============================================================*/
+    /*========================= PROFILE PAGE ======================*/
+    .profile-page {
+        padding: 2.4rem 0;
+        margin-bottom: 4.8rem;
+    }
+    
+    .page-header h1 {
+        font-size: 3rem;
+        margin: 3.9rem 0;
+    }
+
+    .section-header p {
+        font-size: 1.1rem;
+        margin-bottom: 2.3rem;
+    }
+
+    .section-header h2 {
+        font-size: 2.1rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .account-section {
+        padding: 2.6rem;
+        margin-bottom: 2.6rem;
+        border-radius: 25px;
+    }
+    
+    .form-container {
+        max-width: 600px;
+    }
+    
+    .form-container form {
+        gap: 1.6rem;
+    }
+    
+    .form-container input {
+        font-size: 1rem;
+        height: 3.4rem;
+        border-radius: 20px;
+        border-width: 2px;
+        padding: 0 1.4rem;
+    }
+    
+    .form-container input:focus {
+        border-width: 2px;
+    }
+    
+    .form-container button {
+        font-size: 1rem !important;
+        min-width: 200px;
+        border-radius: 30px !important;
+        margin-top: 0.9rem;
+        padding: 1.1rem 2.1rem !important;
+    }
+    
+    .msgFillAll, .msgShort, .msgMatch {
+        font-size: 1rem;
+        margin-top: 0.75rem;
+    }
+    
+    /* the siscount section */
+    #discounts-container {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.8rem;
+        margin-top: 2.1rem;
+    }
+    
+    .discount-card {
+        padding: 2rem 1.75rem;
+        border-radius: 30px;
+        gap: 1rem;
+    }
+    
+    .discount-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 25px 25px rgba(228, 188, 195, 0.2);
+    }
+
+    .discount-card .btn {
+        width: 100%;
+        padding: 0.85rem !important;
+        font-size: 1rem !important;
+        border-radius: 35px !important;
+    }
+    
+    .discount-value {
+        font-size: 1rem;
+    }
+
+    .discount-code {
+        font-size: 1.2rem;
+        padding: 0.8rem 1.7rem;
+        border-radius: 25px;
+        letter-spacing: 4px;
+    }
+    
+    .discount-expiry {
+        font-size: 1rem;
+    }
+
+    #delete-acc-btn {
+        min-width: 250px;
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        border-radius: 35px;
+        border-width: 2px;
+        margin-top: 0.9rem;
+    }
+    
+    .delete-account {
+        padding: 2.4rem;
+    }
+    
+    #delete-acc-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 18px rgba(194, 74, 74, 0.3);
+    }
+
+    /*===============================================================*/
+    /*========================= MY ORDERS PAGE ======================*/
 }
      
