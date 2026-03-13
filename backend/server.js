@@ -867,6 +867,8 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
                 [couponCode, orderId]
             );
 
+            
+
             message = 'Order cancelled and coupon generated';
         }
 
