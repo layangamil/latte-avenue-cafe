@@ -849,6 +849,13 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             return res.status(403).json({error: 'Access denied'});
         }
 
+        let couponCode = null;
+        let message = '';
+        let emailHtml = '';
+        let customerEmail = '';
+        let customerName = '';
+        let userInfo;
+
         //check if order can be cancelled by customer
         if(!isStaff) {
             if (order.status !== 'pending') {
@@ -873,18 +880,14 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             );
 
             const usedCoupon = couponCheck[0]?.coupon_used || false;
-
-            let couponCode = null;
-            let emailHtml = '';
-            let message = '';
             
-            const [userInfo] = await db.query(
+            userInfo = await db.query(
                     'SELECT email, first_name FROM users WHERE user_id = ?',
                     [userId]
                 );
 
-                const customerEmail = userInfo[0].email;
-                const customerName = userInfo[0].first_name;
+                customerEmail = userInfo[0].email;
+                customerName = userInfo[0].first_name;
 
             if (usedCoupon) {
                 couponCode = null;
@@ -961,8 +964,8 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
         }
 
         //STaff cancellation
-        
-            //generate unique code
+
+            message = 'Order cancelled successfully';
             couponCode = generateCouponCode();
 
             console.log('Order total amount (staff cancel):', order.total_amount);
@@ -975,15 +978,15 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
                 [couponCode, orderId]
             );
 
-            const [userInfo] = await db.query(
+            userInfo = await db.query(
                 'SELECT email, first_name FROM users WHERE user_id = ?',
                 [order.user_id]
             );
 
-            const customerEmail = userInfo[0].email
-            const customerName = userInfo[0].first_name
+            customerEmail = userInfo[0].email
+            customerName = userInfo[0].first_name
             
-            const emailHtml = `
+            emailHtml = `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background-color: #8b6b61; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
             <h1>Order Cancelled</h1>
@@ -1026,9 +1029,8 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             order_id: orderId,
             coupon_generated: ! !couponCode
         });
-    }
-
 });
+
 
 
 
