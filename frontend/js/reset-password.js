@@ -1,14 +1,13 @@
 document.addEventListener('DOMContentLoaded', function(){
     const urlParam = new URLSearchParams(window.location.search);
-    // const email = urlParam.get('email');
     const token = urlParam.get('token');
 
     if (!token){
         alert('Unauthorized login attempt. Please create new link.');
+        window.location.href = 'login.html';
         return;
     }
 
-    // localStorage.setItem('resetEmail', email);
     localStorage.setItem('resetToken', token);
 
     const resetBtn = document.getElementById('resetBtn');
@@ -62,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function(){
         });
     }
 });
-
 
 async function resetPassword(newPass, token){
 
