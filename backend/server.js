@@ -734,6 +734,10 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
 
         const order = orderCheck[0];
 
+        console.log('Order total amount (status update):', order.total_amount);
+
+
+
         let estimatedPickup = null;
         if (status === 'ready') {
             const orderedAt = new Date(order.created_at)
@@ -832,18 +836,59 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
                 });
             }
 
-     
-            const couponCode = generateCouponCode();
+            console.log('Order total amount (customer cancel):', order.total_amount);
 
-            const [userInfo] =await db.query(
-                'SELECT email, first_name FROM users WHERE user_id = ?',
-                [userId]
+            const [couponCheck] = await db.query(
+                'SELECT coupon_used FROM `order` WHERE order_id = ?',
+                [orderId]
             );
 
-            const customerEmail = userInfo[0].email
-            const customerName = userInfo[0].first_name;
+            const usedCoupon = couponCheck[0]?.coupon_used || false;
 
-            const emailHtml = `
+            let couponCode = null;
+            let emailHtml = '';
+            let message = '';
+            
+            const [userInfo] = await db.query(
+                    'SELECT email, first_name FROM users WHERE user_id = ?',
+                    [userId]
+                );
+
+                const customerEmail = userInfo[0].email;
+                const customerName = userInfo[0].first_name;
+
+            if (usedCoupon) {
+                couponCode = null;
+                message = 'Order cancelled: No coupon issued (since order used a coupon).';
+
+                
+                emailHtml = `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background-color:#8b6b61; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
+                <h1>Order Cancelled</h1>
+                </div>
+                <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px">
+                <p>Hello ${userInfo[0].first_name},</p>
+                <p>Your order #${orderId} has been cancelled as requested.</p>
+                <p>No coupon was issued because this order used a discount.</p>
+                <p>Your original coupon is still valid until its expiration date.</p>
+                <p style="margin-top: 30px;">See you soon!<br>Best wishes,<br>Latte Avenue</p>
+                </div>
+                </div>
+                `;
+
+                await sendEmail(
+                    customerEmail,
+                    'Your Latte Avenue order has been cancelled',
+                    emailHtml
+                );
+
+            } else {
+                couponCode = generateCouponCode();
+                message = 'Order cancelled successfully. A coupon has been added to your profile page.'
+
+
+            emailHtml = `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background-color:#8b6b61; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
             <h1>Order Cancelled</h1>
@@ -880,20 +925,20 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             
             return res.json({
                 success: true,
-                message: 'Order cancelled successfully. A coupon has been emailed to you and added yo your profile page.',
+                message: message,
                 order_id: orderId,
-                coupon_generated: true
+                coupon_generated: !!couponCode
             });
         }
 
         //STaff cancellation
-        let couponCode = null;
-        let message = 'Order cancelled successfully';
 
         //if order was paid (not pending when cancelled), generate coupon
         if (order.status !== 'pending' && order.status !== 'cancelled'){
             //generate unique code
             couponCode = generateCouponCode();
+
+            console.log('Order total amount (staff cancel):', order.total_amount);
 
             //update order with coupon code
             await db.query(
@@ -953,6 +998,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             order_id: orderId,
             coupon_generated: ! !couponCode
         });
+    }
 
 });
 
@@ -966,6 +1012,8 @@ app.post('/api/orders', auth, async (req, res) => {
     
     const userId = req.user.id;
     const {items, total, paymentMethod, status, couponCode} = req.body;
+
+    console.log('Order total amount (payment):', total);
 
     //confirm user input
     if (!items || items.length === 0) {
