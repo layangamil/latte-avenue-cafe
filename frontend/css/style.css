@@ -213,24 +213,6 @@ nav {
     color: rgba(255,255,255,0.9);
 }
 
-/* .btn-primary {
-    display: inline-block;              
-    background: #e6bcc2;
-    color: white;
-    cursor: pointer;
-    padding: 1rem 2.5rem;
-    border-radius: 2px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    letter-spacing: 3px;
-    transition: background 0.3s, transform 0.3s;
-}
-
-.btn-primary:hover {
-    background: #c3949a;
-    transform: translateY(-2px); 
-} */
 .section-title {
     text-align: center;
     margin: 2rem 0rem 3rem 0rem;
@@ -864,21 +846,6 @@ nav {
     padding: 1rem !important;
     border-radius: 15px !important;
 }
-/* 
-.popup-btns .btn-tertiary{
-    height:2.6rem;
-    width: 100%;
-    padding-top: 0.5rem 1rem;
-    letter-spacing: 0.5px;
-    border: none;
-    border-radius: 15px;
-}
-.popup-btns .btn-secondary {
-    font-weight:100;
-    line-height: 1.5;
-    letter-spacing: 0.5px;
-} */
-
 /*===================================================================*/
                       /* RESET PASSWORD PAGE:*/
 /*===================================================================*/
@@ -1083,15 +1050,6 @@ nav {
     width: 270px;
 }
 
-/* .btn-primary {              
-    background: #e6bcc2;
-    color: white;
-    font-family: 'Playfair Display', serif;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 2px;
-} */
-
 /* empty cart*/
 .empty-cart{
     display: flex;
@@ -1116,13 +1074,6 @@ nav {
     padding-bottom: 1.5rem;
 }
 
-/* .empty-cart a{
-    padding: 1rem 2.4rem;
-    background: #e6bcc2;
-    color: white;
-    font-size: 1.3rem;
-    font-style: italic;
-} */
 /*===================================================================*/
                       /* PAYMENT PAGE:*/
 /*===================================================================*/
@@ -1171,10 +1122,6 @@ nav {
     align-items: center;
     border-bottom: 1px dashed #eddcc0;
     padding: 0.7rem 0;
-    /* gap: 6rem; */
-    /* margin-bottom: 0.5rem;
-    color:#5d4037;
-    font-size: 1rem; */
 }
 
 .payment-order-items:last-child{
@@ -1314,21 +1261,6 @@ nav {
     display: flex; 
     gap: 0.9rem;
 }
-/* 
-.payment-action-btn {  not needed after changing btn classes
-    background-color:#8b6b61;
-    color: white;
-    padding: 1rem 1.5rem;
-    border-radius: 2px;
-    border: none;
-    margin-top:1rem;
-    font-family: 'Playfair Display', serif;
-    font-size:1rem;
-}
-
-.payment-action-btn:hover{
-    background-color:#614b44;
-} */
 
 .discount-input label{
     color: #5d4037;
@@ -1595,68 +1527,6 @@ nav {
     margin-bottom: 1.2rem;
 }
 
-/* .profile-info{
-    color:#5d4037;
-    margin-bottom: 1.1rem;
-    background: #faf7f2;
-    border-radius: 16px;
-}
-
-.profile-info p{
-    display: flex;
-    align-items: center;
-    margin: 0;
-}
-
-.profile-info span{
-    color:#5d4037;
-    flex: 1;
-} */
-
-/* .password-section-container{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-right: auto;
-    width: 100%; 
-    max-width: 400px;
-}
-
-.password-section-container input{
-    height: 2.9rem;
-    padding: 0 1rem;
-    border:1px solid #8b6b61;
-    border-radius: 13px;
-    font-size: 1rem;
-    font-family: 'Cormorant Garamond', serif;
-    background: white;
-}
-
-.password-container-form{
-    display: flex;
-    gap: 1rem;
-    flex-direction: column;
-}
-
-.password-section-container input:focus{
-    outline-color: #5d4037; 
-    background: #faf7f2;
-}
-
-.password-section-container input::placeholder{
-    color: #a1887f;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.9rem;
-}
-
-.password-section-container button{
-    margin-top: 0.5rem;
-}  */
-
-/* .password-section-container button:hover{
-    background-color:#c3949a;
-}  */
-
 .discounts-section {
     margin-top: 1.1rem;
 }
@@ -1859,7 +1729,7 @@ nav {
 
 .menu-item-row {
     background-color: #faf7f2;
-    padding: 1.4rem;
+    padding: 1.1rem;
     margin-bottom: 1rem;
     border: 1px solid #eddcc0;
     border-radius: 15px;
@@ -1879,7 +1749,7 @@ nav {
 }
 
 .field-price {
-    width: 69px;
+    width: 80px;
 }
 
 .field-description {
@@ -1888,6 +1758,10 @@ nav {
 
 .field-image {
     width: 200px;
+}
+
+.field-stock {
+    width: 80px;
 }
 
 .fields-row textarea, .fields-row input{
@@ -1900,9 +1774,8 @@ nav {
     transition: all 0.3s ease;
 }
 
-
 .fields-row textarea:focus, .fields-row input:focus{
-    border-color: #e6bcc2;
+    border-color: #8b6b61;
     background: white;
     outline: none;
     box-shadow: 0 0 0 4px rgba(229, 187, 193, 0.15);
@@ -1922,36 +1795,12 @@ nav {
 
 .items-actions .btn.update-btn {
     color: #5d4037 !important;
-    background-color: #f0e6d6 !important;
-    border: 1px solid #eddcc0 !important;
+    background-color: #5d4037 !important;
+    border: 1.5px solid #eddcc0 !important;
 }
 .items-actions .btn.update-btn:hover {
     background-color: #eddcc0 !important;
 }
-
-/* .btn-tertiary.update-btn{
-    background-color:#f0e6d6;
-    color:#5d4037;
-}
-
-.btn-tertiary.update-btn:hover{
-    background-color:#eddcc0;
-} */
-
-/* .btn-secondary {
-    background-color: white;
-    color:#8b6b61;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: background 0.3s, transform 0.3s;
-}
-
-.btn-secondary:hover {
-    color:#593e35;
-    transform: translateY(-2px); 
-} */
 
 /*===================================================================*/
                       /* ADMIN - ORDER MANAGE PAGE:*/
@@ -2106,23 +1955,6 @@ nav {
 .order-details p {
     margin: 0.2rem 0;
 }
-
-/* .btn-tertiary {
-    cursor: pointer;
-    background-color:#8b6b61;
-    color:#faf7f2;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: 'Playfair Display', serif;
-    letter-spacing: 3px;
-    border: none;
-    border-radius: 4px;
-    transition: background 0.3s;
-} */
-
-/* .btn-tertiary:hover {
-    background-color:#5d4037;  
-} */
 
 .order-actions select {
     color:#5d4037;
