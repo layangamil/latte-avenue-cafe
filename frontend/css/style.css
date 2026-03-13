@@ -1308,7 +1308,8 @@ nav {
     font-family: 'Cormorant Garamond', serif;
     flex: 1;
     border: 1px solid #eddcc0;
-    padding: 0.7rem 0.9rem;
+    padding: 0.5rem 0.7rem;
+    margin-bottom: 1rem;
     border-radius: 7px;
 }
 /*===================================================================*/
