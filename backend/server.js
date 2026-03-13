@@ -805,7 +805,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             );
 
             const customerEmail = userInfo[0].email
-            const customerName = userInfor[0].first_name;
+            const customerName = userInfo[0].first_name;
 
             const emailHtml = `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -867,9 +867,38 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
                 [couponCode, orderId]
             );
 
-            
+            const [userInfo] = await db.query(
+                'SELECT email, first_name FROM users WHERE user_id = ?',
+                [order.user_id]
+            );
 
-            message = 'Order cancelled and coupon generated';
+            const customerEmail = userInfo[0].email
+            const customerName = userInfo[0].first_name
+            const emailHtml = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background-color: #8b6b61; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
+            <h1>Order Cancelled</h1>
+            </div>
+            <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px;">
+            <p>Hello ${customerName},</p>
+            <p>Your order #${orderId} has been cancelled by our staff due to unforseen reasons. As an apology, here is a coupon witha discount code the next time you get a sweet tooth or fancy a drink:</p>
+            <div style="background-color: #e8e1d6; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;">
+            <h2 style="font-family: monospace; font-size: 24px; letter-spacing: 2px; color: #8b6b61;">${couponCode}</h2>
+            <p style="font-size: 14px;">Worth: ${order.total_amount} SEK</p>
+            </div>
+            <p>Use this code at the checkout on your next order. Valid for 30 days.</p>
+            <p style="margin-top: 30px;">We hope to see you soon!<br>Best wishes,<br>Latte Avenue</p>
+            </div>
+            </div>
+            `;
+
+            await sendEmail(
+                customerEmail,
+                'Your Latte AVenue order has been cancelled',
+                emailHtml
+            );
+
+            message = 'Order cancelled and coupon sent to customer';
         }
 
             //update order status to cancledd
