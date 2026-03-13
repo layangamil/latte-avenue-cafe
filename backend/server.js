@@ -1158,6 +1158,51 @@ app.post('/api/orders', auth, async (req, res) => {
             await connection.commit();
             connection.release();
 
+            const [userInfo] = await db.query('SELECT email, first_name FROM users WHERE user_id = ?',
+                [userId]
+            );
+
+            const customerEmail = userInfo[0].email;
+            const customerName = userInfo[0].first_name;
+
+            const pickupTime = estimatedPickup.toLocaleTimeString('sv-SE', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            let itemsList = '';
+            for (let item of items) {
+                itemsList += `<li>${item.quantity}x ${item.name} - ${item.price * item.quantity} SEK</li>`;
+            }
+
+            const emailHtml = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background-color: #8b6b61; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
+            <h1>Order Confirmed!</h1>
+            </div>
+            <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px;">
+            <p>Hello ${customerName},</p>
+            <p>Thank you for considering Latte Avenue. Your order has been confirmed.</p>
+            <div style="background-color: #e8e1d6; padding: 20px; margin: 20px 0; border-radius: 5px;">
+            <h2 style="margin-top: 0; color: #8b6b61;">Order #${orderId}</h2>
+            <p><strong>Pickup time:</strong> ${pickupTime}</p>
+            <p><strong>Total:</strong> ${finalTotal} SEK</p>
+            <h3>Items:</h3>
+            <ul style="list-style: none; padding: 0;">
+            ${itemsList}
+            </ul>
+            </div>
+            <p>You can view your order details on your <a href="${process.env.FRONTEND_URL}/my-orders.html" style="color: #8b6b61;">My Orders page</a>.</p>
+            <p style="margin-top: 30px;">See you soon!<br>Best wishes,<br>Latte Avenue</p>
+            </div>
+            </div>
+            `;
+
+            await sendEmail(
+                customerEmail,
+                `Order Confirmed #${orderId}`,
+                emailHtml
+            );
 
             res.status(201).json({
                 success: true,
