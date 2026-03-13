@@ -3,9 +3,18 @@ document.addEventListener('DOMContentLoaded', function(){
     const email = urlParam.get('email');
     const token = urlParam.get('token');
 
+    // LÄGG TILL DESSA RADER
+    console.log('=== RESET PASSWORD DEBUG ===');
+    console.log('Full URL:', window.location.href);
+    console.log('Email from URL:', email);
+    console.log('Token from URL:', token);
+    console.log('All URL params:', Object.fromEntries(urlParam.entries()));
+    
+    // Testa att skapa en dummy-länk för att se formatet
+    console.log('Länken borde se ut som: reset-password.html?email=anvandare@email.com&token=123abc');
+
     if (!email || !token){
         alert('Unauthorized login attempt. Please create new link.');
-        window.location.href= 'login.html';
         return;
     }
 
