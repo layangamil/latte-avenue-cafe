@@ -493,21 +493,22 @@ app.post('/api/cart/check-stock', auth, async (req, res) => {
         //list of product id's to check
         const productIds = items.map(item => item.menuItemId);
         if (productIds.length === 0) {
-            return res.json({ ok: true, outOfStock: [] })
+            return res.json({ok: true, outOfStock: []})
         }
 
-        const [rows] = await db.query(
-            `SELECT product_id, name, stock FROM product WHERE product_id IN (?)`,
-            [productIds]
-        );
 
         const outOfStock = [];
 
         for (let item of items) {
-            const product = rows.find(product => product.product_id === item.menuItemId); //find the item in the db
+            const [productRows] = await db.query(
+            `SELECT product_id, name, stock FROM product WHERE product_id = ?`,
+            [item.menuItemId]
+        );
+
+        const product = productRows[0];
 
             if (!product) {
-                outOfStock.push({id: item.menuItemId,name: 'Unkonw', reason: 'not found'
+                outOfStock.push({id: item.menuItemId,name: 'Unknown', reason: 'not found'
                 });
 
             } else if (product.stock < item.quantity) {
