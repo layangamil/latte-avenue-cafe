@@ -712,7 +712,7 @@ app.get('/api/orders', auth, async (req, res) => {
 app.put('/api/orders/:id/status', auth, async (req, res) => {
         //only staff can update status
         if (req.user.role !== 'staff') {
-            return res.status(403).json({error: 'Onlybstaff allowed'});
+            return res.status(403).json({error: 'Staff only'});
         }
 
         const orderId = req.params.id;
@@ -728,24 +728,16 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
         const [orderCheck] = await db.query('SELECT * FROM `order` WHERE order_id = ?', [orderId]);
 
         if (orderCheck.length === 0) {
-            return res.status(400).json({ error: 'no order not found' });
+            return res.status(400).json({error: 'No order found'});
         }
 
 
         const order = orderCheck[0];
-        const currentStatuses = order.status;
-
-
-        if (!validTransitions.includes(status)) {
-            return res.status(400).json({
-                error: 'Not a valid status'
-            });
-        }
 
         let estimatedPickup = null;
         if (status === 'ready') {
             const orderedAt = new Date(order.created_at)
-            estimatedPickup = new Date(orderedAt.getTime() + 5 * 60000); // 5 mins
+            estimatedPickup = new Date(orderedAt.getTime() + 5 * 60000); //5 mins
         }
 
         //update order status
