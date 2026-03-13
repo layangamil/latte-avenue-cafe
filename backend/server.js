@@ -751,7 +751,16 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
 
         console.log('Order total amount (status update):', order.total_amount);
 
-
+        if (order.status === 'pending' && status !== 'pending') {
+            const orderTime = new Date(order.created_at);
+            const minutesSinceOrder = (new Date() - orderTime) / (1000 * 60);
+        
+            if (minutesSinceOrder < 1) {
+                return res.status(400).json({
+                    error: 'Cannot update order sattus for 1 minute from when order was placed'
+                });
+            }
+        }
 
         let estimatedPickup = null;
         if (status === 'ready') {
@@ -952,9 +961,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
         }
 
         //STaff cancellation
-
-        //if order was paid (not pending when cancelled), generate coupon
-        if (order.status !== 'pending' && order.status !== 'cancelled'){
+        
             //generate unique code
             couponCode = generateCouponCode();
 
@@ -975,6 +982,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
 
             const customerEmail = userInfo[0].email
             const customerName = userInfo[0].first_name
+            
             const emailHtml = `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background-color: #8b6b61; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
