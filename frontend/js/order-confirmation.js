@@ -27,7 +27,7 @@ async function loadOrderDetails(orderId){
         const data = await response.json();
 
         if(data.can_cancel){
-            startCountdown(data.time_remaining, orderId);
+            startCountdown(data.time_left, orderId);
         } else {
             document.getElementById('cancel-section').style.display = 'none';
         }

@@ -137,9 +137,8 @@ body {
 }
 
 .logo {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    width: 100px;
+    height: 70px;
 }
 
 .logo a{
@@ -1744,7 +1743,7 @@ nav {
     color:#c3949a;
     font-size: 1.3rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .order-body {
@@ -1752,7 +1751,7 @@ nav {
 }
 
 .order-body .order-total{
-    margin-top: 0.5rem;
+    margin-top: 0.8rem;
     color:#5d4037;
     display: flex;
     justify-content: space-between;
@@ -1766,7 +1765,7 @@ nav {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding: 1rem 0.5rem 1.5rem;
+    padding: 1rem 0.5rem 2.1rem;
 }
 
 @media (max-width: 600px) {       /*mobile*/

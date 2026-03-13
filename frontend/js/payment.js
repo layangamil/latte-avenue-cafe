@@ -56,7 +56,6 @@ async function placeOrder(cart) {
     console.log('placeOrder function is running! With: ', cart);
     const method = document.querySelector('input[name="paymentMethod"]:checked').value;  // checks which button that is 'checked' and gets its value '.value' (visa, applepay or klarna)
     const token = localStorage.getItem('token'); //checks if logged in
-    console.log('User-ID: ', token?.id);
 
     //check stock by sending fetch request to backend with items in cart
     try {
