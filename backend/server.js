@@ -680,7 +680,7 @@ app.get('/api/orders', auth, async (req, res) => {
 
         if (isStaff) {
             //staff xan see all orders
-            query = `SELECT order.*, users.email, users.first_name, users.last_name 
+            query = `SELECT \`order\`.*, users.email, users.first_name, users.last_name 
                      FROM \`order\` 
                      JOIN users ON order.user_id = users.user_id
                      ORDER BY order.created_at DESC`;
