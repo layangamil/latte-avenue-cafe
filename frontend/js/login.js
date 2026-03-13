@@ -120,7 +120,7 @@ async function registerUser(firstName, lastName, email, password, confirmPass, m
         msgMatch.style.display = 'none';
     }
 
-    if (password.length < 6){
+    if (password.length < 6 || confirmPass.length < 6){
         msgShort.style.display = 'block';
         return;
     }else {

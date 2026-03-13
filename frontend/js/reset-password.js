@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 msgMatch.style.display = 'none';
             }
 
-            if (newPass.length < 6){
+            if (newPass.length < 6 || confirmNewPass.length < 6){
                 msgShort.style.display = 'block';
                 return;
             }else {

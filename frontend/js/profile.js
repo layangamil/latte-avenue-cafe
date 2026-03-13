@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function(){
             const msgShort = document.getElementById('msgShort');
             const msgFillAll = document.getElementById('msgMissing');
 
-            if(!newPw || !confirmPw){
+            if(!newPw || !confirmPw || !currentPw){
                 msgFillAll.style.display = 'block';
                 return;
             } else {
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 msgMatch.style.display = 'none';
             }
 
-            if(newPw.length < 6){
+            if(newPw.length < 6 || confirmPw.length < 6){
                 msgShort.style.display = 'block';
                 return;
             }else {
