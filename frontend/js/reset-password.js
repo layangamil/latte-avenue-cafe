@@ -15,8 +15,9 @@ document.addEventListener('DOMContentLoaded', function(){
     const resetBtn = document.getElementById('resetBtn');
     const passReset = document.getElementById('passReset');
     const confirmPassReset = document.getElementById('confirmPassReset');
-    const msgMatch = document.getElementById('matchPasswordMsg');
-    const msgMissingInfo = document.getElementById('missingInfoMsg');
+    const msgMatch = document.getElementById('msgMatch');
+    const msgShort = document.getElementById('msgShort');
+    const msgFillAll = document.getElementById('msgMissing');
 
     if(resetBtn){
         resetBtn.addEventListener('click', async function(e){
@@ -28,10 +29,10 @@ document.addEventListener('DOMContentLoaded', function(){
 
             if(!confirmNewPass || !newPass){
                 console.log('Missing input infromation');
-                msgMissingInfo.style.display = 'block';
+                msgFillAll.style.display = 'block';
                 return;
             } else{
-                msgMissingInfo.style.display = 'none';
+                msgFillAll.style.display = 'none';
             }
 
             if (newPass !== confirmNewPass){
@@ -39,6 +40,13 @@ document.addEventListener('DOMContentLoaded', function(){
                 return;
             }else {
                 msgMatch.style.display = 'none';
+            }
+
+            if (newPass.length < 6){
+                msgShort.style.display = 'block';
+                return;
+            }else {
+                msgShort.style.display = 'none';
             }
 
             await resetPassword(newPass, saveToken);

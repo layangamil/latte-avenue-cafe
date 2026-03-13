@@ -25,9 +25,19 @@ document.addEventListener('DOMContentLoaded', function(){
             const email = document.getElementById('customer-signup-email').value;
             const password = document.getElementById('customer-signup-password').value;
             const confirmPass = document.getElementById('customer-confirm-password').value;
-            const msgMatch = document.getElementById('matchPasswordMsg');
+            const msgMatch = document.getElementById('msgMatch');
+            const msgShort = document.getElementById('msgShort');
+            const msgFillAll = document.getElementById('msgMissing');
+
+            if(!firstName || !lastName || !email || !password || !confirmPass){
+                msgFillAll.style.display = 'block';
+                return;
+            } else {
+                msgFillAll.style.display = 'none';
+            }
+
         
-            registerUser(firstName, lastName, email, password, confirmPass, msgMatch); //call sign up function with said values
+            registerUser(firstName, lastName, email, password, confirmPass, msgMatch, msgShort); //call sign up function with said values
         });
     }
     //Admin - login
@@ -98,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 });
 
-async function registerUser(firstName, lastName, email, password, confirmPass, msgMatch) {
+async function registerUser(firstName, lastName, email, password, confirmPass, msgMatch, msgShort) {
     console.log('registerUser function is running! With: ', firstName, lastName, email);
     console.log('1. registerUser start', {firstName, lastName, email, password, confirmPass});
     console.log('2. msgMatch element:', msgMatch);
@@ -108,6 +118,13 @@ async function registerUser(firstName, lastName, email, password, confirmPass, m
         return;
     }else {
         msgMatch.style.display = 'none';
+    }
+
+    if (password.length < 6){
+        msgShort.style.display = 'block';
+        return;
+    }else {
+        msgShort.style.display = 'none';
     }
     
     try {
@@ -144,6 +161,11 @@ async function registerUser(firstName, lastName, email, password, confirmPass, m
         // Network or connection error
         console.log('Error:', error);
         alert('Cannot connect to server');
+        document.getElementById('customer-signup-firstname').value = '';
+        document.getElementById('customer-signup-lastname').value = '';
+        document.getElementById('customer-signup-email').value = '';
+        document.getElementById('customer-signup-password').value = '';
+        document.getElementById('customer-confirm-password').value = '';
     }
 }
 

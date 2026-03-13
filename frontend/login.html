@@ -57,7 +57,9 @@
                         <input type="email" id="customer-signup-email" placeholder="E-mail Address" required>
                         <input type="password" id="customer-signup-password" placeholder="Password" required>
                         <input type="password" id="customer-confirm-password" placeholder="Confirm Password" required>
-                        <span id="matchPasswordMsg" style="color: red; display: none;">Passwords do not match!</span>
+                        <span id="msgMissing" class="msgFillAll">Please, fill in all fields.</span>
+                        <span id="msgMatch" class="msgMatch">Passwords do not match!</span>
+                        <span id="msgShort" class="msgShort">Password must be minimum 6 characters.</span>
                    </form>
                 </div>
                 <button class="btn btn-primary btn-fullwidth">Create account</button>
