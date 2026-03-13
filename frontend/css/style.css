@@ -1618,8 +1618,8 @@ nav {
     width: 100%;
     border-bottom: 1px solid #c3949a;
     font-family: 'Cormorant Garamond', serif;
-    margin: 0 0 2rem 0;
-    padding-bottom: 1rem;
+    margin: 0 0 2.3rem 0;
+    padding-bottom: 1.3rem;
 }
 
 .order-header span:last-child em{
@@ -1637,7 +1637,7 @@ nav {
     color:#c3949a;
     font-size: 1.3rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .order-body {
@@ -1645,7 +1645,7 @@ nav {
 }
 
 .order-body .order-total{
-    margin-top: 0.8rem;
+    margin-top: 0.1rem;
     color:#5d4037;
     display: flex;
     justify-content: space-between;
@@ -1659,7 +1659,7 @@ nav {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding: 1rem 0.5rem 2.1rem;
+    padding: 1.4rem 0.5rem 2.4rem;
 }
 
 @media (max-width: 600px) {       /*mobile*/
@@ -1669,8 +1669,8 @@ nav {
     }
 
     .order-card {
-        padding: 0.8rem;
-        margin-bottom: 0.5rem;
+        padding: 1.05rem;
+        margin-bottom: 1.05rem;
     }
 
     .order.card .order-header{
