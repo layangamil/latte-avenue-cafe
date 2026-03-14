@@ -1244,6 +1244,51 @@ app.get('/api/profile', auth, async (req, res) => {
     });
 });
 
+
+//PUT /api/profile name & emaik
+app.put('/api/profile', auth, async (req, res) => {
+    const userId = req.user.id;
+    const {first_name, last_name, email} = req.body;
+
+    let updates = [];
+    let values = [];
+
+    if (first_name !== undefined) {
+        updates.push('first_name = ?');
+        values.push(first_name);
+    }
+
+    if (last_name !== undefined) {
+        updates.push('last_name = ?');
+        values.push(last_name);
+    }
+
+    if (email !== undefined) {
+        const [existing] = await db.query('SELECT user_id FROM users WHERE email = ? AND user_id !=?', [email, userId]);
+        if (existing.length > 0) {
+            return res.status(400).json({message: 'Email already registered'});
+        }
+
+        updates.push('email = ?');
+        values.push(email);
+    }
+
+    if (updates.length === 0) {
+        return res.status(400).json({message: 'Nothing to change'});
+    }
+
+    values.push(userId);
+
+    await db.query(
+        `UPDATE users SET ${updates.json(', ')} WHERE user_id = ?`, values
+    );
+
+    res.json({
+        success: true,
+        message: 'Profile updates.'
+    });
+});
+
 //PUT /api/profile/password chane password
 app.put('/api/profile/password', auth, async (req, res) => {
     const userId = req.user.id;
@@ -1287,7 +1332,6 @@ app.put('/api/profile/password', auth, async (req, res) => {
         message: 'Password updated successfully'
     });
 });
-
 
 //delete account://
 //DELETE /api/profile 
