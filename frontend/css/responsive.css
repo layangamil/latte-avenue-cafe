@@ -83,7 +83,8 @@
 
     /*footer section*/
     .footer-section {
-        padding: 1.5rem 0;
+        padding-top: 1.7rem;
+        padding-bottom: 1rem;
     }
     
     .footer-section .container {
@@ -94,9 +95,9 @@
     }
     
     .footer-section .contact-us, .footer-section .socials-section, .footer-section .visit-us{
-        flex: 1 1 auto;
         width: 100%;
         text-align: center;
+        margin: 0 auto !important;
         max-width: 280px;
     }
     
@@ -107,21 +108,27 @@
     
     .footer-section p {
         justify-content: center;
+        font-size: 0.8rem;
         margin: 0.8rem 0;
     }
 
     .footer-section h3 {
+        font-size: 1rem;
+        margin: 0 0 1.1rem 0 !important;
         text-align: center;
     }
     
     .socials-section .socials {
         justify-content: center;
+        margin: 1rem 0 0 0 !important;
         gap: 1.45rem;
     }
     
     .footer-section .copyrights {
         font-size: 0.7rem;
         margin-top: 1.45rem;
+        text-align: center;
+        width: 100%;
     }
 
     /*menu*/
@@ -156,6 +163,11 @@
         margin-top: 10px;
     }
 
+    .btn-add-to-cart {
+        padding: 6px 10px !important;
+        font-size: 0.7rem !important;
+    }
+
     .item-content {
         padding: 0.5rem;
     }
@@ -180,11 +192,6 @@
 
     .price {
         font-size: 0.7rem;
-    }
-
-    .btn-add-to-cart {
-        padding: 6px 10px !important;
-        font-size: 0.7rem !important;
     }
 
     .sold-out-label {
