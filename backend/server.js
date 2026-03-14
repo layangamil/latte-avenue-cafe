@@ -1102,7 +1102,7 @@ app.post('/api/orders', auth, async (req, res) => {
             const [orderResult] = await connection.query(
                 `INSERT INTO \`order\` (user_id, total_amount, original_total, status, payment_method, estimated_pickup_time) 
                  VALUES (?, ?, ?, ?, ?, ?)`,
-                [userId, finalTotal, 'pending', paymentMethod, estimatedPickup]
+                [userId, finalTotal, total, 'pending', paymentMethod, estimatedPickup]
             );
 
             const orderId = orderResult.insertId;
