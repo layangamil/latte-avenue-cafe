@@ -663,6 +663,8 @@ app.get('/api/orders/:id', auth, async (req, res) => {
         const orderToSend = {
             order_id: order.order_id,
             user_id: order.user_id,
+            first_name: order.first_name,
+            last_name: order.last_name,
             total_amount: order.total_amount,
             status: order.status,
             created_at: order.created_at,
@@ -883,6 +885,8 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             const customerEmail = userInfo[0].email;
             const customerName = userInfo[0].first_name;
 
+            const orderTotal = order.original_total || order.total_amount;
+
 
             const emailHtml = `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -896,7 +900,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             Note: If you spend less than the coupon value, the remining amount will not be saved, so be sure to spend up to the discount price.<br>:</p>
             <div style="background-color: #e8e1d6; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;">
             <h2 style="font-family: monospace; font-size: 24px; letter-spacing: 2px; color: #8b6b61;">${couponCode}</h2>
-            <p style="font-size: 14px;">Worth: ${order.total_amount} SEK</p>
+            <p style="font-size: 14px;">Worth: ${orderTotal} SEK</p>
             </div>
             <p>Use this code at checkout on your next order. Valid for 30 days.</p>
             <p style="margin-top: 30px;">See you soon!<br>Best wishes,<br>Latte Avenue</p>
@@ -1096,8 +1100,8 @@ app.post('/api/orders', auth, async (req, res) => {
 
             //create order
             const [orderResult] = await connection.query(
-                `INSERT INTO \`order\` (user_id, total_amount, status, payment_method, estimated_pickup_time) 
-                 VALUES (?, ?, ?, ?, ?)`,
+                `INSERT INTO \`order\` (user_id, total_amount, original_total, status, payment_method, estimated_pickup_time) 
+                 VALUES (?, ?, ?, ?, ?, ?)`,
                 [userId, finalTotal, 'pending', paymentMethod, estimatedPickup]
             );
 
