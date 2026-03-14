@@ -781,7 +781,7 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
         </div>
         <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px;">
         <p>Hello ${customerName},</p>
-        <p>The wait os over! Your order #${orderId} is now ready for pickup.</p>
+        <p>The wait is over! Your order #${orderId} is now ready for pickup.</p>
         <div style="background-color: #e8e1d6; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;">
         <h2 style="color: #8b6b61;">Ready at: ${pickupTime}</h2>
         </div>
@@ -821,10 +821,8 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
 app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
         const userId = req.user.id;
         const orderId = req.params.id;
-        const isStaff = req.user.role === 'staff';
         const timeNow = new Date();
 
-        
         const [orderCheck] = await db.query('SELECT * FROM `order` WHERE order_id = ?', [orderId]);
 
         if (orderCheck.length === 0) {
@@ -834,22 +832,15 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
         const order = orderCheck[0];
 
        
-        if (!isStaff && order.user_id !== userId) {
+        if (order.user_id !== userId) {
             return res.status(403).json({error: 'Access denied'});
         }
 
-        let couponCode = null;
-        let message = '';
-        let emailHtml = '';
-        let customerEmail = '';
-        let customerName = '';
-        let userInfo;
-
         //check if order can be cancelled by customer
-        if(!isStaff) {
+       /* if(!isStaff) {
             if (order.status !== 'pending') {
                 return res.status(400).json({error: 'Only pending orders can be cancelled'});
-            }
+            }*/
 
         //check 1 min window 
         const orderedAt = new Date(order.created_at);
@@ -861,7 +852,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
                 });
             }
 
-            console.log('Order total amount (customer cancel):', order.total_amount);
+            console.log('Order total amount:', order.total_amount);
 
             const [couponCheck] = await db.query(
                 'SELECT coupon_used FROM `order` WHERE order_id = ?',
@@ -870,54 +861,39 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
 
             const usedCoupon = couponCheck[0]?.coupon_used || false;
             
-            userInfo = await db.query(
+            let couponCode = null;
+            let message = '';
+
+
+            if (usedCoupon) {
+                couponCode = generateCouponCode();
+                message = 'Order cancelled: A new coupon has been issued for the total order amount.';
+
+            } else {
+
+                couponCode = generateCouponCode();
+                message = 'Order cancelled successfully. A coupon has been added to your profile page.';
+            }
+
+            const [userInfo] = await db.query(
                     'SELECT email, first_name FROM users WHERE user_id = ?',
                     [userId]
                 );
 
-                customerEmail = userInfo[0].email;
-                customerName = userInfo[0].first_name;
-
-            if (usedCoupon) {
-                couponCode = null;
-                message = 'Order cancelled: No coupon issued (since order used a coupon).';
-
-                
-                emailHtml = `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                <div style="background-color:#8b6b61; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
-                <h1>Order Cancelled</h1>
-                </div>
-                <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px">
-                <p>Hello ${userInfo[0].first_name},</p>
-                <p>Your order #${orderId} has been cancelled as requested.</p>
-                <p>No coupon was issued because this order used a discount.</p>
-                <p>Your original coupon is still valid until its expiration date.</p>
-                <p style="margin-top: 30px;">See you soon!<br>Best wishes,<br>Latte Avenue</p>
-                </div>
-                </div>
-                `;
-
-                await sendEmail(
-                    customerEmail,
-                    'Your Latte Avenue order has been cancelled',
-                    emailHtml
-                );
-
-            } else {
-                couponCode = generateCouponCode();
-                message = 'Order cancelled successfully. A coupon has been added to your profile page.'
+            const customerEmail = userInfo[0].email;
+            const customerName = userInfo[0].first_name;
 
 
-            emailHtml = `
+            const emailHtml = `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background-color:#8b6b61; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
             <h1>Order Cancelled</h1>
             </div>
             <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px">
-            <p>PHello ${customerName}, </p>
+            <p>Hello ${customerName}, </p>
             <p>Your order #${orderId} has been cancelled as requested.</p>
-            <p>Here is a disount code with the same price as your cancelled order to use the next time you have a sweet tooth or fancy a drink:</p>
+            <p>Here is a coupon code with the same price as your cancelled order to use the next time you have a sweet tooth or fancy a drink.<br>
+            Note: If you spend less than the coupon value, the remining amount will not be saved, so be sure to spend up to the discount price.<br>:</p>
             <div style="background-color: #e8e1d6; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;">
             <h2 style="font-family: monospace; font-size: 24px; letter-spacing: 2px; color: #8b6b61;">${couponCode}</h2>
             <p style="font-size: 14px;">Worth: ${order.total_amount} SEK</p>
@@ -933,7 +909,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
                 'Your Latte avenue order has been cancelled',
                 emailHtml
             );
-        }
+
             
             await db.query(
                 `UPDATE \`order\` 
@@ -951,8 +927,11 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
                 order_id: orderId,
                 coupon_generated: !!couponCode
             });
-        }
+        });
 
+        
+        
+        /*
         //STaff cancellation
 
             message = 'Order cancelled successfully';
@@ -1019,7 +998,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             order_id: orderId,
             coupon_generated: ! !couponCode
         });
-});
+}); */
 
 
 
@@ -1177,7 +1156,7 @@ app.post('/api/orders', auth, async (req, res) => {
             <p>Thank you for considering Latte Avenue. Your order has been confirmed.</p>
             <div style="background-color: #e8e1d6; padding: 20px; margin: 20px 0; border-radius: 5px;">
             <h2 style="margin-top: 0; color: #8b6b61;">Order #${orderId}</h2>
-            <p><strong>Pickup time:</strong> ${pickupTime}</p>
+            <p><strong>Estimated pickup time:</strong> ${pickupTime}</p>
             <p><strong>Total:</strong> ${finalTotal} SEK</p>
             <h3>Items:</h3>
             <ul style="list-style: none; padding: 0;">
