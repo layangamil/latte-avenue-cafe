@@ -1264,7 +1264,7 @@ app.put('/api/profile', auth, async (req, res) => {
     }
 
     if (email !== undefined) {
-        const [existing] = await db.query('SELECT user_id FROM users WHERE email = ? AND user_id !=?', [email, userId]);
+        const [existing] = await db.query('SELECT user_id FROM users WHERE email = ? AND user_id != ?', [email, userId]);
         if (existing.length > 0) {
             return res.status(400).json({message: 'Email already registered'});
         }
