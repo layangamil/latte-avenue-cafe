@@ -753,6 +753,18 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
 
         console.log('Order total amount (status update):', order.total_amount);
 
+
+        if (status === 'completed') {
+            if (order.coupon_code) {
+                await db.query(
+                    `UPDATE \`order\` SET coupon_used = TRUE WHERE order_id = ?`,
+                    [orderId]
+                );
+
+                console.log('Coupon marked as used for the order:', orderId);
+            }
+        }
+
         let estimatedPickup = null;
         if (status === 'ready') {
             const orderedAt = new Date(order.created_at)
@@ -1058,11 +1070,6 @@ app.post('/api/orders', auth, async (req, res) => {
                 finalTotal = Math.max(0, total - coupon.total_amount);
                 appliedCoupon = coupon.coupon_code;
 
-                
-                await connection.query(
-                    `UPDATE \`order\` SET coupon_used = TRUE WHERE order_id = ?`,
-                    [coupon.order_id]
-                );
             }
         }
         //check stock for the ordered ittem
@@ -1197,8 +1204,6 @@ app.post('/api/orders', auth, async (req, res) => {
         connection.release();
     }
 });
-
-
 
 
 
