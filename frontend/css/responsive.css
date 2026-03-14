@@ -157,11 +157,11 @@
     }
 
     .item-content {
-        padding: 0.6rem;
+        padding: 0.5rem;
     }
 
     .item-content h4 {
-        font-size: 0.9rem;
+        font-size: 1rem;
         margin-top: 0.5rem;
         padding-top: 0.5rem;
     }
@@ -170,16 +170,16 @@
         font-size: 0.7rem !important;
         min-height: 30px !important;
         margin-bottom: 0.3rem;
-        line-height: 1.2;
+        line-height: 1.4;
     }
 
     .item-footer {
-        margin-top: 0.3rem;
+        margin-top: 0.2rem;
         padding-top: 0.3rem;
     }
 
     .price {
-        font-size: 0.9rem;
+        font-size: 0.7rem;
     }
 
     .btn-add-to-cart {
