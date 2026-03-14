@@ -114,7 +114,6 @@ body {
     display: block;
 }
 
-
 /* ======= */
 /* Header */
 .main-header {
@@ -486,8 +485,7 @@ nav {
     transform: translateY(-2px);
 }
 /* =============== */
-/* CONTACT SECTION */
-.contact-section{
+/* .contact-section{
     padding: 4rem 0 2rem 0;
 }
 
@@ -514,7 +512,7 @@ nav {
     align-items: center;
     font-style:'Cormorant Garamond', serif;
     color:#80665e;
-}
+} */
 
 /* ================= */
 /* Responsive Design */
@@ -602,14 +600,12 @@ nav {
     font-family: 'Playfair Display', serif;
     letter-spacing: 5px;
     margin-bottom:1.3rem;
-    margin-left: 1rem;
 }
 
 .socials-section .socials {
     display: flex;
     margin-top: 0.6rem;
     gap: 5rem;
-    margin-left: 1rem;
 }
 
 .socials-section .socials a{
@@ -622,9 +618,6 @@ nav {
     transform: scale(1.4);
 }
 
-.contact-us {
-    margin-left: 6rem;
-}
 
 .footer-section i{
     font-size: 1.5rem;
