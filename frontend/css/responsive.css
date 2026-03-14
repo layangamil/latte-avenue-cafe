@@ -137,7 +137,7 @@
     .menu-items {
         display: grid;
         grid-template-columns: 1fr 1fr !important;
-        gap: 0.8rem !important;
+        gap: 0.5rem !important;
         padding: 0.5rem 0;
     }
 
@@ -148,6 +148,9 @@
     }
 
     .menu-item img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 80%;
         height: 80px;
         margin-top: 10px;
