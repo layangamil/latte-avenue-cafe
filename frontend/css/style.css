@@ -484,35 +484,6 @@ nav {
     background: #5d4037;
     transform: translateY(-2px);
 }
-/* =============== */
-/* .contact-section{
-    padding: 4rem 0 2rem 0;
-}
-
-.contact-content{
-    padding-bottom: 1rem;
-    margin: 2rem;
-    text-align: center;
-}
-
-.contact-content h3{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 3rem;
-    font-family: 'Playfair Display', serif;
-    font-weight: 550;
-    font-size: 1.5rem;
-    color:#5d4037;
-}
-
-.contact-content p{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    font-style:'Cormorant Garamond', serif;
-    color:#80665e;
-} */
 
 /* ================= */
 /* Responsive Design */
@@ -555,8 +526,7 @@ nav {
     }
 
 }
-                                        /* Cart counter animation */
-                                        /* Simple bump animation */
+                                      
 .cart-count {
     display: inline-block;
     transition: transform 0.3s ease;    /*transition will start slow, then go fast, and end slow */
@@ -564,16 +534,6 @@ nav {
     border-radius: 50%;
     background-color: #f0e6d6;
 }
-/* 
-.cart-count.bump {
-    animation: bump 0.3s ease;
-}
-
-@keyframes bump {                       
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-} */
 
 /* ============ */
 /* FOOTER SECTION*/
