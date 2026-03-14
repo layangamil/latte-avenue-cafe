@@ -1250,6 +1250,9 @@ app.put('/api/profile', auth, async (req, res) => {
     const userId = req.user.id;
     const {first_name, last_name, email} = req.body;
 
+    console.log('Updating profile for user:', userId);
+    console.log('Data received:', {first_name, last_name, email});
+
     let updates = [];
     let values = [];
 
@@ -1265,6 +1268,9 @@ app.put('/api/profile', auth, async (req, res) => {
 
     if (email !== undefined) {
         const [existing] = await db.query('SELECT user_id FROM users WHERE email = ? AND user_id != ?', [email, userId]);
+        
+        console.log('Email check result:', existing);
+
         if (existing.length > 0) {
             return res.status(400).json({message: 'Email already registered'});
         }
@@ -1278,6 +1284,10 @@ app.put('/api/profile', auth, async (req, res) => {
     }
 
     values.push(userId);
+
+    const sql = `UPDATE users SET ${updates.join(', ')} WHERE user_id = ?`;
+    console.log('SQL Query:', sql);
+    console.log('Values:', values);
 
     await db.query(
         `UPDATE users SET ${updates.join(', ')} WHERE user_id = ?`, values
