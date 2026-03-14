@@ -28,7 +28,7 @@ function updateUIBasedOnLogin(){
 
     if(token){
         console.log('Role: ', role);
-        console.log('User-ID: ', token.id);
+        
         if (loginLink) loginLink.style.display = 'none';
         if (accountDropdown) accountDropdown.style.display = 'block';
     } else {
