@@ -751,17 +751,6 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
 
         console.log('Order total amount (status update):', order.total_amount);
 
-        if (order.status === 'pending' && status !== 'pending') {
-            const orderTime = new Date(order.created_at);
-            const minutesSinceOrder = (new Date() - orderTime) / (1000 * 60);
-        
-            if (minutesSinceOrder < 1) {
-                return res.status(400).json({
-                    error: 'Cannot update order sattus for 1 minute from when order was placed'
-                });
-            }
-        }
-
         let estimatedPickup = null;
         if (status === 'ready') {
             const orderedAt = new Date(order.created_at)
@@ -787,7 +776,7 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
 
         const emailHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="background-color: #4CAF50; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
+        <div style="background-color: #8b6b61; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
         <h1>Your Order is Ready for Pickup!</h1>
         </div>
         <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px;">
@@ -944,6 +933,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
                 'Your Latte avenue order has been cancelled',
                 emailHtml
             );
+        }
             
             await db.query(
                 `UPDATE \`order\` 
@@ -1011,7 +1001,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             );
 
             message = 'Order cancelled and coupon sent to customer';
-        }
+        
 
             //update order status to cancledd
         await db.query(
