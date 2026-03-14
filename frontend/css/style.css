@@ -542,6 +542,11 @@ nav {
     padding: 2rem 0rem;
 }
 
+.contact-us .phone-nr{
+    color:#f0e6d6;
+    text-decoration: none;
+}
+
 .footer-section .container{
     display: flex;
     justify-content: center;
@@ -591,7 +596,7 @@ nav {
 
 .footer-section p{
     margin: 1.2rem;
-    color:#faf7f2;
+    color:#f0e6d6;
     display:flex;
     align-items: center;
     gap: 0.6rem;
@@ -1309,7 +1314,8 @@ nav {
     font-weight: 600;
     font-family: 'Playfair Display', serif;
     letter-spacing: 2px;
-    color: #5d4037;
+    border: 1px dashed #f5f0ed;
+    color: #8b6b61;
     font-size: 1.7rem !important;
     margin-top: 0.55rem;
 }
@@ -1552,32 +1558,31 @@ nav {
 .discount-code{
     font-family: ui-monospace;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 0.75rem;
     letter-spacing: 3px;
     background: #faf7f2;
-    padding: 0.7rem 1.6rem;
+    padding: 0.3rem 0.5rem;
     border-radius: 15px;
     border: 1px solid #eddcc0;
     color: #5d4037;
 }
 
 .discount-expiry{
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.2rem;
     color: #8b6b61;
-    font-size: 1rem;
+    font-size: 0.5rem;
 }
-
 
 .discount-value{
     color: #5d4037;
-    font-size: 1rem;
+    font-size: 0.65rem;
     font-weight: 550;
 }
 
 .no-coupons{
     color:#999;
     font-family:'Cormorant Garamond', serif;
-    font-size: 1.5rem;
+    font-size: 1rem;
     letter-spacing: 3px;
 }
 
