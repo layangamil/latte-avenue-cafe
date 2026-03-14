@@ -1221,7 +1221,7 @@ app.post('/api/orders', auth, async (req, res) => {
 
 
 
-// ================= PROFILE (PROTECTED) ============================================================
+//profile://
 //GET /api/profile -Get user profile info
 app.get('/api/profile', auth, async (req, res) => {
 
@@ -1280,7 +1280,7 @@ app.put('/api/profile', auth, async (req, res) => {
     values.push(userId);
 
     await db.query(
-        `UPDATE users SET ${updates.json(', ')} WHERE user_id = ?`, values
+        `UPDATE users SET ${updates.join(', ')} WHERE user_id = ?`, values
     );
 
     res.json({
