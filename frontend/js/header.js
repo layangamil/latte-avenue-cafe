@@ -48,15 +48,13 @@ function signout(){
 }
 
 window.addEventListener('load', function() {
-    setTimeout(function() {
-        const signoutBtn = document.getElementById('customerSignoutBtn');
-        if (signoutBtn) {
-            // Ta bort gammal event listener och sätt en ny direkt
-            signoutBtn.onclick = function(event) {
-                event.preventDefault();
-                signout();
-                return false;
-            };
-        }
-    }, 500); // Vänta 500ms
+    const signoutBtn = document.getElementById('customerSignoutBtn');
+    if (signoutBtn) {
+        console.log('Sign out Btn: ', signoutBtn);
+        signoutBtn.onclick = function(event) {
+            event.preventDefault();
+            signout();
+            return false;
+        };
+    }
 });
