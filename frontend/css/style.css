@@ -1324,7 +1324,10 @@ nav {
     font-weight: 600;
     font-family: 'Playfair Display', serif;
     letter-spacing: 2px;
-    /* border: 1px dashed #f5f0ed; */
+    border: 1px dashed #a1887f;
+    padding: 0.5rem;
+    max-width: 100px;
+    border-radius:35px;
     color: #8b6b61;
     font-size: 1.7rem !important;
     margin-top: 0.55rem;
@@ -1344,13 +1347,13 @@ nav {
     font-size: 1.2rem;
     color: #8b6b61;
 }
-
+/* 
 .order-id-section span{
     border: 1px dashed #a1887f;
     padding: 0.5rem;
     max-width: 100px;
     border-radius:35px;
-}
+} */
 
 .order-id-section .btn-primary{
     margin-top: 1rem;
