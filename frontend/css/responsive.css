@@ -107,6 +107,11 @@
         max-width: 180px;
         flex: 1 1 149px;
     }
+
+    .contact-us .phone-nr{
+        color:#f0e6d6;
+        text-decoration: none;
+    }
     
     .footer-sub-header p {
         margin-right: auto;
@@ -659,25 +664,14 @@
         gap: 0.5rem;
     }
     
-    .discount-code {
-        font-size: 0.7rem !important;
-        padding: 0.25rem 0.5rem !important;
-        letter-spacing: 1.5px;
-    }
-    
     .discount-expiry {
         margin-bottom: 0.15rem;
-        font-size: 0.650rem !important;
-    }
-
-    .discount-value {
-        font-size: 0.65rem !important;
     }
     
     .discount-card .btn {
         margin-top: 0.17rem;
         padding: 0.25rem !important;
-        font-size: 0.8rem !important;
+        font-size: 0.7rem !important;
     }
 
     #delete-acc-btn {
@@ -716,7 +710,7 @@
     
     .order-card {
         max-width: 240px;
-        background: white;
+        background: #a1887f;
         border-radius: 20px;
         box-shadow: 0 4px 9px rgba(138, 106, 96, 0.08);
         padding: 0.7rem;
@@ -952,6 +946,11 @@
     
     .footer-section .contact-us, .footer-section .socials-section, .footer-section .visit-us {
         flex: 1 1 180px;
+    }
+
+    .contact-us .phone-nr{
+        color:#f0e6d6;
+        text-decoration: none;
     }
     
     .footer-section p {
@@ -1339,6 +1338,11 @@
         max-width: 1400px;
         margin: 0 auto;
         gap: 2.9rem;
+    }
+
+    .contact-us .phone-nr{
+        color:#f0e6d6;
+        text-decoration: none;
     }
     
     .footer-section .contact-us, .footer-section .socials-section, .footer-section .visit-us {
