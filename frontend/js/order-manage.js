@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function(){
         window.location.href = "login.html";
         return;
     }
-    console.log('User-ID: ', token?.id);
     loadAllOrders();
 });
 
@@ -37,7 +36,6 @@ function displayOrders(orders) {
             activeOrders.push(order);
         }
     }
-    // REMOVE //const activeOrders = orders.filter(order => order.status !== 'completed' && order.status !== 'cancelled');
     
     
     const container = document.getElementById('orders-list');
@@ -46,11 +44,11 @@ function displayOrders(orders) {
     for (let i = 0; i < activeOrders.length; i++){
         const order = activeOrders[i];
 
-        // ANVÄND RÄTT FÄLTNAMN FRÅN BACKEND
-        const orderId = order.order_id;                 // från backend: order_id
-        const orderTotal = order.total_amount;          // från backend: total_amount
+        // using the correct name from backend
+        const orderId = order.order_id;                 // fron backend: order_id
+        const orderTotal = order.total_amount;          // from backend: total_amount
         const customerName = order.first_name + ' ' + order.last_name;
-        const itemsSummary = `${order.item_count} items`;  // från backend: item_count
+        const itemsSummary = `${order.item_count} items`;  // from backend: item_count
 
         html += `
             <div class="order-card" data-id="${orderId}">
@@ -66,7 +64,6 @@ function displayOrders(orders) {
                             <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>Preparing</option>
                             <option value="ready" ${order.status === 'ready' ? 'selected' : ''}>Ready</option>
                             <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
-                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
                         </select>
                     </div>
                 </div>
@@ -79,7 +76,7 @@ function displayOrders(orders) {
         `;
     }
     if (activeOrders.length === 0){
-        container.innerHTML = '<p class="no-orders">No active orders</p>'
+        container.innerHTML = '<p class="no-orders" style="color:#999; letter-spacing: 3px;>No active orders</p>'
     }else {
         container.innerHTML = html;
     }
@@ -88,7 +85,6 @@ function displayOrders(orders) {
 async function updateStatus(orderId, newStatus) {
     console.log('updateStatus function is running! With: ', orderId, newStatus);
     const token = localStorage.getItem('token');
-    console.log('User-ID: ', token?.id);
 
     const response = await fetch(`/api/orders/${orderId}/status`, {
         method: 'PUT',

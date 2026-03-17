@@ -62,7 +62,7 @@ function displayOrders(orders){
         }
         currentBox.innerHTML = html;
     } else {
-        currentBox.innerHTML = '<p class="no-order">No active order</p>';
+        currentBox.innerHTML = '<p class="no-orders" style="color:#999; letter-spacing: 3px;>No active orders</p>';
     }
 
     //show order history
@@ -74,7 +74,7 @@ function displayOrders(orders){
         }
         historyBox.innerHTML = html;
     } else {
-        historyBox.innerHTML = '<p class="no-order">No previous orders</p>';
+        historyBox.innerHTML = '<p class="no-orders" style="color:#999; letter-spacing: 3px;>No previous orders</p>';
     }
 
     if (typeof window.updateCartCount === 'function') {
