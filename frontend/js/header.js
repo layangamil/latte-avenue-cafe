@@ -47,14 +47,14 @@ function signout(){
     }
 }
 
-window.addEventListener('load', function() {
-    const signoutBtn = document.getElementById('customerSignoutBtn');
-    if (signoutBtn) {
-        console.log('Sign out Btn: ', signoutBtn);
-        signoutBtn.onclick = function(event) {
-            event.preventDefault();
-            signout();
-            return false;
-        };
-    }
-});
+// window.addEventListener('load', function() {  //???
+//     const signoutBtn = document.getElementById('customerSignoutBtn');
+//     if (signoutBtn) {
+//         console.log('Sign out Btn: ', signoutBtn);
+//         signoutBtn.onclick = function(event) {
+//             event.preventDefault();
+//             signout();
+//             return false;
+//         };
+//     }
+// });
