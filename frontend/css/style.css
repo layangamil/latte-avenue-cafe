@@ -1755,7 +1755,7 @@ nav {
 }
 
 .menu-item-row, .new-item-row {
-    background: #fff9f7;
+    background:#e2c1c6;
     padding: 0.75rem;
     margin-bottom: 1rem;
     border: 1px solid #eddcc0;
@@ -1960,7 +1960,7 @@ nav {
 .order-card {
     width: 100%;
     min-width: 0;
-    background-color:#faf7f2;
+    background-color:#b6afad;
     border-radius: 6px;
     box-shadow: 0 1px 3px rgba(139, 107, 97, 0.1);
 }
