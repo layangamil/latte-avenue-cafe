@@ -1758,7 +1758,7 @@ nav {
 }
 
 .menu-item-row, .new-item-row {
-    background:#e2c1c6;
+    background-color:#e2c1c6;
     padding: 0.75rem;
     margin-bottom: 1rem;
     border: 1px solid #eddcc0;
