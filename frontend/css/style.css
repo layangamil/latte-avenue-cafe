@@ -1925,7 +1925,7 @@ nav {
     }
 }
 
-@media (min-width: 1025px){
+/* @media (min-width: 1025px){
     .orders-list {
         grid-template-columns: repeat(4, 1fr);
         gap: 1rem;
@@ -1958,7 +1958,7 @@ nav {
         font-size: 0.8rem;
         white-space: nowrap;
     }
-}
+} */
 
 .order-manage-page .order-card {
     width: 100%;
