@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     console.log('User-ID: ', token?.id);
     loadUserProfile();
-    loadDiscounts();
+    // loadDiscounts();
 
 
     document.getElementById('emailForm').addEventListener('submit', async function(e){
@@ -159,51 +159,51 @@ async function updateProfile(data){
     }
 }
 
-async function loadDiscounts(){
-    const token = localStorage.getItem('token');
+// async function loadDiscounts(){
+//     const token = localStorage.getItem('token');
 
-    try {
-        const response = await fetch('/api/profile/coupons', {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        });
+//     try {
+//         const response = await fetch('/api/profile/coupons', {
+//             headers: {
+//                 'Authorization': 'Bearer ' + token
+//             }
+//         });
 
-        const discounts = await response.json();
-        displayDiscounts(discounts);
-    } catch(error){
-        console.log('Error:', error);
-    }
-}
+//         const discounts = await response.json();
+//         displayDiscounts(discounts);
+//     } catch(error){
+//         console.log('Error:', error);
+//     }
+// }
 
-function displayDiscounts(discounts){
-    const container = document.getElementById('discounts-container');
+// function displayDiscounts(discounts){
+//     const container = document.getElementById('discounts-container');
 
-    if(!discounts || discounts.length === 0){
-        container.innerHTML = '<p class="no-coupons">You have no coupons</p>';
-        return;
-    }
+//     if(!discounts || discounts.length === 0){
+//         container.innerHTML = '<p class="no-coupons">You have no coupons</p>';
+//         return;
+//     }
 
-    let html = '';
-    for (let j = 0; j < discounts.length; j++){
-        const discount = discounts[j];
+//     let html = '';
+//     for (let j = 0; j < discounts.length; j++){
+//         const discount = discounts[j];
 
-        html += `
-            <div class="discount-card">
-                <div class="discount-code">${discount.code}</div>
-                <div class="discount-value">Worth: ${discount.value} SEK</div>
-                <div class="discount-expiry">Expires in: ${discount.days_left} days</div>
-                <button class="btn btn-secondary btn-small" onclick="copyDiscount('${discount.code}')">Copy Code</button>
-            </div>
-        `;
-    }
-    container.innerHTML= html;
-}
+//         html += `
+//             <div class="discount-card">
+//                 <div class="discount-code">${discount.code}</div>
+//                 <div class="discount-value">Worth: ${discount.value} SEK</div>
+//                 <div class="discount-expiry">Expires in: ${discount.days_left} days</div>
+//                 <button class="btn btn-secondary btn-small" onclick="copyDiscount('${discount.code}')">Copy Code</button>
+//             </div>
+//         `;
+//     }
+//     container.innerHTML= html;
+// }
 
-window.copyDiscount = function(code){
-    navigator.clipboard.writeText(code);
-    alert('Copied coupon code to clipboard!');
-};
+// window.copyDiscount = function(code){
+//     navigator.clipboard.writeText(code);
+//     alert('Copied coupon code to clipboard!');
+// };
 
 
 async function deleteAccount(){

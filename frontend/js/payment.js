@@ -83,7 +83,6 @@ async function placeOrder(cart) {
                 names.push(item.name);
             }
             const items = names.join(', ');
-            // REMOVE //const items = stockResult.outOfStock.map(i => i.name).join(', '); //create a string of the item names that are not in stock
             alert(`Insufficient Storage: ${items}`); //show them here in alert msg to user
 
             //create new cart without out of stock items, save that and take user back to cart page
@@ -137,8 +136,8 @@ async function placeOrder(cart) {
             quantity: item.quantity
         })),
         total: total,
-        paymentMethod: method,
-        couponCode: document.getElementById('discountCode')?.value || null
+        paymentMethod: method
+        // couponCode: document.getElementById('discountCode')?.value || null
     };
     console.log('Order data: ', orderData);
 
@@ -148,7 +147,7 @@ async function placeOrder(cart) {
         btn.disabled = true; // make button unclickable so customer doesnt press multiple times
         
         const token = localStorage.getItem('token');
-        console.log('User-ID: ', token?.id);
+        // console.log('User-ID: ', token?.id);
 
         const response = await fetch('/api/orders', {
             method: 'POST',
