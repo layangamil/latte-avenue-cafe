@@ -264,25 +264,23 @@ app.post('/api/forgot-password', async (req, res) => {
         }
 
         //check if user exists
-        const [users] = await db.query('SELECT user_id FROM users WHERE email = ?', [email]);
+        const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
 
         if (users.length === 0) {
             return res.json({message: 'A reset lnk has been sent to your email'});
         }
-
-        const userId = users[0].user_id;
 
         //generate secure token
         const token = crypto.randomBytes(32).toString('hex');
         const expiresAt = new Date(Date.now() + 60 * 60 * 1000); //one hour from now
 
         //delete all the old tokens
-        await db.query('DELETE FROM password_resets WHERE user_id = ?', [userId]);
+        await db.query('DELETE FROM password_resets WHERE email = ?', [email]);
 
         //save new token
         await db.query(
-            'INSERT INTO password_resets (user_id, token, expires_at) VALUES (?, ?, ?)',
-            [userId, token, expiresAt]
+            'INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)',
+            [email, token, expiresAt]
         );
 
         //create resset link
@@ -338,10 +336,7 @@ app.post('/api/reset-password', async (req, res) => {
 
         //find valid token
         const [tokens] = await db.query(
-            `SELECT password_resets.*, users.email
-            FROM password_resets
-            JOIN users ON password_resets.user_id = users.user_id
-            WHERE password_resets.token = ? AND password_resets.expires_at > NOW()`,
+            'SELECT * FROM password_resets WHERE token = ? AND expires_at > NOW()',
             [token]
         );
 
