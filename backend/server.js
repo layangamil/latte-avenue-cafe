@@ -11,10 +11,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors()); //also made backend & fronten connect
 
-//make a random coupon
-function generateCouponCode() {
-    return 'LATTE-' + Math.random().toString(36).substring(2, 10).toUpperCase();
-}
 
 //for frontend files
 app.use(express.static(path.join(__dirname, '../frontend')));
@@ -672,8 +668,6 @@ app.get('/api/orders/:id', auth, async (req, res) => {
             payment_method: order.payment_method,
             cancelled_at: order.cancelled_at,
             updated_at: order.updated_at,
-            coupon_code: order.coupon_code,
-            coupon_used: order.coupon_used
         }
 
         res.json({
@@ -752,18 +746,6 @@ app.put('/api/orders/:id/status', auth, async (req, res) => {
         const order = orderCheck[0];
 
         console.log('Order total amount (status update):', order.total_amount);
-
-
-        if (status === 'completed') {
-            if (order.coupon_code) {
-                await db.query(
-                    `UPDATE \`order\` SET coupon_used = TRUE WHERE order_id = ?`,
-                    [orderId]
-                );
-
-                console.log('Coupon marked as used for the order:', orderId);
-            }
-        }
 
         let estimatedPickup = null;
         if (status === 'ready') {
@@ -850,11 +832,11 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             return res.status(403).json({error: 'Access denied'});
         }
 
-        //check if order can be cancelled by customer
-       /* if(!isStaff) {
-            if (order.status !== 'pending') {
-                return res.status(400).json({error: 'Only pending orders can be cancelled'});
-            }*/
+        //check if order can be cancelled
+        
+        if (order.status !== 'pending') {
+            return res.status(400).json({error: 'Only pending orders can be cancelled'});
+        }
 
         //check 1 min window 
         const orderedAt = new Date(order.created_at);
@@ -867,28 +849,8 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             }
 
             console.log('Order total amount:', order.total_amount);
-
-            const [couponCheck] = await db.query(
-                'SELECT coupon_used FROM `order` WHERE order_id = ?',
-                [orderId]
-            );
-
-            const usedCoupon = couponCheck[0]?.coupon_used || false;
             
-            let couponCode = null;
-            let message = '';
-
-
-            if (usedCoupon) {
-                couponCode = generateCouponCode();
-                message = 'Order cancelled: A new coupon has been issued for the total order amount.';
-
-            } else {
-
-                couponCode = generateCouponCode();
-                message = 'Order cancelled successfully. A coupon has been added to your profile page.';
-            }
-
+        
             const [userInfo] = await db.query(
                     'SELECT email, first_name FROM users WHERE user_id = ?',
                     [userId]
@@ -897,9 +859,6 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             const customerEmail = userInfo[0].email;
             const customerName = userInfo[0].first_name;
 
-            const orderTotal = order.original_total || order.total_amount;
-
-
             const emailHtml = `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background-color:#8b6b61; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
@@ -907,14 +866,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
             </div>
             <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px">
             <p>Hello ${customerName}, </p>
-            <p>Your order #${orderId} has been cancelled as requested.</p>
-            <p>Here is a coupon code with the same price as your cancelled order to use the next time you have a sweet tooth or fancy a drink.<br>
-            Note: If you spend less than the coupon value, the remining amount will not be saved, so be sure to spend up to the discount price.<br>:</p>
-            <div style="background-color: #e8e1d6; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;">
-            <h2 style="font-family: monospace; font-size: 24px; letter-spacing: 2px; color: #8b6b61;">${couponCode}</h2>
-            <p style="font-size: 14px;">Worth: ${orderTotal} SEK</p>
-            </div>
-            <p>Use this code at checkout on your next order. Valid for 30 days.</p>
+            <p>Your order #${orderId} has been cancelled as requested.</p>          
             <p style="margin-top: 30px;">See you soon!<br>Best wishes,<br>Latte Avenue</p>
             </div>
             </div>
@@ -931,90 +883,19 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
                 `UPDATE \`order\` 
                  SET status = 'cancelled', 
                      cancelled_at = CURRENT_TIMESTAMP, 
-                     estimated_pickup_time = NULL,
-                     coupon_code = ?
+                     estimated_pickup_time = NULL
                  WHERE order_id = ?`,
-                 [couponCode, orderId]
+                 [orderId]
             );
             
             return res.json({
                 success: true,
-                message: message,
+                message: 'Order has been cancelled',
                 order_id: orderId,
-                coupon_generated: !!couponCode
             });
         });
 
-        
-        
-        /*
-        //STaff cancellation
 
-            message = 'Order cancelled successfully';
-            couponCode = generateCouponCode();
-
-            console.log('Order total amount (staff cancel):', order.total_amount);
-
-            //update order with coupon code
-            await db.query(
-                `UPDATE \`order\` 
-                 SET coupon_code = ? 
-                 WHERE order_id = ?`,
-                [couponCode, orderId]
-            );
-
-            userInfo = await db.query(
-                'SELECT email, first_name FROM users WHERE user_id = ?',
-                [order.user_id]
-            );
-
-            customerEmail = userInfo[0].email
-            customerName = userInfo[0].first_name
-            
-            emailHtml = `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <div style="background-color: #8b6b61; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
-            <h1>Order Cancelled</h1>
-            </div>
-            <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px;">
-            <p>Hello ${customerName},</p>
-            <p>Your order #${orderId} has been cancelled by our staff due to unforseen reasons. As an apology, here is a coupon witha discount code the next time you get a sweet tooth or fancy a drink:</p>
-            <div style="background-color: #e8e1d6; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;">
-            <h2 style="font-family: monospace; font-size: 24px; letter-spacing: 2px; color: #8b6b61;">${couponCode}</h2>
-            <p style="font-size: 14px;">Worth: ${order.total_amount} SEK</p>
-            </div>
-            <p>Use this code at the checkout on your next order. Valid for 30 days.</p>
-            <p style="margin-top: 30px;">We hope to see you soon!<br>Best wishes,<br>Latte Avenue</p>
-            </div>
-            </div>
-            `;
-
-            await sendEmail(
-                customerEmail,
-                'Your Latte AVenue order has been cancelled',
-                emailHtml
-            );
-
-            message = 'Order cancelled and coupon sent to customer';
-        
-
-            //update order status to cancledd
-        await db.query(
-            `UPDATE \`order\` 
-             SET status = 'cancelled', 
-                 cancelled_at = CURRENT_TIMESTAMP, 
-                 estimated_pickup_time = NULL
-             WHERE order_id = ?`,
-            [orderId]
-        );
-
-        res.json({
-            success: true,
-            message: message,
-            order_id: orderId,
-            coupon_generated: ! !couponCode
-        });
-}); */
 
 
 
@@ -1026,7 +907,7 @@ app.delete('/api/orders/:id/cancel', auth, async (req, res) => {
 app.post('/api/orders', auth, async (req, res) => {
     
     const userId = req.user.id;
-    const {items, total, paymentMethod, status, couponCode} = req.body;
+    const {items, total, paymentMethod, status} = req.body;
 
     console.log('Order total amount (payment):', total);
 
@@ -1054,24 +935,7 @@ app.post('/api/orders', auth, async (req, res) => {
         
         //coupon check
         let finalTotal = total;
-        let appliedCoupon = null;
 
-        if (couponCode) {
-            const [coupons] = await connection.query(
-                `SELECT * FROM \`order\`
-                    WHERE user_id = ? AND coupon_code = ? AND coupon_used = FALSE
-                    AND cancelled_at > DATE_SUB(NOW(), INTERVAL 30 DAY)`,
-                [userId, couponCode]
-            );
-
-            if (coupons.length > 0) {
-                const coupon = coupons[0];
-                
-                finalTotal = Math.max(0, total - coupon.total_amount);
-                appliedCoupon = coupon.coupon_code;
-
-            }
-        }
         //check stock for the ordered ittem
         const productIds = items.map(item => item.menuItemId);
         const [stockRows] = await connection.query(
@@ -1107,9 +971,9 @@ app.post('/api/orders', auth, async (req, res) => {
 
             //create order
             const [orderResult] = await connection.query(
-                `INSERT INTO \`order\` (user_id, total_amount, original_total, status, payment_method, estimated_pickup_time) 
-                 VALUES (?, ?, ?, ?, ?, ?)`,
-                [userId, finalTotal, total, 'pending', paymentMethod, estimatedPickup]
+                `INSERT INTO \`order\` (user_id, total_amount, status, payment_method, estimated_pickup_time) 
+                 VALUES (?, ?, ?, ?, ?)`,
+                [userId, finalTotal, 'pending', paymentMethod, estimatedPickup]
             );
 
             const orderId = orderResult.insertId;
@@ -1189,8 +1053,7 @@ app.post('/api/orders', auth, async (req, res) => {
             res.status(201).json({
                 success: true,
                 orderId: orderId.toString(),
-                message: 'Order confirmed',
-                coupon_applied: !!appliedCoupon
+                message: 'Order confirmed'
             });
         } catch (err) {
             await connection.rollback();
@@ -1381,26 +1244,6 @@ app.delete('/api/profile', auth, async (req, res) => {
     } finally {
         connection.release();
     }
-});
-
-//coupon discount:://
-//GET /api/profile/coupons 
-app.get('/api/profile/coupons', auth, async (req, res) => {
-        
-const userId = req.user.id;
-
-        const [coupons] = await db.query(
-            `SELECT order_id, coupon_code as code, total_amount as value, 
-                    DATE_FORMAT(cancelled_at, '%Y-%m-%d') as date,
-                    DATEDIFF(DATE_ADD(cancelled_at, INTERVAL 30 DAY), NOW()) as days_left
-             FROM \`order\` 
-             WHERE user_id = ? AND coupon_code IS NOT NULL AND coupon_used = FALSE
-             AND cancelled_at > DATE_SUB(NOW(), INTERVAL 30 DAY)
-             ORDER BY cancelled_at DESC`,
-            [userId]
-        );
-
-        res.json(coupons);
 });
 
 
