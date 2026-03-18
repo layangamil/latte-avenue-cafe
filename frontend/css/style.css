@@ -1615,7 +1615,7 @@ nav {
 /*===================================================================*/
                       /* CUSTOMER - MY ORDERS PAGE:*/
 /*===================================================================*/
-.order-card{
+.customer-page .order-card{
     flex: 0 0 auto;
     max-width: 350px;
     width: 100%;
@@ -1623,6 +1623,8 @@ nav {
     font-family: 'Cormorant Garamond', serif;
     margin: 0 0 2.3rem 0;
     padding-bottom: 1.3rem;
+    border-radius: 7px;
+    background-color:#cebab3;
 }
 
 .order-header span:last-child em{
@@ -1957,7 +1959,7 @@ nav {
     }
 }
 
-.order-card {
+.order-manage-page .order-card {
     width: 100%;
     min-width: 0;
     background-color:#b6afad;
