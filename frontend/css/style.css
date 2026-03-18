@@ -365,7 +365,7 @@ nav {
     .menu-items {
         grid-template-columns: repeat(4, 1fr);
         overflow-x: visible;
-        gap: 2rem;
+        gap: 1.5rem;
     }
 
     .menu-item {
@@ -373,11 +373,11 @@ nav {
     }
 
     .item-content h4{
-        font-size: 1.3rem;
+        font-size: 1.1rem;
     }
 
     .item-content p{
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         min-height: 40px;
     }
 
@@ -386,8 +386,8 @@ nav {
     }
 
     .btn-add {
-        padding: 12px 20px;
-        font-size: 0.8rem;
+        padding: 7px 17px;
+        font-size: 0.76rem;
     }
 
     .sold-out-label {
@@ -1729,7 +1729,7 @@ nav {
 
 @media (min-width: 1025px) {    /*desktop*/
     #current-order-box, #order-history-box{
-        grid-auto-columns: 280px;   
+        grid-auto-columns: 220px;   
     }
 }
 /*===================================================================*/
@@ -1962,7 +1962,7 @@ nav {
 .order-manage-page .order-card {
     width: 100%;
     min-width: 0;
-    background-color:#b6afad;
+    background-color:#cebab3;
     border-radius: 6px;
     box-shadow: 0 1px 3px rgba(139, 107, 97, 0.1);
 }
