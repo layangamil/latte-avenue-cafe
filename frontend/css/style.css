@@ -1255,7 +1255,7 @@ nav {
     display: flex; 
     gap: 0.9rem;
 }
-
+/* 
 .discount-input label{
     color: #5d4037;
     display: block;
@@ -1280,7 +1280,7 @@ nav {
     padding: 0.5rem 0.7rem;
     margin-bottom: 1rem;
     border-radius: 7px;
-}
+} */
 /*===================================================================*/
                       /* ORDER CONFIRMATION PAGE:*/
 /*===================================================================*/
@@ -1536,7 +1536,7 @@ nav {
     font-style: italic;
     margin-bottom: 1.2rem;
 }
-
+/* 
 .discounts-section {
     margin-top: 1rem;
 }
@@ -1599,7 +1599,7 @@ nav {
     font-family:'Cormorant Garamond', serif;
     font-size: 1rem;
     letter-spacing: 3px;
-}
+} */
 
 /*===================================================================*/
                       /* CUSTOMER - MY ORDERS PAGE:*/
