@@ -15,6 +15,7 @@ html, body{
     scroll-behavior: smooth;
     overflow: visible;
     scroll-padding-top: 100px;
+    font-size: 16px;
 }
 
 body {
@@ -361,7 +362,7 @@ nav {
     }
 }
 
-@media (min-width: 1025px) {           /*response desktop*/
+/* @media (min-width: 1025px) {            desktop
     .menu-items {
         grid-template-columns: repeat(4, 1fr);
         overflow-x: visible;
@@ -394,7 +395,7 @@ nav {
         padding: 10px 20px;
         font-size: 0.9rem;
     }
-}
+} */
                                        
 .menu-item {                           /* Individual Menu Item (Bubble/Card) */
     background: white;
@@ -1727,11 +1728,11 @@ nav {
     }
 }
 
-@media (min-width: 1025px) {    /*desktop*/
+/* @media (min-width: 1025px) {    desktop
     #current-order-box, #order-history-box{
         grid-auto-columns: 220px;   
     }
-}
+} */
 /*===================================================================*/
                       /* ADMIN - MENU MANAGE PAGE:*/
 /*===================================================================*/
