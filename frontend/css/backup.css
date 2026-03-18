@@ -2010,3 +2010,123 @@ nav {
     color: #8b6b61;
     padding: 4rem;
 }
+
+/*----------my-orders.html----------*/
+<!DOCTYPE html>
+<html lang="en"> <!-- tells browser and screen readers page is in english-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- view-port tag to make website responsive on mobile devices, by setting width to the device width -->
+    <title>Latte Avenue - My Orders</title>
+    <link rel="icon" type="image/jpg" href="image/favicon.png">
+    <link rel="stylesheet" href= "css/style.css">
+    <link rel="stylesheet" href= "css/responsive.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- 'Font Awesome' is an icon library. for shopping bag icon, plus icon, coffee mug -->
+</head>
+
+<body class="customer-page">
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container"> <!-- common pattern to limit content width and center it, in css-->
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <img class="logo" src="image/new_logo.png">
+                    </a>
+                </div>
+                <nav>
+                    <!-- navigation links -->
+                    <a href="index.html" class="nav-item">Home</a>
+                    <a href="index.html#menu" class="nav-item">Menu</a>
+                    <a href="#footer-section" class="nav-item">Contact</a>
+                    <a href="cart.html" class="nav-item">
+                        <i class="fa-solid fa-cart-arrow-down"></i>
+                        <span id="cart-count" class="cart-count">0</span> <!-- span, bc it doesnt break line (inline -element) JS needs a unique id to find and update cart nr. class cart-count is for styling, ID for JS -->
+                    </a>
+                    <a href="login.html" id="loginLink" class="nav-item">
+                        <i class="fa-solid fa-circle-user"></i><strong>Sign in</strong>
+                    </a>
+
+                    <div class="dropdown" id="accountDropdown" style="display:none">
+                        <button class="nav-item profile-btn">
+                            <i class="fa-solid fa-circle-user"></i><strong>My Account ▼</strong>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="profile.html">Profile</a>
+                            <a href="my-orders.html">Orders</a>
+                            <a href="#" id="customerSignoutBtn">Sign Out</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="orders-page">
+        <div class="container">
+            <div class="page-header">
+                <h1>My Orders</h1>
+            </div>
+            <div class="current-order-section">
+                <div class="section-header">
+                    <h2>Current Orders</h2>
+                </div>
+                <div id="current-order-box" class="order-box">
+                    <!--JS will write code here-->
+                    <p>Loading order...</p>
+                </div>
+            </div>
+
+            <div class="order-history-section">
+                <div class="section-header">
+                    <h2>Previous Orders</h2>
+                </div>
+                <div id="order-history-box" class="order-box">
+                    <!--JS will write code here-->
+                    <p>Loading history...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="footer-section" class="footer-section">
+        <img src="image/footer_logo2.png" class="logo">
+        <div class="container">
+            <div class="visit-us">
+                <div class="footer-sub-header">
+                    <h3>Visit Us</h3>
+                    <p></p>
+                </div>
+                <p><i class="fa-solid fa-location-dot"></i>123 Centralplan, Stockholm</p>
+                <p><i class="fa-solid fa-clock"></i>Mon-Sat : 7am-8pm</p>
+            </div>
+
+            <div class="socials-section">
+                <div class="footer-sub-header">
+                    <h3>Follow us on our socials</h3>
+                    <p></p>
+                </div>
+                <div class="socials">
+                    <a href="https://www.instagram.com/latte_avenue_sthlm/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@latte_avenue_sthlm?lang=en-GB" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61588507070670" target="_blank"><i class="fa-brands fa-square-facebook"></i></a>
+                </div>
+            </div>
+
+            <div class="contact-us">
+                <div class="footer-sub-header">
+                    <h3>Contact Us</h3>
+                    <p></p>
+                </div>
+                <p><i class="fa-solid fa-phone"></i>Phone: +46 123 456 789<p> 
+                <p><i class="fa-solid fa-envelope"></i>Email: latteavenue@gmail.com</p>
+            </div>
+        </div>
+        <p class="copyrights">© 2026 Latte Avenue Café. All rights reserved.</p>
+    </footer>
+
+    <script src="js/header.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/my-orders.js"></script>
+</body>
+</html>
