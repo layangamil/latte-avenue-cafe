@@ -118,9 +118,8 @@
         margin-right: 0.2rem;
     }
 
-    .contact-us .phone-nr{
-        color:#f0e6d6 !important;
-        text-decoration: none !important;
+    .footer-section .contact-us .phone-nr {
+        color: #f0e6d6 !important;
     }
     
     .footer-section p {
