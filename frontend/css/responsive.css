@@ -107,11 +107,6 @@
         max-width: 180px;
         flex: 1 1 149px;
     }
-
-    .contact-us .phone-nr{
-        color:#f0e6d6;
-        text-decoration: none;
-    }
     
     .footer-sub-header p {
         margin-right: auto;
@@ -947,11 +942,6 @@
     .footer-section .contact-us, .footer-section .socials-section, .footer-section .visit-us {
         flex: 1 1 180px;
     }
-
-    .contact-us .phone-nr{
-        color:#f0e6d6;
-        text-decoration: none;
-    }
     
     .footer-section p {
         margin: 0.75rem 0;
@@ -1338,11 +1328,6 @@
         max-width: 1400px;
         margin: 0 auto;
         gap: 2.9rem;
-    }
-
-    .contact-us .phone-nr{
-        color:#f0e6d6;
-        text-decoration: none;
     }
     
     .footer-section .contact-us, .footer-section .socials-section, .footer-section .visit-us {
