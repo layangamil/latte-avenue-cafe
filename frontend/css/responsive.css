@@ -1244,9 +1244,9 @@
 /*---------------------------------------------------------------------------------*/
 
 /*EXTRA BIG SCREEN*/
-@media (min-width: 1440){  
+@media (min-width: 1600px){  
     .container {
-        max-width: 1400px;  
+        max-width: 1550px;  
     }
     
     body {

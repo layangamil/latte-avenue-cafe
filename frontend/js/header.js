@@ -46,15 +46,3 @@ function signout(){
         window.location.href = 'index.html';
     }
 }
-
-// window.addEventListener('load', function() {  //???
-//     const signoutBtn = document.getElementById('customerSignoutBtn');
-//     if (signoutBtn) {
-//         console.log('Sign out Btn: ', signoutBtn);
-//         signoutBtn.onclick = function(event) {
-//             event.preventDefault();
-//             signout();
-//             return false;
-//         };
-//     }
-// });
