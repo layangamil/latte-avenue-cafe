@@ -10,12 +10,15 @@
 
     .customer-page .header-content .logo {
         display: flex;
-        width: 100%;
+        width: auto;
         justify-content: center;
     }
 
     .customer-page .header-content .logo img {
         margin: 0 auto;
+        max-width: 120px;
+        width: 100%; 
+        height: auto;
     }
 
     .customer-page .header-content {
@@ -23,7 +26,8 @@
     }
     
     .logo{
-        width: 120px;
+        max-width: 120px;
+        width: auto;
         height: auto;
         margin: 0 auto;
     }
@@ -103,19 +107,20 @@
     }
     
     .footer-section .container {
-        flex-direction: row;
+        flex-direction: column;
         flex-wrap: wrap;
-        gap: 0.9rem;
-        padding: 0 1rem;
+        gap: 1.3rem;
+        justify-content: center;
         align-items: center;
+        padding: 0 1rem;
     }
     
     .footer-section .contact-us, .footer-section .socials-section, .footer-section .visit-us{
         width: 100%;
         text-align: center;
         margin: 0 !important;
-        max-width: 180px;
-        flex: 1 1 149px;
+        max-width: 250px;
+        flex: none;
     }
     
     .footer-sub-header p {
@@ -126,10 +131,6 @@
     .footer-section i {
         font-size: 0.7rem;
         margin-right: 0.2rem;
-    }
-
-    .footer-section .contact-us .phone-nr {
-        color: #f0e6d6 !important;
     }
     
     .footer-section p {
@@ -784,6 +785,7 @@
         max-width: 100%;
         font-size: 0.8rem;
         width: 100%;
+        background-color:#faf7f2 !important;
     }
     
     .order-header {
