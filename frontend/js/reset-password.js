@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function(){
             }
 
             if (newPass !== confirmNewPass){
+                console.log('Passwords do not match');
                 msgMatch.style.display = 'block';
                 return;
             }else {
@@ -41,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function(){
             }
 
             if (newPass.length < 6 || confirmNewPass.length < 6){
+                console.log('Passwords less than 6 char');
                 msgShort.style.display = 'block';
                 return;
             }else {
