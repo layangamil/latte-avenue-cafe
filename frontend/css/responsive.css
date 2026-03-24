@@ -8,6 +8,16 @@
         text-align: center;
     }
 
+    .customer-page .header-content .logo {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .customer-page .header-content .logo img {
+        margin: 0 auto;
+    }
+
     .customer-page .header-content {
         justify-content: center !important;
     }
@@ -497,7 +507,7 @@
         width: 100%;
     }
     
-    /* Discount */
+    /* Discount
     .discount-input {
         margin: 1rem 0;
     }
@@ -518,7 +528,7 @@
     
     .discount-row button {
         width: 100%;
-    }
+    } */
     
     #place-order-btn {
         margin-top: 1rem;
