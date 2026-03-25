@@ -931,9 +931,7 @@ app.post('/api/orders', auth, async (req, res) => {
     
     try {
     await connection.beginTransaction();
-
-        
-        //coupon check
+    
         let finalTotal = total;
 
         //check stock for the ordered ittem
