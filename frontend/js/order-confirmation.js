@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
 async function loadOrderDetails(orderId){
     console.log('loadOrderDetails function is running! With: ', orderId);
     const token = localStorage.getItem('token');
-    console.log('User-ID: ', token?.id);
+    
     try{
         const response = await fetch(`/api/orders/${orderId}`, {
             headers: {'Authorization': 'Bearer ' + token}

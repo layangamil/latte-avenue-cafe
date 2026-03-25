@@ -137,7 +137,7 @@ async function placeOrder(cart) {
         })),
         total: total,
         paymentMethod: method
-        // couponCode: document.getElementById('discountCode')?.value || null
+        
     };
     console.log('Order data: ', orderData);
 
