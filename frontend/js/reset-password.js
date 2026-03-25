@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const cancelReset = document.getElementById('cancelReset');
     if(cancelReset){
         cancelReset.addEventListener('click', function(){
-            // localStorage.removeItem('resetEmail');
+            
             localStorage.removeItem('resetToken');
             window.location.href = 'login.html';
             return;

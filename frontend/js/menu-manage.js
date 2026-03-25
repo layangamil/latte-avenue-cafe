@@ -42,9 +42,6 @@ async function loadMenuItems(){
             }
         }
 
-        // REMOVE //const drinks = items.filter(item => item.category?.toLowerCase().includes('drink'));
-        // REMOVE //const desserts = items.filter(item => item.category?.toLowerCase().includes('dessert'));
-
         displayItems('drinks-list', drinks, 'drinks');
         displayItems('desserts-list', desserts, 'desserts');
     

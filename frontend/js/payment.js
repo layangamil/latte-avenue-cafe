@@ -100,7 +100,7 @@ async function placeOrder(cart) {
                     newCart.push(itemCart);
                 }
             }
-            // REMOVE //const newCart = cart.filter(item => !stockResult.outOfStock.some(out => out.id == item.id));
+           
             localStorage.setItem('cart', JSON.stringify(newCart));
             window.location.href = 'cart.html';
             return; // does not order
@@ -126,7 +126,7 @@ async function placeOrder(cart) {
     for (const item of cart){
         total += item.price * item.quantity;
     }
-    // REMOVE //const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+   
     console.log('Total price: ', total);
     const orderData = {  //gets all the info that will be sent to backend
         items: cart.map(item => ({  // map() creates an array where every item get reformated to macth backend
